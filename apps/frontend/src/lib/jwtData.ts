@@ -1,0 +1,1 @@
+export const jwtData = localStorage.getItem('jwt');

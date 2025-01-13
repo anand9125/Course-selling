@@ -1,0 +1,23 @@
+# Ignore node_modules
+/node_modules/
+
+# Ignore environment files
+.env
+.env.local
+
+# Ignore log files
+*.log
+
+# Ignore build output
+/dist/
+/build/
+
+# Ignore specific files
+secret.txt
+
+config/credentials.json
+.env
+
+config/
+
+config.ts
