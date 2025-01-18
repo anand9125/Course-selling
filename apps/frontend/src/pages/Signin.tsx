@@ -46,7 +46,7 @@ function Signin() {
           withCredentials: true
       })
       localStorage.setItem('jwt', response.data.token);
-        console.log(response.data);
+    
           setSigninState(response.data)
           if(response.status === 200) {navigate("/")}
         console.log(response.status);

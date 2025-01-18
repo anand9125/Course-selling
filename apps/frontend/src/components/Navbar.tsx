@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
+import socket from "../store/socketConnection";
 
 
 const Navbar = () => {
   const logout = () => {
     // Clear the authentication token (or any session state)
-   
     localStorage.clear();
     window.location.href = '/signin'; // Redirect to login after logout
-};
+    socket.disconnect();
+  };
+  socket.on("disconnect", () => {
+    console.log("Disconnected from WebSocket server");
+  });
 
   return (
     <header

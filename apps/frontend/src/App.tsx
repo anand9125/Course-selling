@@ -1,6 +1,6 @@
 import { Routes, Route,BrowserRouter as Router, } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import Navbar from "./AuthRoutes/Navbar";
+import Navbar from "./components/Navbar";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import SettingPagge from "./pages/SettingPagge";
@@ -9,6 +9,7 @@ import PrivateRoute from "./AuthRoutes/Auth";
 import { RecoilRoot } from "recoil";
 import { AuthProvider } from "./context/AuthContext";
 import { useThemeStore } from "./store/useThemeStore";
+import { Toaster } from "react-hot-toast";
 function App() {
   const{theme} =useThemeStore()
   return (
@@ -42,6 +43,7 @@ function App() {
     </div>
   </div>
 </Router>
+  <Toaster></Toaster>
 
     </RecoilRoot>
   );

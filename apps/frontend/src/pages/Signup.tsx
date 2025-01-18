@@ -8,9 +8,10 @@ import { backendUrl } from "../lib/backendUrl";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { FaGoogle } from "react-icons/fa";
-import {  useRecoilValue, useSetRecoilState } from "recoil";
+import {useSetRecoilState } from "recoil";
 import { dataAtom } from "../Recoil/dataAtom";
-
+import socket from "../store/socketConnection";
+import { useNavigate } from 'react-router-dom';
 type FormData = {
   fullName: string;
   username: string;
@@ -21,13 +22,13 @@ function Signup() {
   const {signInWithGoogle  } = useAuth(); 
   const [showPassword,setShowPassword] = useState(false) 
   const setSignupState = useSetRecoilState(dataAtom)
- 
+  const navigate = useNavigate();
    const[formData,setFormData]= useState<FormData>({
     fullName:"",
     username:"",
     password:""
    })
-  // console.log(formData)
+  
    const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.username.trim()) return toast.error("Email is required");
@@ -38,13 +39,11 @@ function Signup() {
     return true;
   };
   
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
      e.preventDefault();
      const success = validateForm();
-    // console.log(success);
-    // console.log(formData);
-    
     if (success === true) 
     try {
       const response = await axios.post(`${backendUrl}/signup`, formData, {
@@ -53,6 +52,7 @@ function Signup() {
       setSignupState(response.data);
       if(response.status==200){
         localStorage.setItem('jwt', response.data.token);
+        navigate('/');
       }
 
        console.log(response.status);  // You can handle the response as needed
@@ -66,16 +66,14 @@ function Signup() {
     try{
      await signInWithGoogle()
      alert("Register successfull with google")
+     socket.connect()
   
     }
     catch(e){
      alert("Google register failed")
     }
    }
-   
-   const data = useRecoilValue(dataAtom)
-   console.log("hii")
-   console.log(data)
+    
   return <div className="min-h-screen grid lg:grid-cols-2 ">
      
       {/* left side */}
@@ -202,4 +200,5 @@ function Signup() {
   
 }
 
-export default Signup
+
+export default Signup ; 

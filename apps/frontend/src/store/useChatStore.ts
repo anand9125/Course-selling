@@ -4,6 +4,7 @@ import { backendUrl } from "../lib/backendUrl"
 import {create} from "zustand" //Zustand state management library used to create a store for managing the application's state.
 import toast from "react-hot-toast"
 import axios from "axios"
+import socket from "./socketConnection";
 interface MessageData {
     id: string;
     senderId: string;
@@ -24,6 +25,7 @@ interface User {
 
 interface ChatStore{
     message:MessageData[];
+    onlineUsers:any, //to store the online users
     users:Array<User>,
     selectedUser :any,
     isUserLoading :boolean,
@@ -33,18 +35,21 @@ interface ChatStore{
     sendMessage:(messageData:any)=>void,
     setSelectedUser:(selectedUser:any)=>void ,//it is a function that return void
     set:(state:any)=>void
+    subscribeTomessages:()=>void,
+    unsubscribeTomessages:()=>void
 }
 
 const token =localStorage.getItem('jwt') 
 console.log(backendUrl +"hii")
 // The create function initializes the store, and set is a function used to update the store's state. state is our case mesg ,user ,selectedUser....
 //Here we will use zustand to manage our state
-export const useChatStore = create<ChatStore>((set,get)=>({ // This defines a Zustand store that can be used across your React application.
+   export const useChatStore = create<ChatStore>((set,get)=>({ // This defines a Zustand store that can be used across your React application.
     message:[], //empty array where the messages will be stored 
     users:[], //empty array where the users will be stored. it's empty, but once the users are fetched, they will be stored here
     selectedUser :null, // set to null, this state holds the currently selected user
     isUserLoading :false, //loading state to indicate whether the user data is currently being fetched
     isMessageLoading :false,
+    onlineUsers:[],
 //all the above are state
     getUser:async()=>{//getUser function
         set({isUserLoading:true}); // Updates isUserLoading to true before the fetch to indicate that the data is loading.
@@ -57,7 +62,6 @@ export const useChatStore = create<ChatStore>((set,get)=>({ // This defines a Zu
             console.log(response,"hii")
             set({users:response.data});
            
-        
         }
         catch(err){
             toast.error("Failed to get users")
@@ -88,18 +92,37 @@ export const useChatStore = create<ChatStore>((set,get)=>({ // This defines a Zu
                 headers: {
                   'Authorization':token
                 }
-            });
-
-            
+            })  
             set({message:[...message,res.data]});
         }catch (error){
             toast.error("Failed to send message")
         }
 
     },
+    subscribeTomessages:()=>{
+         const {selectedUser} = get()
+          if(!selectedUser)return 
+        //we are  listening for a socket event called "newMessage".
+          socket.on("newMessage",(newMessageData)=>{
+          set({
+            message:[...get().message,newMessageData]
+          })
+    })
+    },
+    //detaching the listener 
+    unsubscribeTomessages:()=>{
+      socket.off("newMessage")
+    },
     //todo :optimized this one later
     setSelectedUser:(selectedUser:any)=>set({
         selectedUser
-    }),//setSelectedUser is a function that will update the selectedUser state with the help of set
-    set:(state:any)=>set(state) //making a set function so that we can update any state
-}))
+        }),//setSelectedUser is a function that will update the selectedUser state with the help of set
+       set:(state:any)=>set(state) //making a set function so that we can update any state
+    }))
+
+    socket.on("getOnlineUser", (userId) => {
+        console.log(userId,"dfgdfgdsfgdfgdfgdfg")
+         // Update the onlineUsers state with the data received from the socket event
+         useChatStore.getState().set({ onlineUsers: userId});
+        console.log(useChatStore.getState(),"Hello i am all state")
+  });

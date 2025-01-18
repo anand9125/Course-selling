@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Camera, Mail, User } from "lucide-react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import { dataAtom, uploadPicAtom } from "../Recoil/dataAtom";
 import axios from "axios";
 import { backendUrl } from "../lib/backendUrl";
@@ -10,7 +10,7 @@ const token =localStorage.getItem('jwt')
 const ProfilePage = () => {
    const userData = useRecoilValue(dataAtom)
   const setProfilePic = useSetRecoilState(uploadPicAtom)
-  const [selectedImg, setSelectedImg] = useState<string | ArrayBuffer | null>(null);
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
   
 
    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

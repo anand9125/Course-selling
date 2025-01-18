@@ -1,8 +1,9 @@
 import { json, Request,Response } from "express"
 import { PrismaClient } from "@prisma/client";
-
+import { io } from "../lib/socket.io/socket";
 const client =new PrismaClient()
 import cloudinary from "../lib/cloudnary";
+import { getReciverSocketId } from "../lib/socket.io/socket";
 export const getUserForSidebar = async (req: Request, res: Response) => {
     try {
       const loggedUserId = req.userId;
@@ -93,7 +94,12 @@ export const sentMessage = async(req:Request,res:Response)=>{
             receiverId:(recieverId)
         }
     })
-    //todo realtime functionality goes here => socket.io
+   
+    const recieverSocketId=getReciverSocketId(recieverId)
+    if(recieverSocketId){
+      io.to(recieverSocketId).emit("newMessage", newMessage)
+    }
+
     res.status(201).json(newMessage)
     console.log(newMessage)
    }
