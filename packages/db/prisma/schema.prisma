@@ -41,38 +41,39 @@ model UserCategory {
 // Each Category can have multiple users.
 model Category {
   id             String         @id @default(cuid())
-  name           String         @unique
+  categoryId     String         @unique
+  name           String         
   mentors        Mentor[]
   userCategories UserCategory[]
+  courses Course[] // One category has many courses
 }
 
 model Mentor {
   id              String            @id @default(cuid())
+  mentorId        String            @unique
   name            String
+  image           String
   categoryId      String
   category        Category          @relation(fields: [categoryId], references: [id])
   courses         Course[]
   rating          Float             @default(0.0)
-  mentorExpertise MentorExpertise[]
-}
 
-model MentorExpertise {
-  id        String @id @default(cuid())
-  mentor    Mentor @relation(fields: [mentorId], references: [id])
-  mentorId  String
-  expertise String
 }
 
 model Course {
   id          String     @id @default(cuid())
+  image       String
   courseId    String     @unique
   title       String
   description String
   price       Float
+  actualPrice Float
   mentorId    String
   mentor      Mentor     @relation(fields: [mentorId], references: [id])
   purchases   Purchase[]
   reviews     Review[]
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
 }
 
 model Purchase {
