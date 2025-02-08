@@ -4,7 +4,6 @@ import { SigninSchema, SignupSchema } from "../types";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_PASSWORD } from "../config"
-import { parse } from "cookie";
 import { adminPassword } from "../types/config";
 const client = new PrismaClient()
 

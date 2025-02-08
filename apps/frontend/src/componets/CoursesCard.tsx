@@ -63,7 +63,7 @@ const ImgMediaCard: React.FC<CardProps> = ({ title, description, image, onClick 
   </Card>
 );
 
-const CardComponent: React.FC = () => {
+const CoursesCardComponent: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCardClick = (title: string) => {
@@ -98,4 +98,4 @@ const CardComponent: React.FC = () => {
   );
 };
 
-export default CardComponent;
+export default CoursesCardComponent

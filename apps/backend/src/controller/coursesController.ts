@@ -1,5 +1,5 @@
 import {PrismaClient} from "@prisma/client";
-import { CreatecoursesSchema,updateCourseSchema } from "../types"
+import { CreatecoursesSchema,updateCourseIndexSchema,updateCourseSchema } from "../types"
 import { Request,Response } from "express";
 
 const client = new PrismaClient()
@@ -13,6 +13,7 @@ export const createCourses = async(req:Request,res:Response)=>{
         return;
     }
     try{
+    const course = await client.$transaction(async(tx)=>{
     let category = await client.category.findUnique({
         where:{
             categoryId:parseData.data.categoryId
@@ -24,7 +25,10 @@ export const createCourses = async(req:Request,res:Response)=>{
         category = await client.category.create({
             data:{
                 categoryId:parseData.data.categoryId,
-                name:parseData.data.categoryName as string, 
+                name:parseData.data.categoryName as string,
+                index:parseData.data.index ,
+                image:parseData.data.categoryImg as string
+               
             }
         })
     }
@@ -34,7 +38,7 @@ export const createCourses = async(req:Request,res:Response)=>{
             mentorId:parseData.data.mentorId
         }
     })
-    console.log("mentor is found" ,mentor)
+  
     if(!mentor){
         mentor = await client.mentor.create({
             data:{
@@ -66,14 +70,16 @@ export const createCourses = async(req:Request,res:Response)=>{
                 connect:{
                     id:mentor.id
                 }
-            }
+            },
+            index:parseData.data.index
         }
     })
     res.status(201).json({
         message: "Course created successfully",
         data: course
     })
-   }
+   })
+}
     catch(err){
         console.error("Error creating course",err)
         res.status(500).json({
@@ -126,7 +132,7 @@ export const getSingleCourse = async(req:Request,res:Response)=>{
     }
 }
 
-export const updateCourseById = async(req:Request,res:Response)=>{
+export const updateCourse = async(req:Request,res:Response)=>{
     const courseId = req.params.courseId;
     
     const parseData = updateCourseSchema .safeParse(req.body)
@@ -170,7 +176,7 @@ export const updateCourseById = async(req:Request,res:Response)=>{
     
 }
 
-export const deleteCourseById = async(req:Request,res:Response)=>{
+export const deleteCourse = async(req:Request,res:Response)=>{
     const courseId = req.params.courseId;
     try{
         const existCourse = await client.course.findUnique({
@@ -201,7 +207,7 @@ export const deleteCourseById = async(req:Request,res:Response)=>{
     }
 }
     
-export const getCoursesByCategoryId = async (req: Request, res: Response) => {
+export const getCoursesByCategoryid = async (req: Request, res: Response) => {
     const { categoryId } = req.params; // Assuming you pass `categoryId` in the URL
 
     try {
@@ -234,7 +240,7 @@ export const getCoursesByCategoryId = async (req: Request, res: Response) => {
 };
 
 
-export const getCoursesByMentor= async(req:Request,res:Response)=>{
+export const getCoursesByMentorid= async(req:Request,res:Response)=>{
     const mentorId = req.params.mentorId;
     try{
        const Mentor = await client.mentor.findUnique({
@@ -265,3 +271,51 @@ export const getCoursesByMentor= async(req:Request,res:Response)=>{
         })
     
 }}
+
+export const updateCourseIndex= async(req:Request,res:Response)=>{
+  const { courseId} = req.params;
+  const parseData = updateCourseIndexSchema.safeParse(req.body)
+  if(!parseData.success){
+    res.status(400).json({
+      message: "Invalid data"
+    })
+    return;
+  }
+  try{
+    const existingCourse = await client.course.findUnique({
+        where:{
+          courseId:courseId
+        }
+      })
+      if (!existingCourse) throw new Error("Course not found");
+    
+      // Shift indexes of other courses that are equal or greater than the new index
+      await client.course.updateMany({
+        where: {
+          index: { gte: parseData.data.newIndex },
+        },
+        data: {
+          index: {
+            increment:1
+          }
+        },
+      })
+      const updatedCourse = await client.course.updateMany({
+        where:{
+          courseId:courseId
+        },
+        data:parseData.data
+      })
+      res.json({
+        message: "Course index updated successfully",
+        data: updatedCourse
+      })
+
+  }catch(err){
+    console.error("Error updating course index",err)
+    res.status(500).json({
+      message: "Failed to update course index"
+    })
+  }
+  
+}

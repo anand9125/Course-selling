@@ -1,17 +1,17 @@
 import { Router } from "express";
 import { adminAuthMiddleware } from "../../Middlewares/adminMiddlewares";
-import { createCourses, deleteCourseById, updateCourseById } from "../../controller/coursesController";
+import { createCourses, deleteCourse, updateCourseIndex ,updateCourse} from "../../controller/coursesController";
 
 const router =  Router()
 
 
 router.post("/create",adminAuthMiddleware,createCourses)
 
-router.put("/update/:courseId",adminAuthMiddleware,updateCourseById)
+router.put("/update/:courseId",adminAuthMiddleware,updateCourse)
  
-router.delete("/delete-Course/:courseId",adminAuthMiddleware,deleteCourseById)
+router.delete("/delete/:courseId",adminAuthMiddleware,deleteCourse)
 
-
+router.put("/updateIndex/:courseId",adminAuthMiddleware,updateCourseIndex)
 
 
 

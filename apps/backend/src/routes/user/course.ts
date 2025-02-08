@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllCourses,  getCoursesByCategoryId, getCoursesByMentor, getSingleCourse } from "../../controller/coursesController";
+import { getAllCourses,  getCoursesByCategoryid, getCoursesByMentorid, getSingleCourse } from "../../controller/coursesController";
 
 
 const router = Router();
@@ -9,8 +9,8 @@ router.get("/",getAllCourses)
 
 router.get("/:courseId",getSingleCourse)
 
-router.get("/category/:categoryId",  getCoursesByCategoryId);
+router.get("/category/:categoryId",  getCoursesByCategoryid);
 
-router.get("/mentor/:mentorId", getCoursesByMentor);
+router.get("/mentor/:mentorId", getCoursesByMentorid);
 
 export const courseRouter = router

@@ -1,4 +1,4 @@
-import LatestCardComponent from "../../componets/LatestCard"
+import CoursesCardComponent from "../../componets/CoursesCard"
 import { IoLocationOutline } from "react-icons/io5";
 function OurlatestCourses() {
   return (
@@ -9,7 +9,7 @@ function OurlatestCourses() {
                     Our Latest Courses
                 </div>
                  <div>
-                 <LatestCardComponent />
+                 <CoursesCardComponent />
                 </div>
                <div className="text-center p-5">
                  <button className="bg-primary text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">

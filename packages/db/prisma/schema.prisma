@@ -18,9 +18,10 @@ model User {
   year             Int?
   walletBalance    Float          @default(0.0)
   referralCode     String         @unique @default(uuid())
-  referredById     String?
+  //relation represents a self-referencing many-to-one relationship within usermodel
+  referredById     String?       // Stores the ID of the user who referred this user
   referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id]) //Tracks who referred them (referredBy field).
-  referrals        User[]         @relation("UserReferrals") // Tracks who they referred (referrals field).उन्होंने किसे refer kara
+  referrals        User[]         @relation("UserReferrals") // Tracks who they referred (referrals field).उन्होंने किसे refer karav  A list of users that this user has referred.
   role             Role     @default(STUDENT)
   profileCompleted Boolean        @default(false)
   purchases        Purchase[]
@@ -28,25 +29,27 @@ model User {
   userCategories   UserCategory[]
 }
 
-model UserCategory {
+model UserCategory {  //UserCategory table acts as a join table to connect User and Category
   id         String   @id @default(cuid())
   user       User     @relation(fields: [userId], references: [id])
-  userId     String
+  userId     String   //userId field is a foreign key referencing the User table
   category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  categoryId String   //categoryId field is a foreign key referencing the Category table.
 }
 
-// Many to many realtion 
+//  UserCategory model represents a Many to many realtion etween User and Category. 
 // Each User can be part of multiple categories.
 // Each Category can have multiple users.
 model Category {
   id             String         @id @default(cuid())
   categoryId     String         @unique
-  name           String         
+  name           String 
+  image          String
   mentors        Mentor[]
   userCategories UserCategory[]
   courses Course[] // One category has many courses
-}
+   index  Int      @default(0) @unique // Indexing for sorting categories
+ }
 
 model Mentor {
   id              String            @id @default(cuid())
@@ -74,6 +77,7 @@ model Course {
   reviews     Review[]
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
+   index       Int        @default(0) @unique// Indexing for sorting courses
 }
 
 model Purchase {

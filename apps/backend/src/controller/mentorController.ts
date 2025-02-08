@@ -16,51 +16,54 @@ export const createMentor = async(req:Request, res:Response)=>{
     return;
    }
    try{
-   let categories=await client.category.findUnique({
-    where:{
-        categoryId:parseData.data.categoryId
-    }
-   })
-   console.log(categories,"hii")
-   if(!categories){
-    categories = await client.category.create({
-        data:{
-            categoryId:parseData.data.categoryId,
-            name:parseData.data.categoryName as string,
+        const mentor=await client.$transaction(async(tx)=>{
+    let categories=await client.category.findUnique({
+        where:{
+            categoryId:parseData.data.categoryId
         }
     })
-   }
-   console.log("i have crossesd categories", categories)
-
-   const mentor = await client.mentor.create({
-    data:{
-          mentorId:parseData.data.mentorId,
-          name:parseData.data.name,
-          image:parseData.data.image,
-          category:{
-            connect:{
-                id:categories.id
+    console.log(categories,"hii")
+    if(!categories){
+        categories = await client.category.create({
+            data:{
+                categoryId:parseData.data.categoryId,
+                name:parseData.data.categoryName as string,
+                image:parseData.data.categoryImg as string
             }
-          }
+        })
     }
-   })
-   res.status(201).json({
-       message:"Mentor created successfully",
-       data:mentor
-   })
- }
- catch(err){
-    res.status(500).json({
-        message:"Error while creating mentor"
+    console.log("i have crossesd categories", categories)
+
+    const mentor = await client.mentor.create({
+        data:{
+            mentorId:parseData.data.mentorId,
+            name:parseData.data.name,
+            image:parseData.data.image,
+            category:{
+                connect:{
+                    id:categories.id
+                }
+            }
+        }
     })
- }
+    res.status(201).json({
+        message:"Mentor created successfully",
+        data:mentor
+    })
+    }
+    )}
+    catch(err){
+        res.status(500).json({
+            message:"Error while creating mentor"
+        })
+    }
 }
 
 export const getAllMentor = async(req:Request, res:Response)=>{
     
     try{
         const mentor= await client.mentor.findMany({})
-    res.status(200).json({
+        res.status(200).json({
         message:"Mentors fetched successfully",
         data:mentor
     })
@@ -140,8 +143,6 @@ export const updateMentor = async(req:Request, res:Response)=>{
         })
     }
 }
-
-
 
 
 export const deleteMentor=async(req:Request,res:Response)=>{

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Category" ADD COLUMN     "index" INTEGER NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Course" ADD COLUMN     "index" INTEGER NOT NULL DEFAULT 0;
