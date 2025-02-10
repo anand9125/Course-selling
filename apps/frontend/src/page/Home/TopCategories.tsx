@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import CategoryCardComponent from "../../componets/CategoryCard"
-import { useCategoryStore } from "../../store/useCoursesStore";
+import { useCategoryStore } from "../../store/useCategoryStore";
 
 function Topcategories() {
-  const { categories, fetchCategories } = useCategoryStore();
+  const { categories, fetchCategories} = useCategoryStore();
   
   useEffect(() => {
     fetchCategories();
   }, []);
+  
   return (
     <div>
         <div>

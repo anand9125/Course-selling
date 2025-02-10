@@ -60,7 +60,7 @@ model Mentor {
   category        Category          @relation(fields: [categoryId], references: [id])
   courses         Course[]
   rating          Float             @default(0.0)
-
+  index           Int            @default(0)    
 }
 
 model Course {
@@ -77,7 +77,7 @@ model Course {
   reviews     Review[]
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
-   index       Int        @default(0) @unique// Indexing for sorting courses
+   index       Int         // Indexing for sorting courses
 }
 
 model Purchase {

@@ -4,8 +4,8 @@ import { FaWhatsapp } from "react-icons/fa";
 function Footer() {
   return (
     <div className="w-full h-max pt-6 ">
-      <div className=" bg-black sm:pl-3 ">
-        <div  className="max-w-7xl mx-auto  grid grid-cols-4 ">
+      <div className=" bg-black sm:pl-3 mx-auto">
+        <div  className="max-w-7xl mx-auto  px-4  grid grid-cols-4 ">
         <div>
           <div className="text-white font-medium pt-3 ">
             CONTACT

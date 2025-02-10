@@ -24,7 +24,7 @@ function Navbar() {
     }
   return (
     <div> 
-        <header className="max-w-7xl mx-auto px-4 py-6">
+        <header className="max-w-7xl mx-auto px-4  py-6">
             <nav className="flex justify-between items-center">
                 <div className="flex items-center md:gap-12 gap-4">
                 {/* Left side navigation */}

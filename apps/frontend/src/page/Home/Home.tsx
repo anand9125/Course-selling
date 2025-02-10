@@ -7,12 +7,12 @@ import Footer from "../../componets/Footer"
 function Home() {
   return (
     <div className="">
-      <Banner></Banner>
+    
       <HeroSection></HeroSection>
       <Topcategories></Topcategories>
       <BuildTrust></BuildTrust>
       <OurlatestCourses ></OurlatestCourses>
-      <Footer></Footer>
+      
      
     </div>
   )

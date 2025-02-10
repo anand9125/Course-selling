@@ -1,56 +1,43 @@
-import {create} from "zustand"
-
 import axios from "axios"
-import { adminEndPoint, userEndPoint } from "../utils/config";
+import {create} from "zustand"
+import { userEndPoint } from "../utils/config"
 
-interface Category{
-    id: string,
-    name: string,
-    categoryId: string,
-    image: string,
-    index: number;
+interface CourseStore{
+    courses: any[],
+    isLoading: boolean,
+    error: any,
+    fetchCourses: (categoryId:string,mentorId:string,) => Promise<void>,
+    // updateCourseIndex: (courseId: string, index: number) => Promise<void>,
 }
 
-interface CategoryStore {
-    categories: Category[];
-    loading: boolean;
-     fetchCategories: () => Promise<void>;
-     updateCategoryIndex: (categoryId: string, index: number) => Promise<void>;
-  }
 
-  interface CategoryStore {
-    categories: Category[];
-    loading: boolean;
-    fetchCategories: () => Promise<void>;
-    updateCategoryIndex: (categoryId: string, index: number) => Promise<void>;
-  }
-  
-  export const useCategoryStore = create<CategoryStore>((set) => ({
-    categories: [],
-    loading: false,
-  
-    fetchCategories: async () => {
-      set({ loading: true });
-      try {
-        const response = await axios.get(`${userEndPoint}/category`); // Adjust API endpoint
-        console.log(response)
-        set({ categories: response.data.categories, loading: false });
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        set({ loading: false });
-      }
+export const useCoursesStore = create<CourseStore>((set)=>({
+    courses:[],
+    isLoading:false,
+    error:null,
+    fetchCourses: async (categoryId,mentorId) => {
+        set({isLoading:true})
+        try{
+            const response = await axios.get(`${userEndPoint}/course/getCourse/${categoryId}/${mentorId}`)
+            set({courses:response.data.courses, isLoading:false})
+        }catch(err){
+            set({ isLoading:false})
+        }
     },
-  
-    updateCategoryIndex: async (categoryId, index) => {
-      try {
-        await axios.put(`${adminEndPoint}/category/update/${categoryId}`, { index }); // Update index API
-        set((state) => ({
-          categories: state.categories.map((cat) =>
-            cat.id === categoryId ? { ...cat, index } : cat
-          ),
-        }));
-      } catch (error) {
-        console.error('Error updating category index:', error);
-      }
-    },
-  }));
+    // updateCourseIndex: (courseId: string, index: number) => async () => {
+    //     try{
+    //         await axios.put(`${userEndPoint}/course/updateIndex/${courseId}`, {index})
+    //     }catch(err){
+    //         console.error('Error updating course index:', err)
+    //     }
+    // },
+    // deleteCourse: (courseId: string) => async () => {
+    //     try{
+    //         await axios.delete(`${userEndPoint}/course/delete/${courseId}`)
+    //     }catch(err){
+    //         console.error('Error deleting course:', err)
+    //     }
+    // },
+
+
+}))

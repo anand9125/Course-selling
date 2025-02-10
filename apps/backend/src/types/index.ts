@@ -31,15 +31,17 @@ export const CreatecoursesSchema = z.object({
     description:z.string(),
     price: z.number().positive("Price must be greater than 0"), 
     actualPrice: z.number().positive("Price must be greater than 0"), 
+    index: z.number().optional(),
     categoryId: z.string(),
     categoryName:z.string().optional(),
+    categoryImg: z.string().optional(),
+    categoryIndex:z.number().optional(),
     mentorId: z.string(),
     mentorName: z.string().optional(),
-    mentorImage: z.string().optional(),
-    index: z.number().optional(),
-    categoryImg: z.string().optional(),
+    mentorImage: z.string().optional(), 
+    mentorIndex: z.number().optional(),
+ });
     
-})
 
 export const updateCourseSchema = z.object({
     image:z.string().optional(),
@@ -47,12 +49,16 @@ export const updateCourseSchema = z.object({
     description:z.string().optional(),
     price: z.number().optional(),
     actualPrice: z.number().optional(),
+    index: z.number().optional(),
     categoryId: z.string().optional(),
     categoryName:z.string().optional(),
+    categoryImg: z.string().optional(),
+    categoryIndex:z.number().optional(),
     mentorId: z.string().optional(),
     mentorName: z.string().optional(),
     mentorImage: z.string().optional(),
-    categoryImg: z.string().optional(),
+    mentorIndex: z.number().optional(),
+    
 })
 
 export const createMentorSchema=z.object({
@@ -62,6 +68,8 @@ export const createMentorSchema=z.object({
     categoryId: z.string(),
     categoryName:z.string().optional(),
     categoryImg: z.string().optional(),
+    categoryIndex:z.number().optional(),
+    index:z.number().optional()
 })
 
 export const updateMentorSchema=z.object({
@@ -70,18 +78,20 @@ export const updateMentorSchema=z.object({
     categoryId: z.string().optional(),
     categoryName:z.string().optional(),
     categoryImg: z.string().optional(),
+    index:z.number().optional()
 })
 
 export const createCategorySchema=z.object({
     categoryId: z.string(),
     name:z.string(),
-    index:z.number(),
+    index:z.number().optional(),
     image:z.string(),
 })
 
 export const updateCategorySchema=z.object({
     name:z.string().optional(),
     image:z.string().optional(),
+    index:z.number().optional(),
 })
 
 export const updateCourseIndexSchema = z.object({

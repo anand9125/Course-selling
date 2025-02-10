@@ -25,11 +25,17 @@ export const createCategory = async (req: Request, res: Response)=>{
             })
             return;
         }
+        const lastCategory = await client.category.findFirst({
+            orderBy: {
+                index: 'desc'
+            }
+        })
+        const categoryIndex = parseData.data.index ??(lastCategory ? lastCategory.index+1:1)
         const category = await client.category.create({
             data:{
                 categoryId: parseData.data.categoryId,
                 name: parseData.data.name,
-                index: parseData.data.index,
+                index: categoryIndex,
                 image: parseData.data.image,
             }
         })

@@ -16,7 +16,7 @@ export const createMentor = async(req:Request, res:Response)=>{
     return;
    }
    try{
-        const mentor=await client.$transaction(async(tx)=>{
+     const mentor=await client.$transaction(async(tx)=>{
     let categories=await client.category.findUnique({
         where:{
             categoryId:parseData.data.categoryId
@@ -24,21 +24,35 @@ export const createMentor = async(req:Request, res:Response)=>{
     })
     console.log(categories,"hii")
     if(!categories){
+        const lastCategory = await client.category.findFirst({
+            orderBy: {
+                index: 'desc'
+            }
+        })
+        const categoryIndex = parseData.data.categoryIndex ??(lastCategory ? lastCategory.index+1:1)
         categories = await client.category.create({
             data:{
                 categoryId:parseData.data.categoryId,
                 name:parseData.data.categoryName as string,
-                image:parseData.data.categoryImg as string
+                image:parseData.data.categoryImg as string,
+                index:categoryIndex
             }
         })
     }
     console.log("i have crossesd categories", categories)
+    const lastMentor = await client.mentor.findFirst({
+        orderBy: {
+            index: 'desc'
+        }
+    })
+    const mentorIndex = parseData.data.index??(lastMentor? lastMentor.index+1:1)
 
     const mentor = await client.mentor.create({
         data:{
             mentorId:parseData.data.mentorId,
             name:parseData.data.name,
             image:parseData.data.image,
+            index:mentorIndex,
             category:{
                 connect:{
                     id:categories.id
@@ -65,7 +79,7 @@ export const getAllMentor = async(req:Request, res:Response)=>{
         const mentor= await client.mentor.findMany({})
         res.status(200).json({
         message:"Mentors fetched successfully",
-        data:mentor
+        mentors:mentor
     })
     }
     catch(err){
@@ -162,4 +176,34 @@ export const deleteMentor=async(req:Request,res:Response)=>{
             message:"Error while deleting mentor"
         })
     }
+}
+
+export const getCategroyMentor = async(req:Request,res:Response)=>{
+    const categoryId = req.params.categoryId;
+
+    console.log(categoryId)
+    try{
+        const category = await client.category.findUnique({
+            where:{
+                categoryId
+            }
+        })
+        console.log(category)
+        const mentors = await client.mentor.findMany({
+            where:{
+                categoryId:category?.id
+                
+            }
+        })
+        res.status(200).json({
+            message:"Mentors fetched successfully for the given category",
+            mentors
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            message:"Error while fetching mentors for the given category"
+        })
+    }
+ 
 }

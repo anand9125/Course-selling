@@ -22,7 +22,8 @@ const ImgMediaCard: React.FC<CardProps> = ({ title, description, image, onClick 
     onClick={onClick}
     sx={{
       width: '100%',
-      maxWidth: 300,
+      maxWidth: 350,
+      height:350,
       transition: 'transform 0.3s ease-in-out',
       cursor: 'pointer',
       '&:hover': {

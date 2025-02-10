@@ -7,7 +7,7 @@ const Banner = () => {
     <div>
       {/* Desktop Navigation */}
       <div className="bg-black w-full ">
-        <div className="max-w-7xl  mx-auto h-14 mt-4 text-white flex items-center justify-between px-4 md:px-8 lg:px-4 hidden md:flex">
+        <div className="max-w-7xl  mx-auto h-14 mt-4 text-white flex items-center justify-between px-4  hidden md:flex">
           {/* Left Part */}
           <div className="flex gap-2 md:gap-6">
             {["Home", "Course", "Contact us", "About"].map((item, index) => (

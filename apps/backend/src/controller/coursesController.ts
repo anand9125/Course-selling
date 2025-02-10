@@ -22,12 +22,19 @@ export const createCourses = async(req:Request,res:Response)=>{
     })
     console .log("category is  found", category)
     if(!category){
+        const lastCategory = await client.category.findFirst({
+            orderBy:{
+                index:"desc"
+            }
+        })
+         const categoryIndex = parseData.data.categoryIndex ?? (lastCategory ? lastCategory.index+1:1)
         category = await client.category.create({
             data:{
                 categoryId:parseData.data.categoryId,
                 name:parseData.data.categoryName as string,
-                index:parseData.data.index ,
-                image:parseData.data.categoryImg as string
+                index:categoryIndex ,
+                image:parseData.data.categoryImg as string,
+               
                
             }
         })
@@ -40,11 +47,18 @@ export const createCourses = async(req:Request,res:Response)=>{
     })
   
     if(!mentor){
+        const lastMentor = await client.mentor.findFirst({
+            orderBy:{
+                index:"desc"
+            }
+        })
+         const mentorIndex = parseData.data.mentorIndex?? (lastMentor? lastMentor.index+1:1)
         mentor = await client.mentor.create({
             data:{
                 mentorId:parseData.data.mentorId,
                 name:parseData.data.mentorName as string,
                 image:parseData.data.mentorImage as string,
+                index:mentorIndex,
                 category:{
                     connect:{
                         id:category.id  //For each category, it connects the user to that category by category.id
@@ -53,6 +67,12 @@ export const createCourses = async(req:Request,res:Response)=>{
             }
         })
     }
+    const lastCourse = await client.course.findFirst({
+        orderBy:{
+            index:"desc"
+        }
+    })
+    const courseIndex = parseData.data.index?? (lastCourse? lastCourse.index+1:1)
     const course = await client.course.create({
         data:{
             image:parseData.data.image,
@@ -71,7 +91,7 @@ export const createCourses = async(req:Request,res:Response)=>{
                     id:mentor.id
                 }
             },
-            index:parseData.data.index
+            index:courseIndex
         }
     })
     res.status(201).json({
@@ -318,4 +338,44 @@ export const updateCourseIndex= async(req:Request,res:Response)=>{
     })
   }
   
+}
+
+export const getCoursesByCategoryidMentorid = async(req:Request,res:Response)=>{
+    const { categoryId, mentorId } = req.params;
+    try{
+        const category = await client.category.findFirst({
+            where:{
+                categoryId:categoryId
+            }
+        })
+        const mentor = await client.mentor.findFirst({
+            where:{
+                mentorId:mentorId
+            }
+        })
+        const courses = await client.course.findMany({
+            where:{
+                categoryId:category?.id,
+                mentorId:mentor?.id
+            },
+            include:{
+                mentor:true,
+                category:true
+            }
+        })
+        if(!courses){
+            res.status(404).json({ message: "No courses found" });
+            return;
+        }
+        res.status(200).json({
+            message: "Courses fetched successfully",
+            courses: courses
+        })
+    }
+    catch(err){
+        console.error("Error fetching courses by category and mentor",err)
+        res.status(500).json({
+            message: "Failed to fetch courses"
+        })
+    }
 }
