@@ -136,7 +136,7 @@ export const getSingleCategory=async(req:Request,res:Response)=>{
         }
         res.status(200).json({
             message: "Category fetched successfully",
-            data: category
+             category
         })
     }
     catch(error){

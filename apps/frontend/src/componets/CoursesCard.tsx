@@ -1,102 +1,190 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import bannerImg from "../assets/banner.png";
+import * as React from "react";
+import Skeleton from "@mui/material/Skeleton";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useMentorStore } from "../store/useMentorStore";
+import useCartAction from "./useCartAction"; // Import cart actions
 
-// Define types for card props
-interface CardProps {
+interface Courses {
+  id: string;
   title: string;
+  courseId: string;
+  price: number;
+  actualPrice: number;
   description: string;
+  categoryId: string;
+  mentorId: string;
   image: string;
-  onClick?: () => void;
+  index: number;
 }
 
-const ImgMediaCard: React.FC<CardProps> = ({ title, description, image, onClick }) => (
-  <Card
-    onClick={onClick}
-    sx={{
-      width: '100%',
-      maxWidth: 350,
-      height:350,
-      transition: 'transform 0.3s ease-in-out',
-      cursor: 'pointer',
-      '&:hover': {
-        transform: 'scale(1.05) translateY(-10px)',
-      },
-    }}
-  >
-    <CardMedia
-      component="img"
-      alt={title}
-      height="200"
-      image={image}
-      sx={{ objectFit: 'cover' }}
-    />
-    <CardContent>
-      <Typography gutterBottom variant="h5">
-        {title}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {description}
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Enroll</Button>
-      <Button size="small">Learn More</Button>
-      <Typography
-        sx={{
-          marginLeft: 'auto',
-          backgroundColor: 'gold',
-          padding: '5px 15px',
-          borderRadius: '10px',
-          fontSize: '18px',
-        }}
-      >
-        *Free
-      </Typography>
-    </CardActions>
-  </Card>
-);
+interface Mentor {
+  id: string;
+  mentorId: string;
+  name: string;
+  image: string;
+  index: number;
+}
 
-const CoursesCardComponent: React.FC = () => {
-  const navigate = useNavigate();
+interface CoursesCardProps {
+  courses: Courses[];
+  mentor: Mentor | null;
+ 
+}
 
-  const handleCardClick = (title: string) => {
-    navigate(`/learn`);
-  };
-
-  const cardsData: CardProps[] = [
-    { title: 'DSA', description: 'Learn essential DSA concepts.', image: bannerImg },
-    { title: 'Java Basics', description: 'Master Java fundamentals.', image: bannerImg },
-    { title: 'WebDev', description: 'Build amazing websites.', image: bannerImg },
-    { title: 'React', description: 'Learn React for UI development.', image: bannerImg },
-   
-  ];
-
+const ImgMediaCard: React.FC<
+  Courses & { onClick?: () => void; loading?: boolean; addToCart: (course: Courses) => void ,navigate:any }
+> = ({ title,navigate , image, price, actualPrice, id, description, onClick, loading, addToCart, ...course}) => {
   return (
-    <Box sx={{ maxWidth: '1300px', margin: 'auto', padding: 2 }}>
-     
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {cardsData.map((card, index) => (
-          <ImgMediaCard key={index} {...card} onClick={() => handleCardClick(card.title)} />
-        ))}
-      </Box>
-    </Box>
+    <Card
+      onClick={onClick}
+      sx={{
+        width: "100%",
+        maxWidth: 320,
+        height: 380,
+        transition: "transform 0.3s ease-in-out",
+        cursor: loading ? "default" : "pointer",
+        zIndex: 1,
+        borderRadius: 3,
+        boxShadow: 3,
+        "&:hover": {
+          transform: loading ? "none" : "scale(1.03) translateY(-10px)",
+          zIndex: 10,
+        },
+      }}
+    >
+      {loading ? (
+        <>
+          <Skeleton variant="rectangular" width="100%" height={200} />
+          <CardContent sx={{ textAlign: "center" }}>
+            <Skeleton variant="text" width="80%" height={30} />
+            <Skeleton variant="text" width="60%" height={20} />
+          </CardContent>
+        </>
+      ) : (
+        <>
+          <CardMedia
+            component="img"
+            alt={title}
+            image={image}
+            sx={{
+              objectFit: "cover",
+              height: 200,
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+            }}
+          />
+          <CardContent sx={{ textAlign: "left", padding: 2 }}>
+            <Typography
+              gutterBottom
+              variant="h6"
+              fontWeight="bold"
+              sx={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+                overflow: "hidden",
+              }}
+            >
+              {description}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 1,
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="h6"
+                  color="primary"
+                  fontWeight="bold"
+                  sx={{ display: "inline" }}
+                >
+                  ₹{price}
+                </Typography>
+                {actualPrice > price && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ textDecoration: "line-through", marginLeft: 1 }}
+                  >
+                    ₹{actualPrice}
+                  </Typography>
+                )}
+              </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ borderRadius: 5, textTransform: "none", fontWeight: "bold" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart({ id, title, courseId: course.courseId, price, actualPrice, description, categoryId: course.categoryId, mentorId: course.mentorId, image, index: course.index });
+                 navigate("/cart")
+                }}
+              >
+                Add to Cart
+              </Button>
+            </Box>
+          </CardContent>
+        </>
+      )}
+    </Card>
   );
 };
 
-export default CoursesCardComponent
+const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
+  const { addToCart } = useCartAction(); // Get addToCart function
+  const { isLoading } = useMentorStore();
+  const navigate = useNavigate();
+
+  const handleCardClick = (courseId: string) => {
+    navigate(`/courses/${courseId}`);
+  };
+
+  // Sort courses by index before rendering
+  const sortedCourses = [...courses].sort((a, b) => a.index - b.index);
+
+  return (
+    <div>
+      <div className="text-3xl font-semibold pt-3 md:text-4xl">{mentor?.name}</div>
+      <Box sx={{ maxWidth: "1300px", margin: "auto", padding: 2 }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 3,
+            justifyContent: "center",
+          }}
+        >
+          {sortedCourses.map((course) => (
+            <ImgMediaCard
+              key={course.id}
+              {...course}
+              onClick={() => handleCardClick(course.courseId)}
+              loading={isLoading}
+              addToCart={addToCart} // Pass addToCart function to child
+             navigate={navigate}
+            />
+          ))}
+        </Box>
+      </Box>
+    </div>
+  );
+};
+
+export default CoursesCard;

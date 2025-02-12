@@ -33,6 +33,7 @@ const ImgMediaCard: React.FC<Mentors & { onClick?: () => void; loading?: boolean
       height: 370,
       transition: 'transform 0.3s ease-in-out',
       cursor: loading ? 'default' : 'pointer',
+      boxShadow:3,
       zIndex: 1,
       '&:hover': {
         transform: loading ? 'none' : 'scale(1.03) translateY(-10px)',
@@ -75,6 +76,7 @@ const MentorsCard: React.FC<MentorsCardProps> = ({ mentors , categoryId }) => {
   const sortedMentors = [...mentors].sort((a, b) => a.index - b.index);
 
   return (
+    <div className=''>
     <Box sx={{ maxWidth: '1300px', margin: 'auto', padding: 2 }}>
       <Box 
         sx={{ 
@@ -94,6 +96,7 @@ const MentorsCard: React.FC<MentorsCardProps> = ({ mentors , categoryId }) => {
         ))}
       </Box>
     </Box>
+    </div>
   );
 };
 

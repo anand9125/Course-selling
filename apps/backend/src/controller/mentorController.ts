@@ -105,7 +105,7 @@ export const getSingleMentor= async(req:Request, res:Response)=>{
         }
         res.status(200).json({
             message:"Mentor fetched successfully",
-            data:mentor
+            mentor:mentor
         })
        }
        catch(err){

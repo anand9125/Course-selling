@@ -1,13 +1,13 @@
-
+import { IoWallet } from "react-icons/io5";
 import { MdCurrencyRupee } from 'react-icons/md';
-import { BsBag } from 'react-icons/bs';
+
 
 const Banner = () => {
   return (
     <div>
-      {/* Desktop Navigation */}
+  
       <div className="bg-black w-full ">
-        <div className="max-w-7xl  mx-auto h-14 mt-4 text-white flex items-center justify-between px-4  hidden md:flex">
+        <div className="max-w-7xl  mx-auto h-14  text-white flex items-center justify-between px-4  hidden md:flex">
           {/* Left Part */}
           <div className="flex gap-2 md:gap-6">
             {["Home", "Course", "Contact us", "About"].map((item, index) => (
@@ -24,17 +24,21 @@ const Banner = () => {
 
           {/* Right Part */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1">
-                {/* @ts-ignore */}
-              <MdCurrencyRupee className="text-lg" />
-              <span>0.00</span>
-            </div>
+            
             <div
-              className="relative px-4 py-2 text-lg font-medium transition-all duration-300 hover:scale-110 hover:underline underline-offset-8 decoration-2 cursor-pointer flex items-center justify-center"
+              className="relative px-4 py-2 text-lg font-medium transition-all duration-300 hover:scale-110 hover: decoration-2 cursor-pointer flex items-center justify-center"
               onClick={() => console.log("Bag clicked")}
-            >
+                >
+                <div className="flex items-center gap-1">
+                    {/* @ts-ignore */}
+                  <MdCurrencyRupee className="text-lg" />
+                  <span>0.00</span>
+                </div>
                   {/* @ts-ignore */}
-              <BsBag className="text-xl" />
+                  <div className="pl-1">
+                  <IoWallet  className=""/>
+                  </div>
+                  
               <div className="absolute left-0 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 hover:w-full"></div>
             </div>
           </div>

@@ -6,8 +6,12 @@ import Banner from "./componets/Banner";
 import Footer from "./componets/Footer";
 import Mentors from "./page/Mentos/Mentors";
 import Courses from "./page/Courses/Courses";
+import Cart from "./page/Cart/Cart";
+import { RecoilRoot } from "recoil";
 function App() {
   return (
+    // @ts-ignore
+    <RecoilRoot>
     <Router>
       <Navbar />
       <Banner></Banner>
@@ -19,12 +23,15 @@ function App() {
         <Route path="/category/:categoryId" element={<Mentors />} />
         {/* @ts-ignore */}
         <Route  path="/mentors/:categoryId/:mentorId" element={<Courses/>}></Route>
+       {/* @ts-ignore */}
+        <Route  path="/cart" element={<Cart/>}></Route>
       </Routes>
          {/* @ts-ignore */}
         <Footer/>
         {/* @ts-ignore */}
       <Toaster />
     </Router>
+    </RecoilRoot>
   );
 }
 

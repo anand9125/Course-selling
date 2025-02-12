@@ -111,7 +111,12 @@ export const createCourses = async(req:Request,res:Response)=>{
 
 export const getAllCourses = async(req:Request,res:Response)=>{
     try{
-        const courses = await client.course.findMany()
+        const courses = await client.course.findMany({
+            include:{
+                mentor:true,
+                category:true
+            }
+        })
         res.json({
             courses: courses
         })

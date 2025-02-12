@@ -33,7 +33,7 @@ interface CategoryStore {
       set({ loading: true });
       try {
         const response = await axios.get(`${userEndPoint}/category`); // Adjust API endpoint
-        console.log(response)
+        
         set({ categories: response.data.categories, loading: false });
       } catch (error) {
         console.error('Error fetching categories:', error);
