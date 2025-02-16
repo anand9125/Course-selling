@@ -33,7 +33,7 @@ interface CourseStore {
     mentor: Mentor | null; 
     fetchCourses: (categoryId: string, mentorId: string) => Promise<void>;
     fetchMentorById: (mentorId: string) => Promise<void>;
-    
+   
   }
   
   export const useCoursesStore = create<CourseStore>((set) => ({
@@ -41,6 +41,7 @@ interface CourseStore {
     isLoading: false,
     error: null,
     mentor:null,
+  
   
     fetchCourses: async (categoryId, mentorId) => {
       set({ isLoading: true });
@@ -61,7 +62,7 @@ interface CourseStore {
         set({ isLoading: false, error: "Failed to fetch mentor" });
       }
     },
-
+  
   }));
 
   

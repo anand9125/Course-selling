@@ -66,7 +66,6 @@ const MentorsCard: React.FC<MentorsCardProps> = ({ mentors , categoryId }) => {
   const { isLoading } = useMentorStore();
   
   const navigate = useNavigate();
-  console.log( categoryId)
   const handleCardClick = (mentorId: string) => {
     const trimmedCategoryId = categoryId?.trim(); // Remove extra spaces
     navigate(`/mentors/${trimmedCategoryId}/${mentorId}`);

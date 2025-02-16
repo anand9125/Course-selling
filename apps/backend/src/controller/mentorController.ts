@@ -62,7 +62,7 @@ export const createMentor = async(req:Request, res:Response)=>{
     })
     res.status(201).json({
         message:"Mentor created successfully",
-        data:mentor
+        mentors:mentor
     })
     }
     )}
@@ -96,6 +96,8 @@ export const getSingleMentor= async(req:Request, res:Response)=>{
         const mentor = await client.mentor.findUnique({
             where:{
                 mentorId
+            },include:{
+                category:true
             }
         })
         if(!mentor){

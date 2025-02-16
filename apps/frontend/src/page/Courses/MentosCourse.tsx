@@ -8,11 +8,13 @@ function MentosCourse() {
 
     const {courses,fetchCourses,mentor,fetchMentorById} = useCoursesStore()
     
-  
-    useEffect(()=>{
-      fetchCourses(categoryId!,mentorId!),
-      fetchMentorById(mentorId!)
-    },[categoryId, mentorId ])
+    useEffect(() => {
+      if (!categoryId || !mentorId) return; // Avoid unnecessary API calls
+    
+      fetchCourses(categoryId, mentorId);
+      fetchMentorById(mentorId);
+    }, [categoryId, mentorId, fetchCourses, fetchMentorById]); // Add functions as dependencies if they are not stable
+    
     console.log(mentor)
   return (
         <div>

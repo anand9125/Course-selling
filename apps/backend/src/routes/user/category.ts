@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllCategories, getSingleCategory } from "../../controller/categoryController";
+import { getAllCategories, getCategoryByMentorId, getSingleCategory } from "../../controller/categoryController";
 
 const router = Router();
 
@@ -7,6 +7,8 @@ const router = Router();
 router.get("/",getAllCategories)
 
 router.get("/:categoryId",getSingleCategory)
+
+router.get("/mentor/:mentorId",getCategoryByMentorId)
 
 
 export const categoryRouter =router

@@ -185,3 +185,27 @@ export const updateCategoryIndex = async (req:Request, res:Response) => {
     });
   }
 }
+
+export const getCategoryByMentorId = async (req:Request, res:Response) => {
+    const { mentorId } = req.params;
+    try{
+        const mentor = await client.mentor.findUnique({
+            where: { mentorId: mentorId }
+        })
+        const category = await client.category.findFirst({
+            where:{
+                id:mentor?.categoryId
+            }
+        })
+        res.status(200).json({
+            message: "Category fetched successfully",
+            category: category
+        })
+    }catch(err) {
+        res.status(500).json({
+            message: "Internal Server Error",
+            err
+        })
+    }
+
+}
