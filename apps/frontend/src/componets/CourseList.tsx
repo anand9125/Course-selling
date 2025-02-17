@@ -5,6 +5,7 @@ import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
 const CourseList = () => {
   const searchQuery = useRecoilValue(searchQueryState);
   const allCourses = useRecoilValue(allCoursesWithMetadata);
+  
 
   const filteredCourses = allCourses.filter((course) => {
     const query = searchQuery.toLowerCase();
@@ -22,7 +23,7 @@ const CourseList = () => {
 
       {filteredCourses.length > 0 ? (
         filteredCourses.map((course) => (
-          <div key={course.id} className="flex items-center gap-4 p-3 border-b border-gray-300 last:border-b-0">
+          <div key={course.id} className="flex  gap-4 p-3 border-b border-gray-300 last:border-b-0">
             <img 
               src={course.image} 
               alt={course.title} 

@@ -9,6 +9,9 @@ import Courses from "./page/Courses/Courses";
 import Cart from "./page/Cart/Cart";
 import { RecoilRoot } from "recoil";
 import Category from "./page/Category/Category";
+import User from "./page/User-Profile/User"
+import Wallet from "./page/Wallet/wallet";
+import PopupCard from "./componets/PopupCard";
 
 function App() {
   return (
@@ -16,12 +19,15 @@ function App() {
       <Router>
         <Navbar />
         <Banner />
+        <PopupCard></PopupCard>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/category/:categoryId" element={<Mentors />} />
           <Route path="/mentors/:categoryId/:mentorId" element={<Courses />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/home/categories" element={<Category/>}></Route>
+          <Route path="/user-Profile" element={<User/>}></Route>
+          <Route path="/user-Wallet" element={<Wallet/>}></Route>
         </Routes>
         <Footer />
         <Toaster />

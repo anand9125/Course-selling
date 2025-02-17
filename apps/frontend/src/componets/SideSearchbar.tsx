@@ -1,8 +1,12 @@
 import { IoIosSearch } from "react-icons/io";
 import { useCategoryStore } from "../store/useCategoryStore";
 import { useMentorStore } from "../store/useMentorStore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { searchQueryState, sideSearchQuery } from "../store/Searchbar/atom";
+import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
+import CourseList from "./CourseList";
 
 interface Category {
   id: string;
@@ -33,8 +37,11 @@ function SideSearchbar() {
   const fetchCategory = useMentorStore((state) => state.fetchCateogryByMentorId);
 
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchQuery, setSearchQuery] = useRecoilState(sideSearchQuery);
+    const allCourses = useRecoilValue(allCoursesWithMetadata);
+ 
   const navigate = useNavigate();
+  const searchRef = useRef(null);
 
   useEffect(() => {
     fetchCategories();
@@ -49,7 +56,6 @@ function SideSearchbar() {
 
   const handleMentorClick = async (mentorId: string) => {
     await fetchCategory(mentorId); // Fetch category first
-    
     // Add a small delay to ensure Zustand state updates properly
     setTimeout(() => {
       const updatedCategory = useMentorStore.getState().getCategory; // Fetch latest state
@@ -62,23 +68,55 @@ function SideSearchbar() {
     }, 300); // Small timeout to allow state update
   
   };
+   // Filter courses based on search input
+   const filteredCourses = allCourses.filter((course) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      course.title.toLowerCase().includes(query) ||
+      course.mentor.name.toLowerCase().includes(query) ||
+      course.category.name.toLowerCase().includes(query)
+    );
+  });
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // @ts-ignore
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchQuery(""); // Close dropdown
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   
 
   return (
     <div className="w-full max-w-60 bg-white p-4 rounded-lg ">
       {/* Search Bar */}
-      <div className="relative">
+      <div className="relative w-full" ref={searchRef}>
         <IoIosSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl" />
         <input
           type="text"
           placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full pl-12 pr-4 py-2 rounded-lg bg-gray-100 text-gray-700 border border-gray-300 
          focus:ring-2 focus:ring-gray-600 focus:outline-none transition-shadow"
+         value={searchQuery}
+         onChange={(e) => setSearchQuery(e.target.value)}
         />
+      
+          {/* Search Results Dropdown */}
+         {searchQuery && filteredCourses.length > 0 && (
+            <div className="absolute left-0 top-full w-full flex justify-center z-50">
+            <div className="bg-white shadow-lg rounded-md max-w-3xl w-full p-2 max-h-60 overflow-auto">
+          
+              <CourseList /> {/* Render CourseList when searching */}
+            </div>
+            </div>
+          )}
       </div>
-
       {/* Categories & Mentors */}
       <div className="pt-4 font-semibold text-lg">Categories & Mentors</div>
 

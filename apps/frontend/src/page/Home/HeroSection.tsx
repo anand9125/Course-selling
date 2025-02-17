@@ -1,5 +1,4 @@
 
-
 function HeroSection() {
   return (
     <div>
@@ -11,11 +10,14 @@ function HeroSection() {
           <div className='text-xl mb-6'>
             Get The Best Courses At Unbeatable Prices.
           </div>
-          <button className="bg-primary text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">
+          <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">
             Browse Courses
            </button>
 
         </div>
+      </div>
+      <div>
+         <img src="" alt="" />
       </div>
     </div>
   )
