@@ -13,8 +13,7 @@ export const SignupSchema = z.object({
     }), 
     year: z.number().int().min(1).max(5).optional(),
     referralCode: z.string().optional(),
-    role:z.enum(["STUDENT","ADMIN"]).default("STUDENT"),
-    categoryNames: z.array(z.string()).min(1, "Select at least one category")
+    role:z.enum(["STUDENT","ADMIN"]).default("STUDENT")
 })
     
 

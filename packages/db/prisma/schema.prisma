@@ -48,7 +48,7 @@ model Category {
   mentors        Mentor[]
   userCategories UserCategory[]
   courses Course[] // One category has many courses
-   index  Int      @default(0) @unique // Indexing for sorting categories
+   index  Int      @default(0) // Indexing for sorting categories
  }
 
 model Mentor {

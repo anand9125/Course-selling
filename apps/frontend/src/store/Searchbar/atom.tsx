@@ -8,3 +8,9 @@ export const sideSearchQuery = atom<string>({
     key:"sideSearchQuery",
     default:""
 })
+
+export const categoryQuery = atom<string>({
+ 
+    key:"categoryQuery",
+    default:""
+})

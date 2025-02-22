@@ -4,7 +4,7 @@ import { adminAuthMiddleware } from "../../Middlewares/adminMiddlewares";
 
 const router =  Router();
 
-router.post("/create-category",adminAuthMiddleware, createCategory);
+router.post("/create-category",adminAuthMiddleware,  createCategory);
 
 router.put("/update/:categoryId",adminAuthMiddleware,updateCategory);
 

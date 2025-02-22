@@ -41,17 +41,17 @@ export const userSignUp = async (req: Request, res: Response)=>{
             return referralCode;
           }
           const referralCode = generateReferralCode(5);
-          const categories = await client.category.findMany({
-            where:{
-                name:{
-                    in:parseData.data.categoryNames
-                }
-            },
-            select:{
-                id:true
-            }
-          })
-        const newUser = await client.user.create({
+        //   const categories = await client.category.findMany({
+        //     where:{
+        //         name:{
+        //             in:parseData.data.categoryNames
+        //         }
+        //     },
+        //     select:{
+        //         id:true
+        //     }
+        //   })
+        const user = await client.user.create({
             data:{
                 name:parseData.data.name,
                 email:parseData.data.email,
@@ -61,22 +61,35 @@ export const userSignUp = async (req: Request, res: Response)=>{
                 branch:parseData.data.branch,
                 year:parseData.data.year,
                 referralCode:referralCode,
-                userCategories:{
-                    create:categories.map((category)=>({  //Loops through the categories array
-                        category:{
-                            connect:{
-                                id:category.id   //For each category, it connects the user to that category by category.id
-                            }
-                        }
-                    }))
-                },
+                // userCategories:{
+                //     create:categories.map((category)=>({  //Loops through the categories array
+                //         category:{
+                //             connect:{
+                //                 id:category.id   //For each category, it connects the user to that category by category.id
+                //             }
+                //         }
+                //     }))
+                // },
                 profileCompleted:true
             }
         })
-        const token = jwt.sign({userId:newUser.id},JWT_PASSWORD)
+        const token = jwt.sign({userId:user.id},JWT_PASSWORD)
         res.json({
-            newUser,
-            token
+            user:{
+                id:user.id,
+                name:user.name,
+                email:user.email,
+                college:user.college,
+                branch:user.branch,
+                year:user.year,
+                referralCode:user.referralCode,
+                walletBalance:user.walletBalance,
+                profileCompleted:user.profileCompleted,
+                role:user.role
+            },
+            token:{
+                token:token
+            }
         })
     }
     catch(e){
@@ -122,7 +135,18 @@ export const userSignIn= async(req:Request,res:Response)=>{
              const token = jwt.sign({userId:user.id},adminPassword)
               res.json({
                  message:"Admin login successful",
-                 user,
+                 user:{
+                    id:user.id,
+                    name:user.name,
+                    email:user.email,
+                    college:user.college,
+                    branch:user.branch,
+                    year:user.year,
+                    referralCode:user.referralCode,
+                    walletBalance:user.walletBalance,
+                    profileCompleted:user.profileCompleted,
+                    role:user.role
+                },
                  token
              })
              return;
@@ -137,7 +161,18 @@ export const userSignIn= async(req:Request,res:Response)=>{
           }
           const token = jwt.sign({userId:user.id},JWT_PASSWORD)
           res.json({
-              user,
+            user:{
+                id:user.id,
+                name:user.name,
+                email:user.email,
+                college:user.college,
+                branch:user.branch,
+                year:user.year,
+                referralCode:user.referralCode,
+                walletBalance:user.walletBalance,
+                profileCompleted:user.profileCompleted,
+                role:user.role
+            },
               token
           })
         }

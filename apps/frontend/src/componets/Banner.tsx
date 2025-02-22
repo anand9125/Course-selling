@@ -1,32 +1,48 @@
 import { useEffect, useState } from "react";
 import { IoWallet } from "react-icons/io5";
-import { MdCurrencyRupee } from 'react-icons/md';
+import { MdCurrencyRupee } from "react-icons/md";
+import { FaRegCopy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast"; // Import toast for notifications
 
 const Banner = () => {
-  const navigate  = useNavigate()
-   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const handleOnClick = (e:any) => {
-    if(e=="Home")navigate("/")
-    if(e=="About")navigate("/about")
-    if(e=="Contact us")navigate("/contact")
-    if(e=="Course")navigate(`/category/`)
-    
+  const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  let amiAdmin = "STUDENT"
+  if(userData["role"] === "ADMIN"){
+    amiAdmin = "ADMIN";
   }
-    // Update screen size dynamically
-    useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth <  1024);
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
+
+  // Function to handle navigation clicks
+  const handleOnClick = (e: string) => {
+    if (e === "Home") navigate("/");
+    if (e === "About") navigate("/about");
+    if (e === "Contact us") navigate("/contact");
+    if (e === "Course") navigate(`/category/`);
+  };
+
+  // Handle copying the referral code
+  const handleCopy = () => {
+    if (userData["referralCode"]) {
+      navigator.clipboard.writeText(userData["referralCode"]);
+      toast.success("Referral code copied to clipboard!");
+    }
+  };
+
+  // Dynamically update screen size for responsiveness
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
-  
+     
       <div className="bg-black w-full ">
-        <div className="max-w-7xl  mx-auto h-14  text-white flex items-center justify-between px-4  hidden md:flex">
-          {/* Left Part */}
+        <div className="max-w-7xl mx-auto h-14 text-white flex items-center justify-between px-4 hidden md:flex">
+         
           <div className="flex gap-2 md:gap-6">
             {["Home", "Course", "Contact us", "About"].map((item, index) => (
               <div
@@ -38,62 +54,55 @@ const Banner = () => {
                 <div className="absolute left-0 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 hover:w-full"></div>
               </div>
             ))}
+            {amiAdmin =="ADMIN" &&
+            <div className="pt-2  px-2 md:px-4 py-2 text-base md:text-lg font-medium transition-all duration-300 hover:scale-110 hover:underline underline-offset-8 decoration-2 cursor-pointer flex items-center justify-center whitespace-nowrap"
+             onClick={()=>navigate("/dashboard")}
+            >Dashboard</div>}
           </div>
+          
 
-          {/* Right Part */}
+         
           <div className="flex items-center gap-4">
-            
             <div
-              className="relative px-4 py-2 text-lg font-medium transition-all duration-300 hover:scale-110 hover: decoration-2 cursor-pointer flex items-center justify-center"
-              onClick={()=>navigate("/user-Wallet")}
-                >
-                <div className="flex items-center gap-1">
-                    {/* @ts-ignore */}
-                  <MdCurrencyRupee className="text-lg" />
-                  <span >0.00</span>
-                </div>
-                  {/* @ts-ignore */}
-                  <div className="pl-1">
-                  <IoWallet  className=""/>
-                  </div>
-                  
+              className="relative px-4 py-2 text-lg font-medium transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center"
+              onClick={() => navigate("/user-Wallet")}
+            >
+              <div className="flex items-center gap-1">
+                {/* @ts-ignore */}
+                <MdCurrencyRupee className="text-lg" />
+                <span>{userData["walletBalance"]}.00</span>
+              </div>
+              {/* @ts-ignore */}
+              <div className="pl-1">
+                <IoWallet className="" />
+              </div>
               <div className="absolute left-0 bottom-0 w-0 h-[3px] bg-white transition-all duration-300 hover:w-full"></div>
             </div>
           </div>
         </div>
       </div>
 
-        <div className="">
-             {!isMobile &&(
-              <div className="w-full bg-[#DC9814]">
-              <div className="h-10 flex justify-between items-center text-white font-semibold lg:gap-2 px-4 max-w-5xl mx-auto">
-                <span className="text-sm md:text-base">
-                🎉 Refer & Earn! Share with friends and get <strong>20% reward</strong> on every course they buy. (Referral Code: <strong>YOURCODE</strong>)
-                </span>
-                <button className="bg-white text-[#DC9814] px-3 py-1 rounded-md text-sm font-bold hover:bg-opacity-90 transition-all">
-                  Share Now
-                </button>
-              </div>
-            </div>
-            )}
-          
-            {isMobile && (
-                  <div className="w-full bg-[#DC9814]">
-                  <div className="h-10 flex justify-between items-center text-white font-semibold lg:gap-2 px-4 max-w-5xl mx-auto">
-                    <span className="text-sm md:text-base">
-                    🎉 Refer & Earn! Share with friends and get <strong>20% reward</strong> on every course they buy. 
-                    <div className="flex justify-center">
-                    (Referral Code: <strong>YOURCODE</strong>)
-                    </div>
-                    </span>
-                    <button className="bg-white text-[#DC9814] px-3 py-1 rounded-md text-sm font-bold hover:bg-opacity-90 transition-all">
-                      Share Now
-                    </button>
-                  </div>
-                </div>
-              )}
-        </div>
+    
+      <div className="w-full bg-[#DC9814] flex items-center">
+        <div className="h-12 flex space-x-2 items-center text-white font-semibold px-4 max-w-5xl mx-auto">
+          <span className="text-sm md:text-base">
+            🎉 Refer & Earn! Share with friends and get <strong>20% reward</strong> on every course they buy.
+          </span>
 
+        
+          {userData["referralCode"] && (
+            <div className="flex items-center  bg-white text-[#DC9814] px-3 py-1 rounded-md text-sm font-bold hover:bg-opacity-90 transition-all">
+              <span className="text-red-600 font-semibold pr-1">{userData["referralCode"]}</span>
+              <FaRegCopy
+                className="cursor-pointer hover:text-red-500 transition-transform transform hover:scale-110"
+                onClick={handleCopy}
+              />
+            </div>
+          )}
+
+        
+        </div>
+      </div>
     </div>
   );
 };

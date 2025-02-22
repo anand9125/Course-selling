@@ -3,55 +3,68 @@ import { Request,Response } from "express";
 import { createCategorySchema, updateCategoryIndexSchema, updateCategorySchema } from "../types";
 
 const client = new PrismaClient()
-
-export const createCategory = async (req: Request, res: Response)=>{
+export const createCategory = async (req: Request, res: Response) => {
     const parseData = createCategorySchema.safeParse(req.body);
-    if(!parseData.success){
-        res.status(400).json({
-            message: "Invalid data"
-        })
-        return;
-    
+
+    if (!parseData.success) {
+         res.status(400).json({
+            message: "Invalid data",
+            errors: parseData.error.format()
+        });
+        return
     }
-    try{
+
+    try {
+        const { categoryId, name, image } = parseData.data;
+        let { index } = parseData.data; 
+
+       
         const categoryExists = await client.category.findUnique({
-            where:{
-                categoryId: parseData.data.categoryId
-            }
-        })
-        if(categoryExists){
+            where: { categoryId }
+        });
+
+        if (categoryExists) {
             res.status(409).json({
                 message: "Category already exists"
-            })
-            return;
+            });
+            return
         }
         const lastCategory = await client.category.findFirst({
-            orderBy: {
-                index: 'desc'
-            }
-        })
-        const categoryIndex = parseData.data.index ??(lastCategory ? lastCategory.index+1:1)
+            orderBy: { index: "desc" }
+        });
+
+        if (index == null) {
+            index = lastCategory ? lastCategory.index + 1 : 1;
+        }   // If index is already in use, shift all greater or equal indexes up 
+        else {
+            await client.category.updateMany({
+                where: { index: { gte: index } },
+                data: { index: { increment: 1 } }
+            });
+        }
         const category = await client.category.create({
-            data:{
-                categoryId: parseData.data.categoryId,
-                name: parseData.data.name,
-                index: categoryIndex,
-                image: parseData.data.image,
+            data: {
+                categoryId,
+                name,
+                index,
+                image
             }
-        })
+        });
+
         res.status(201).json({
             message: "Category created successfully",
-            data: category
-        })
-    }
-    catch(error){
+            category
+        });
+
+    } catch (error: any) {
+        console.error("Error creating category:", error);
         res.status(500).json({
             message: "Internal Server Error",
-            error
-        })
+            error: error.message
+        });
+        return
     }
-
-}
+};
 
 export const updateCategory= async(req:Request,res:Response)=>{
     const {categoryId } = req.params;

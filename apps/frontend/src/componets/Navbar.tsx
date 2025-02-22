@@ -14,18 +14,30 @@ import { searchQueryState } from "../store/Searchbar/atom";
 import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
 import CourseList from "./CourseList"; // Import the CourseList component
 import { useNavigate } from "react-router-dom";
-
+import { cartState } from "../store/cart/atom";
+interface Courses {
+  id: string;
+  title: string;
+  courseId: string;
+  price: number;
+  actualPrice: number;
+  description: string;
+  categoryId: string;
+  mentorId: string;
+  image: string;
+  index: number;
+}
 
 function Navbar() {
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useRecoilState<Courses[]>(cartState);
+
   const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const allCourses = useRecoilValue(allCoursesWithMetadata);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-   const searchRef = useRef(null);
-   const navigate = useNavigate()
-
+  const searchRef = useRef(null);
+  const navigate = useNavigate()
+  const userDetails = JSON.parse(localStorage.getItem("user") || "{}");
   // Update screen size dynamically
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -42,6 +54,7 @@ function Navbar() {
       course.category.name.toLowerCase().includes(query)
     );
   });
+
 
   function handleLogOut() {
     // Logout logic here
@@ -126,17 +139,19 @@ function Navbar() {
             onClick={() => navigate("/user-Wallet")}
              className="flex justify-between items-center bg-gray-200 p-2 rounded-md z-40">
               <MdCurrencyRupee className="text-lg" />
-              <span className="pr-1">0</span>
+              <span className="pr-1">{userDetails["walletBalance"]}</span>
               <IoWallet />
             </button>
           )}
 
           {/* Cart Button - Visible only on large screens */}
           {!isMobile && (
-            <a href="/cart" className="bg-indigo-600 text-white px-3 md:px-5 py-2 rounded-full flex items-center gap-2  hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">
+            <div 
+             onClick={()=>navigate("/cart")}
+             className="bg-indigo-600 text-white px-3 md:px-5 py-2 rounded-full flex items-center gap-2 hover:cursor-pointer  hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">
               <FiShoppingCart className="text-lg" />
               <span className="text-sm">{cartItems.length || 0}</span>
-            </a>
+            </div>
           )}
         </div>
       </nav>
