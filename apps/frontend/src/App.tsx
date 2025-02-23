@@ -13,11 +13,16 @@ import User from "./page/User-Profile/User"
 import Wallet from "./page/Wallet/wallet";
 import PopupCard from "./componets/PopupCard";
 import Login from "./page/User-Profile/login";
-
-
 import AdminCategory from "./page/ADMIN/Category/Category"
 import Dashboard from "./page/ADMIN/Dashboard/Dashboard";
 import ManageCategory from "./page/ADMIN/Category/ManageCategory";
+import EditCategory from "./page/ADMIN/Category/Editcategory";
+import ManageMentor from "./page/ADMIN/Mentors/ManageMentor";
+import AdminMentor from "./page/ADMIN/Mentors/Mentor";
+import EditMentor from "./page/ADMIN/Mentors/EditMentor";
+import AdminCourses from "./page/ADMIN/Courses/Courses";
+import ManageCourse from "./page/ADMIN/Courses/ManageCourse";
+import EditCourse from "./page/ADMIN/Courses/EditCourse";
 
 function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -51,18 +56,27 @@ function App() {
           {amiAdmin=="ADMIN" &&
           <Route path="/dashboard/manage-category" element={<ManageCategory/>}></Route>
           }
-          {/* {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/add-mentor" element={<AdminPannel/>}></Route>
+          {amiAdmin=="ADMIN" &&
+          <Route path="/dashboard/edit-category/:categoryId" element={< EditCategory/>}></Route>
           }
           {amiAdmin=="ADMIN" &&
-          <Route path="/admin-pannel/manage-mentor" element={<AdminPannel/>}></Route>
+          <Route path="/dashboard/add-mentor" element={< AdminMentor/>}></Route>
           }
           {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/add-course" element={<AdminPannel/>}></Route>
+          <Route path="/dashboard/manage-mentor" element={<ManageMentor/>}></Route>
           }
           {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/manage-course" element={<AdminPannel/>}></Route>
-          } */}
+          <Route path="/dashboard/edit-mentor/:mentorId" element={<EditMentor/>}></Route>
+          }
+          {amiAdmin=="ADMIN" &&
+          <Route path="/dashboard/add-courses" element={<AdminCourses/>}></Route>
+          }
+          {amiAdmin=="ADMIN" &&
+          <Route path="/dashboard/manage-courses" element={<ManageCourse/>}></Route>
+          }
+          {amiAdmin=="ADMIN" &&
+          <Route path="/dashboard/edit-course/:courseId" element={<EditCourse/>}></Route>
+          }
          </Routes>
          <Footer />
          <Toaster />

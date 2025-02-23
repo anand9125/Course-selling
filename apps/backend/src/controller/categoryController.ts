@@ -76,17 +76,30 @@ export const updateCategory= async(req:Request,res:Response)=>{
         return;
     }
     try{
+        let{index} = parseData.data
+        const lastCategory = await client.category.findFirst({
+            orderBy: { index: "desc" }
+        });
+
+        if (index == null) {
+            index = lastCategory ? lastCategory.index + 1 : 1;
+        }   // If index is already in use, shift all greater or equal indexes up 
+        else {
+            await client.category.updateMany({
+                where: { index: { gte: index } },
+                data: { index: { increment: 1 } }
+            });
+        }
+
         const category = await client.category.update({
             where:{
                 categoryId
             },
-            data:{
-                name: parseData.data.name,
-            }
+            data:parseData.data
         })
         res.status(200).json({
             message: "Category updated successfully",
-            data: category
+            category
         })
     }
     catch(error){

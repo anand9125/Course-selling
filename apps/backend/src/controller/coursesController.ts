@@ -22,22 +22,32 @@ export const createCourses = async(req:Request,res:Response)=>{
     })
     console .log("category is  found", category)
     if(!category){
+        let categoryIndex = parseData.data.categoryIndex
         const lastCategory = await client.category.findFirst({
-            orderBy:{
-                index:"desc"
-            }
-        })
-         const categoryIndex = parseData.data.categoryIndex ?? (lastCategory ? lastCategory.index+1:1)
+            orderBy: { index: "desc" }
+        });
+
+        if (categoryIndex == null) {
+            categoryIndex  = lastCategory ? lastCategory.index + 1 : 1;
+        }   // If index is already in use, shift all greater or equal indexes up 
+        else {
+            await client.category.updateMany({
+                where: { index: { gte: categoryIndex  } },
+                data: { index: { increment: 1 } }
+            });
+        }
+
         category = await client.category.create({
             data:{
                 categoryId:parseData.data.categoryId,
                 name:parseData.data.categoryName as string,
-                index:categoryIndex ,
+                index:categoryIndex,
                 image:parseData.data.categoryImg as string,
                
                
             }
         })
+        
     }
 
     let mentor = await client.mentor.findUnique({
@@ -47,18 +57,27 @@ export const createCourses = async(req:Request,res:Response)=>{
     })
   
     if(!mentor){
+        let mentorIndex = parseData.data.mentorIndex;
         const lastMentor = await client.mentor.findFirst({
-            orderBy:{
-                index:"desc"
+            orderBy: {
+                index: 'desc'
             }
         })
-         const mentorIndex = parseData.data.mentorIndex?? (lastMentor? lastMentor.index+1:1)
+        if(mentorIndex==null){
+            mentorIndex= lastMentor? lastMentor.index+1:1
+        }
+        else{
+            await client.mentor.updateMany({
+                where: { index: { gte: mentorIndex } },
+                data: { index: { increment: 1 } }
+            });
+        }
         mentor = await client.mentor.create({
             data:{
                 mentorId:parseData.data.mentorId,
                 name:parseData.data.mentorName as string,
                 image:parseData.data.mentorImage as string,
-                index:mentorIndex,
+                index:mentorIndex ,
                 category:{
                     connect:{
                         id:category.id  //For each category, it connects the user to that category by category.id
@@ -67,12 +86,21 @@ export const createCourses = async(req:Request,res:Response)=>{
             }
         })
     }
+    let courseIndex = parseData.data.index;
     const lastCourse = await client.course.findFirst({
-        orderBy:{
-            index:"desc"
+        orderBy: {
+            index: 'desc'
         }
     })
-    const courseIndex = parseData.data.index?? (lastCourse? lastCourse.index+1:1)
+    if(courseIndex==null){
+        courseIndex = lastCourse? lastCourse.index+1:1
+    }
+    else{
+        await client.course.updateMany({
+            where: { index: { gte: courseIndex } },
+            data: { index: { increment: 1 } }
+        });
+    }
     const course = await client.course.create({
         data:{
             image:parseData.data.image,
@@ -96,7 +124,7 @@ export const createCourses = async(req:Request,res:Response)=>{
     })
     res.status(201).json({
         message: "Course created successfully",
-        data: course
+         course
     })
    })
 }
@@ -168,6 +196,21 @@ export const updateCourse = async(req:Request,res:Response)=>{
         return;
     }
     try{
+        let {index} = parseData.data;
+        const lastCourse = await client.course.findFirst({
+            orderBy: {
+                index: 'desc'
+            }
+        })
+        if(index==null){
+            index = lastCourse? lastCourse.index+1:1
+        }
+        else{
+            await client.course.updateMany({
+                where: { index: { gte: index } },
+                data: { index: { increment: 1 } }
+            });
+        }
         
         const existCourse = await client.course.findUnique({
             where:{
@@ -186,7 +229,7 @@ export const updateCourse = async(req:Request,res:Response)=>{
             },
             data:parseData.data
         })
-        res.json({
+        res.status(200).json({
             message: "Course updated successfully",
             data: updatedCourse
         })

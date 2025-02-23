@@ -1,6 +1,7 @@
 import axios from "axios"
 import {create} from "zustand"
-import { userEndPoint } from "../utils/config"
+import { adminEndPoint, userEndPoint } from "../utils/config"
+import toast from "react-hot-toast";
 
 interface Mentor{
     id: string,
@@ -22,6 +23,7 @@ interface MentorWithCategory{
     name: string,
     image: string,
     index: number,
+    categoryId: string,
     category: Category  
 }
 
@@ -30,6 +32,7 @@ interface MentorStore{
     isLoading: boolean,
     allMentors: MentorWithCategory[],
     error: string | null,
+    mentor:Mentor|null,
     fetchMentors: (categoryId:string) => void,
     // fetchMentorById: (mentorId: string) => void,
     getCategoryByCategoryId:(categoryId:string) => void,
@@ -37,9 +40,10 @@ interface MentorStore{
     category:Category|null
     getCategory:Category|null
     fetchCateogryByMentorId:(mentorId:string)=>Promise<void>
-  
+    deleteMentor:(mentorId:string)=>Promise<void>
+    fetchMentorById:(mentorId:string)=>Promise<void>
 }
-
+const token = JSON.parse(localStorage.getItem("token") || "{}");
 export const useMentorStore = create<MentorStore>((set)=>({
     mentors:[],
     isLoading:false,
@@ -47,6 +51,7 @@ export const useMentorStore = create<MentorStore>((set)=>({
     error:null,
     category:null,
     getCategory:null,
+    mentor:null,
   
     fetchMentors: async ( categoryId) => {
         set({isLoading:true})
@@ -87,6 +92,32 @@ export const useMentorStore = create<MentorStore>((set)=>({
       console.log(err," i am error")
       set({ isLoading: false, error: "Failed to fetch category" });
     }
-  }
+  },deleteMentor: async (mentorId) => {
+    try {
+      const response=await axios.delete(`${adminEndPoint}/mentor/delete/${mentorId}`,{
+        headers:{
+          "Authorization":token,
+          "Content-Type":"application/json"
+        }
+      }); // Delete category API
+       if (response.status==200)toast.success("Category deleted successfully")
+      set((state) => ({
+        allMentors: state.allMentors.filter((ment) =>  ment.mentorId!== mentorId),
+      }));
+    } catch (error) {
+      toast.error("P2003 Error while deleting category")
+    }
+  },
+  fetchMentorById:async(mentorId) =>{
+    set({ isLoading: true });
+    try {
+      const response = await axios.get(`${userEndPoint}/mentor/${mentorId}`);
+      set({ mentor: response.data.mentor, isLoading: false });
+    } catch (error) {
+      console.error('Error fetching mentor by ID:', error);
+      set({ isLoading: false });
+    }
+      
+  },
 
 }))

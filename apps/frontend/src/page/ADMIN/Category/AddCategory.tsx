@@ -1,13 +1,13 @@
 import  { useState } from 'react'
-import InputField from '../../../AdminComponents/InputField';
+import {InputField} from '../../../AdminComponents/InputField';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { adminEndPoint } from '../../../utils/config';
 import toast from 'react-hot-toast';
-import Loading from '../../../AdminComponents/Loading';
+
 const AddCategory = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const[isLoading,setIsLoading]=useState('falae')
+    const[isLoading,setIsLoading]=useState('true')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
      console.log(token)
     const onSubmit = async (data:any) => {
@@ -20,7 +20,10 @@ const AddCategory = () => {
           "Content-Type":"application/json"
         }
       })
+      
+      
       if(response.status==200){
+        setIsLoading("false")
         toast.success("Category added successfully")
       }
     }catch(error:any){
@@ -72,7 +75,7 @@ const AddCategory = () => {
         />
         <button type="submit" className="w-full py-2 bg-green-500 text-white font-bold rounded-md">
          {
-            isLoading ? <span className="">Adding.. </span> : <span>Add Book</span>
+            isLoading ? <span className="">Adding.. </span> : <span>Add Category</span>
           }
         </button>
       </form>

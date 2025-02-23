@@ -1,6 +1,7 @@
 import { Request,Response } from "express"
 import { createMentorSchema, updateMentorSchema } from "../types"
 import {PrismaClient} from "@prisma/client";
+import { parse } from "dotenv";
 
 
 const client = new PrismaClient()
@@ -16,43 +17,60 @@ export const createMentor = async(req:Request, res:Response)=>{
     return;
    }
    try{
-     const mentor=await client.$transaction(async(tx)=>{
+    const mentor=await client.$transaction(async(tx)=>{
     let categories=await client.category.findUnique({
         where:{
             categoryId:parseData.data.categoryId
         }
     })
-    console.log(categories,"hii")
-    if(!categories){
+    console.log(categories,"i have calledd")
+
+     let Categoryindex = parseData.data.categoryIndex; 
+     if(!categories){
         const lastCategory = await client.category.findFirst({
-            orderBy: {
-                index: 'desc'
-            }
-        })
-        const categoryIndex = parseData.data.categoryIndex ??(lastCategory ? lastCategory.index+1:1)
+            orderBy: { index: "desc" }
+        });
+
+        if ( Categoryindex == null) {
+            Categoryindex= lastCategory ? lastCategory.index + 1 : 1;
+        }   
+        else {
+            await client.category.updateMany({
+                where: { index: { gte: Categoryindex } },
+                data: { index: { increment: 1 } }
+            });
+        }
         categories = await client.category.create({
             data:{
                 categoryId:parseData.data.categoryId,
                 name:parseData.data.categoryName as string,
                 image:parseData.data.categoryImg as string,
-                index:categoryIndex
+                index: Categoryindex
             }
         })
     }
-    console.log("i have crossesd categories", categories)
+
+    let{index} = parseData.data;
     const lastMentor = await client.mentor.findFirst({
         orderBy: {
             index: 'desc'
         }
     })
-    const mentorIndex = parseData.data.index??(lastMentor? lastMentor.index+1:1)
-
+    if(index==null){
+        index = lastMentor? lastMentor.index+1:1
+    }
+    else{
+        await client.mentor.updateMany({
+            where: { index: { gte: index } },
+            data: { index: { increment: 1 } }
+        });
+    }
     const mentor = await client.mentor.create({
         data:{
             mentorId:parseData.data.mentorId,
             name:parseData.data.name,
             image:parseData.data.image,
-            index:mentorIndex,
+            index,
             category:{
                 connect:{
                     id:categories.id
@@ -76,7 +94,11 @@ export const createMentor = async(req:Request, res:Response)=>{
 export const getAllMentor = async(req:Request, res:Response)=>{
     
     try{
-        const mentor= await client.mentor.findMany({})
+        const mentor= await client.mentor.findMany({
+         include:{
+            category:true
+         }   
+        })
         res.status(200).json({
         message:"Mentors fetched successfully",
         mentors:mentor
@@ -128,6 +150,20 @@ export const updateMentor = async(req:Request, res:Response)=>{
             return;
         }
     try{
+        let{index} = parseData.data
+        const lastMentor = await client.mentor.findFirst({
+            orderBy: { index: "desc" }
+        });
+
+        if (index == null) {
+            index = lastMentor ? lastMentor.index + 1 : 1;
+        }   // If index is already in use, shift all greater or equal indexes up 
+        else {
+            await client.mentor.updateMany({
+                where: { index: { gte: index } },
+                data: { index: { increment: 1 } }
+            });
+        }
         const existingMentor = await client.mentor.findUnique({
             where:{
                 mentorId

@@ -1,8 +1,9 @@
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
-import AddCategory from './AddCategory'
-import Layout from './Layout'
-function AdminCategory() {
+import MentorLayout from './MentorLayOut'
+import AddMentor from './AddMentor'
+
+function AdminMentor() {
   return (
     <div>
           <div className='max-w-7xl mx-auto pl-8'>
@@ -17,9 +18,10 @@ function AdminCategory() {
                    <DashboardLayout></DashboardLayout>
                 </div>
                 <div className='bg-gray-200 w-full '>
-                  <Layout></Layout>
+                  <MentorLayout></MentorLayout>
                <div className='pb-6 '>
-                <AddCategory></AddCategory>
+              
+                <AddMentor></AddMentor>
               </div> 
             </div>
           </div>
@@ -27,8 +29,7 @@ function AdminCategory() {
       </div>       
     </div>
 </div>
-   
   )
 }
 
-export default AdminCategory
+export default AdminMentor
