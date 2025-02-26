@@ -5,7 +5,6 @@ import { adminPassword } from "../types/config";
 
 interface AuthenticatedRequest extends Request {
   id?: string; 
-
 }
 
 export function adminAuthMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
