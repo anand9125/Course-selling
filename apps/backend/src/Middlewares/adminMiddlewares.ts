@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_PASSWORD } from "../config";
 import { adminPassword } from "../types/config";
 
 interface AuthenticatedRequest extends Request {
