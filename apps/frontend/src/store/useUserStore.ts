@@ -2,7 +2,7 @@ import axios from 'axios';
 import { create } from 'zustand';
 import { userEndPoint } from '../config';
 
-interface User {
+interface User  {
   id:string,
   name:string,
   email:string,

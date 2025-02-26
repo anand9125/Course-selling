@@ -1,6 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-D:/My all Projec6t of 100x devopps/Chat - Copy/Chat application/apps/backend/src/config.ts
-config.ts*
+
 
 # Dependencies
 node_modules
