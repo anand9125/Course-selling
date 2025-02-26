@@ -15,5 +15,4 @@
 # Ignore specific files
 secret.txt
 
-config/credentials.json
 .env
