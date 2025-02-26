@@ -1,6 +1,6 @@
 import { selector } from "recoil"
 import axios from "axios"
-import { userEndPoint } from "../../utils/config";
+import { userEndPoint } from "../../config";
 
 interface CourseWithMetadata{
     id: string,

@@ -7,7 +7,7 @@ import {  UpdateInputField } from '../../../AdminComponents/InputField'
 import { useForm } from 'react-hook-form'
 import { useEffect} from 'react'
 import axios from 'axios'
-import { adminEndPoint } from '../../../utils/config'
+import { adminEndPoint } from '../../../config'
 import toast from 'react-hot-toast'
 import { useMentorStore } from '../../../store/useMentorStore'
 

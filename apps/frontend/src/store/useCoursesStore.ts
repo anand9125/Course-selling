@@ -1,6 +1,6 @@
 import axios from "axios"
 import {create} from "zustand"
-import { adminEndPoint, userEndPoint } from "../utils/config"
+import { adminEndPoint, userEndPoint } from "../config"
 import toast from "react-hot-toast"
 
 interface Courses{

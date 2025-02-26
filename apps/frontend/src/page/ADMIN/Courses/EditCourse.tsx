@@ -4,7 +4,7 @@ import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import CoursesLayout from './CoursesLayout'
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { adminEndPoint } from '../../../utils/config';
+import { adminEndPoint } from '../../../config';
 import toast from 'react-hot-toast';
 import { UpdateInputField } from '../../../AdminComponents/InputField';
 import { useParams } from 'react-router-dom';

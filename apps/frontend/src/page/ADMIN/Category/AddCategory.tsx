@@ -2,13 +2,13 @@ import  { useState } from 'react'
 import {InputField} from '../../../AdminComponents/InputField';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { adminEndPoint } from '../../../utils/config';
+import { adminEndPoint } from '../../../config';
 import toast from 'react-hot-toast';
 
 const AddCategory = () => {
   
   
-  
+
   const { register, handleSubmit } = useForm();
     const[isLoading,setIsLoading]=useState('true')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
