@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { create } from 'zustand';
-import { userEndPoint } from '../utils/config';
+import { userEndPoint } from '../config';
 
 interface User {
   id:string,

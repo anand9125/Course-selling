@@ -15,9 +15,6 @@
 # Ignore specific files
 secret.txt
 
-config/credentials.json
+
 .env
 
-config/
-
-config.ts

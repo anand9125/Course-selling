@@ -3,7 +3,7 @@ import{ Request, Response } from "express"
 import { SigninSchema, SignupSchema } from "../types";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { JWT_PASSWORD } from "../config"
+import { JWT_PASSWORD } from "../types/config"
 import { adminPassword } from "../types/config";
 const client = new PrismaClient()
 
