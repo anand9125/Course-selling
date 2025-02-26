@@ -27,8 +27,7 @@ interface FormData{
     collage: string;
     branch: string;
     year: number;
-  }  // Add more fields as needed for user registration form data. For example, phone number, address, etc.
-
+  }  
 
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
@@ -41,7 +40,7 @@ export const useUserStore = create<UserStore>((set) => ({
       const response = await axios.post(`${userEndPoint}/user/signup`, formData);
       const userData = response.data.user;
       const token = response.data.token;
-     console.log(userData);
+  
       if (userData) {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token",JSON.stringify(token)); 
@@ -63,7 +62,7 @@ export const useUserStore = create<UserStore>((set) => ({
       const response = await axios.post(`${userEndPoint}/user/signin`, formData);
       const userData = response.data.user;
       const token = response.data.token;
-      console.log(userData);
+
       if (userData) {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token",JSON.stringify(token)); 
@@ -79,4 +78,5 @@ export const useUserStore = create<UserStore>((set) => ({
       set({ isLoading: false });
       return "failure";
     }
-}}));
+  }}
+));

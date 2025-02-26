@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SelectField = ({ label, name, options, register }:{label:string, name:string, options:any, register:any}) => {
   return (
     <div className="mb-4">

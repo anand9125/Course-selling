@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { VscAccount } from "react-icons/vsc";
-import { FaUser } from "react-icons/fa6";
-import { FiMenu, FiShoppingCart } from "react-icons/fi";
+import {  FiShoppingCart } from "react-icons/fi";
 import { IoIosSearch } from "react-icons/io";
 import { CiHeart } from "react-icons/ci";
 import { IoWallet } from "react-icons/io5";
 import { MdCurrencyRupee } from "react-icons/md";
 import avatarImg from "../assets/avatar.png";
 import aditi   from "../assets/aditi.jpg"
-import aditi2 from "../assets/aditi (2).jpg"
 import { useRecoilState, useRecoilValue } from "recoil";
 import { searchQueryState } from "../store/Searchbar/atom";
 import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
@@ -30,8 +27,7 @@ interface Courses {
 
 function Navbar() {
 
-  const [cartItems, setCartItems] = useRecoilState<Courses[]>(cartState);
-
+  const [cartItems] = useRecoilState<Courses[]>(cartState);
   const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
   const allCourses = useRecoilValue(allCoursesWithMetadata);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -58,9 +54,10 @@ function Navbar() {
     navigate(`/courses/${courseId}`);
   };
 
-  function handleLogOut() {
-    // Logout logic here
-  }
+  // function handleLogOut() {
+  //    Logout logic here
+  // }
+
     // Close dropdown when clicking outside
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {

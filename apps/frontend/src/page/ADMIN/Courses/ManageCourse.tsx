@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import CoursesLayout from './CoursesLayout'

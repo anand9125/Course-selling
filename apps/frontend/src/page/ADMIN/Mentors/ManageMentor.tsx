@@ -1,7 +1,6 @@
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import MentorLayout from './MentorLayOut'
-import EditMentor from './EditMentor'
 import { useMentorStore } from '../../../store/useMentorStore'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'

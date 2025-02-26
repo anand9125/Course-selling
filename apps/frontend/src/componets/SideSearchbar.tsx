@@ -1,29 +1,13 @@
 import { IoIosSearch } from "react-icons/io";
 import { useCategoryStore } from "../store/useCategoryStore";
 import { useMentorStore } from "../store/useMentorStore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { searchQueryState, sideSearchQuery } from "../store/Searchbar/atom";
+import {  sideSearchQuery } from "../store/Searchbar/atom";
 import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
 import CourseList from "./CourseList";
 
-interface Category {
-  id: string;
-  name: string;
-  categoryId: string;
-  image: string;
-  index: number;
-}
-
-interface MentorWithCategory {
-  id: string;
-  mentorId: string;
-  name: string;
-  image: string;
-  index: number;
-  category: Category;
-}
 
 function SideSearchbar() {
  // When using Zustand stores like useMentorStore(), you need to provide a selector to extract the required state. 
@@ -33,7 +17,6 @@ function SideSearchbar() {
   const allMentors = useMentorStore((state) => state.allMentors);
   const fetchAllMentors = useMentorStore((state) => state.fetchAllMentors);
 
-  const category = useMentorStore((state) => state.getCategory);
   const fetchCategory = useMentorStore((state) => state.fetchCateogryByMentorId);
 
 

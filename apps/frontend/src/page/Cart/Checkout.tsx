@@ -21,7 +21,7 @@ function Checkout() {
   const [cartItems, setCartItems] = useRecoilState<Courses[]>(cartState);
   const navigate = useNavigate();
 
-  // Load cart items from localStorage on component mount
+  
   useEffect(() => {
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
@@ -29,12 +29,12 @@ function Checkout() {
     }
   }, []);
 
-  // Save cart items to localStorage whenever cart changes
+  
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Clear Cart with confirmation
+  
   const handleClearFromCart = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -53,16 +53,16 @@ function Checkout() {
     });
   };
 
-  // Remove single item from cart
+  
   const handleRemoveFromCart = (product: Courses) => {
     const updatedCart = cartItems.filter((item) => item.id !== product.id);
     setCartItems(updatedCart);
   };
 
-  // Calculate total
+ 
   const Subtotal = cartItems.reduce((acc, curr) => acc + curr.price, 0);
 
-  // Prevent checkout if cart is empty
+  
   const handleClick = (event: any) => {
     if (cartItems.length === 0) {
       event.preventDefault();
@@ -93,7 +93,7 @@ function Checkout() {
           )}
         </div>
 
-        {/* Cart Items List */}
+        
         <div className="mt-8">
           {cartItems.length > 0 ? (
             <ul role="list" className="-my-6 divide-y divide-gray-200">

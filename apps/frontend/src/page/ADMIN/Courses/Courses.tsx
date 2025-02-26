@@ -1,4 +1,3 @@
-import React from 'react'
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import CoursesLayout from './CoursesLayout'
@@ -22,7 +21,7 @@ function AdminCourses() {
                                     <CoursesLayout></CoursesLayout>
                                 <div className='pb-6 '>
                                 <AddCourse></AddCourse>
-                                {/* <AddMentor></AddMentor> */}
+
                                 </div> 
                                </div>
                              </div>

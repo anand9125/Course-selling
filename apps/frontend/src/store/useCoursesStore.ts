@@ -153,18 +153,4 @@ interface CourseStore {
   }));
 
   
-    // updateCourseIndex: (courseId: string, index: number) => async () => {
-    //     try{
-    //         await axios.put(`${userEndPoint}/course/updateIndex/${courseId}`, {index})
-    //     }catch(err){
-    //         console.error('Error updating course index:', err)
-    //     }
-    // },
-    // deleteCourse: (courseId: string) => async () => {
-    //     try{
-    //         await axios.delete(`${userEndPoint}/course/delete/${courseId}`)
-    //     }catch(err){
-    //         console.error('Error deleting course:', err)
-    //     }
-    // },
-
+  

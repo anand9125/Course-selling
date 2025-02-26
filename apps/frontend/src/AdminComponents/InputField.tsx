@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const InputField = ({ label, name, type = 'text', register, placeholder }:{ label: string, name: string, type: string|number, register: any, placeholder?: string }) => {
   return (
     <div className="mb-4">

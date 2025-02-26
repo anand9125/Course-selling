@@ -1,5 +1,3 @@
-import React from 'react'
-
 function TopSection() {
   return (
     <div className='flex  items-center justify-center'>

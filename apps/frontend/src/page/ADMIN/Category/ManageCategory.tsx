@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import SideSection from '../../../AdminComponents/SideSection'
 import Layout from './Layout'
@@ -6,7 +6,7 @@ import { useCategoryStore } from '../../../store/useCategoryStore'
 import { Link } from 'react-router-dom'
 function ManageCategory() {
  
-    const {categories, fetchCategories,deleteCateogry,loading} = useCategoryStore()
+    const {categories, fetchCategories,deleteCateogry} = useCategoryStore()
    
 
     useEffect(() => {

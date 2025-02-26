@@ -15,9 +15,8 @@ function User() {
     category: '',
   });
   const isUserAviable = localStorage.getItem("user")
-  const {user,userSignup} = useUserStore()
+  const {userSignup} = useUserStore()
    
-  // Load saved data from localStorage on mount
   useEffect(() => {
     const savedData = localStorage.getItem('userFormData');
     if (savedData) {
@@ -25,27 +24,25 @@ function User() {
     }
   }, []);
 
-  // Update form data
+ 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
   
     setFormData({
       ...formData,
-      [name]: name === "year" ? Number(value) : value, // Convert year to a number
+      [name]: name === "year" ? Number(value) : value, 
     });
   };
   
 
-  // Handle form submission
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
   
-    const result = await userSignup(formData); // Wait for the signup result
+    const result = await userSignup(formData); 
   
     if (result === "success") {
-      //  localStorage.setItem("userFormData", JSON.stringify(formData)); // Save data persistently
-    
       toast.success("Signup successful!");
     } else {
       alert("Signup failed. Please try again.");
@@ -57,7 +54,7 @@ function User() {
     
     <div className="flex justify-center items-center pt-7 bg-gray-50 px-4">
       <div className="max-w-4xl w-full bg-white p-8 rounded-xl shadow-lg">
-      {/* <Banner></Banner> */}
+  
         {/* Title */}
         {!isUserAviable 
          ?  <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Registration</h2>
@@ -86,7 +83,6 @@ function User() {
            
           </div>
 
-          {/* Submit Button */}
           <div className="flex justify-center mt-6">
             {!isUserAviable 
             ?  <div>

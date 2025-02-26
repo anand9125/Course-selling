@@ -1,4 +1,3 @@
-import React from "react";
 import { MdCurrencyRupee } from "react-icons/md";
 import { IoIosWallet } from "react-icons/io";
 
@@ -6,12 +5,12 @@ function Wallet() {
  const userDetails= JSON.parse(localStorage.getItem("user") || "{}");
   return (
     <div className="max-w-5xl mx-auto px-6 py-8 bg-white rounded-lg shadow-lg ">
-      {/* Wallet Header */}
+      
       <h2 className="text-4xl font-bold text-gray-900 text-center mb-6">
         Your Wallet
       </h2>
 
-      {/* Wallet Balance Section */}
+    
       <div className="flex flex-col items-center">
         <img
           src="https://cdn-icons-png.freepik.com/256/16783/16783114.png"
@@ -24,10 +23,10 @@ function Wallet() {
         </h2>
       </div>
 
-      {/* Divider */}
+     
       <div className="w-full h-px bg-gray-300 my-6"></div>
 
-      {/* Wallet Actions */}
+     
       <div className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow-md">
         <div className="flex items-center space-x-4">
           <IoIosWallet className="w-12 h-12 text-gray-500" />
@@ -41,7 +40,7 @@ function Wallet() {
         </button>
       </div>
 
-      {/* Transaction History Section */}
+    
      
     </div>
   );

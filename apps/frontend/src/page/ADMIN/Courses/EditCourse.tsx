@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect } from 'react'
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import CoursesLayout from './CoursesLayout'
@@ -13,8 +13,7 @@ import { useCoursesStore } from '../../../store/useCoursesStore';
 function EditCourse() {
   const{courseId} = useParams() as any
   const{singleCourse,fetchSingleCourse} = useCoursesStore()
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  const[isLoading,setIsLoading]=useState('true')
+  const { register, handleSubmit } = useForm();
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   
   useEffect(()=>{
@@ -128,9 +127,9 @@ function EditCourse() {
                                              />
                              
                                              <button type="submit" className="w-full py-2 bg-green-500 text-white font-bold rounded-md">
-                                             {
-                                                 isLoading ? <span className="">Updating... </span> : <span>Update Course</span>
-                                             }
+                                             
+                                                  <span>Update Course</span>
+                                             
                                              </button>
                                          </form>
                                      </div>

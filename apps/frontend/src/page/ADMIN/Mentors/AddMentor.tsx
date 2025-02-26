@@ -6,7 +6,7 @@ import { adminEndPoint } from '../../../utils/config';
 import toast from 'react-hot-toast';
 
 const AddMentor = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit } = useForm();
     const[isLoading,setIsLoading]=useState('true')
     const [isChecked, setIsChecked] = useState(false);
     const token = JSON.parse(localStorage.getItem("token") || "{}");

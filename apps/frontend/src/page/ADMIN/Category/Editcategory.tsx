@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import {useEffect} from 'react'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import SideSection from '../../../AdminComponents/SideSection'
 import Layout from './Layout'
@@ -13,7 +13,7 @@ import { useCategoryStore } from '../../../store/useCategoryStore'
 function EditCategory() {
     const {singleCateogry,fetchSingleCategory} = useCategoryStore()
     const {categoryId} = useParams() as any
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit } = useForm();
     // const[isLoading,setIsLoading]=useState('falae')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
      console.log(token)

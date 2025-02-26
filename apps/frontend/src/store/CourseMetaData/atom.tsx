@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil"
+import { selector } from "recoil"
 import axios from "axios"
 import { userEndPoint } from "../../utils/config";
 
@@ -38,7 +38,7 @@ interface CourseWithMetadata{
 export const  allCoursesWithMetadata=selector< CourseWithMetadata[]>({
     
     key:"getAllBookselector",
-    get:async({get})=>{
+    get:async()=>{
       
       try {
         const response = await axios.get(`${userEndPoint}/course`);

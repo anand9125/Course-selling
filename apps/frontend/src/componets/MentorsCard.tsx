@@ -15,15 +15,10 @@ interface Mentors{
   image: string,
   index: number   
 }
-
-
-
-
 interface MentorsCardProps {
   mentors: Mentors[];
   categoryId :string|undefined
 }
-
 const ImgMediaCard: React.FC<Mentors & { onClick?: () => void; loading?: boolean }> = ({ name, image, onClick, loading }) => (
   <Card
     onClick={onClick}

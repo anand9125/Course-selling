@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
 import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import CoursesLayout from './CoursesLayout'
 import { useForm } from 'react-hook-form';
 import { InputField } from '../../../AdminComponents/InputField';
-import { useCoursesStore } from '../../../store/useCoursesStore';
+
 import { useMentorStore } from '../../../store/useMentorStore';
 
 function HandleLatestCourse() {
-     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-     const[isLoading,setIsLoading]=useState('true')
+     const { register, handleSubmit } = useForm();
+ 
      const{putLatestCourseMentorId} = useMentorStore()
 
      
@@ -46,9 +45,9 @@ function HandleLatestCourse() {
                                     register={register}
                                     />
                                 <button type="submit" className="w-full py-2 bg-green-500 text-white font-bold rounded-md">
-                                {
-                                    isLoading ? <span className="">Adding.. </span> : <span>Set Latest Course</span>
-                                }
+                                
+                                    <span>Set Latest Course</span>
+                                
                                 </button>
                             </form>
                         </div>

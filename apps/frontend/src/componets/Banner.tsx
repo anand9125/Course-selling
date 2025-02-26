@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
 import { IoWallet } from "react-icons/io5";
 import { MdCurrencyRupee } from "react-icons/md";
-
 import { FaRegCopy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast"; // Import toast for notifications
+import toast from "react-hot-toast"; 
 
 const Banner = () => {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   let amiAdmin = "STUDENT"
   if(userData["role"] === "ADMIN"){
     amiAdmin = "ADMIN";
   }
 
-  // Function to handle navigation clicks
   const handleOnClick = (e: string) => {
     if (e === "Home") navigate("/");
     if (e === "About") navigate("/about");
     if (e === "Contact us") navigate("/contact");
     if (e === "Course") navigate(`/category/`);
   };
-
-  // Handle copying the referral code
   const handleCopy = () => {
     if (userData["referralCode"]) {
       navigator.clipboard.writeText(userData["referralCode"]);
@@ -31,18 +26,12 @@ const Banner = () => {
     }
   };
 
-  // Dynamically update screen size for responsiveness
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+ 
   return (
     <div>
      
       <div className="bg-black w-full ">
-        <div className="max-w-7xl mx-auto h-14 text-white flex items-center justify-between px-4 hidden md:flex">
+        <div className="max-w-7xl mx-auto h-14 text-white  items-center justify-between px-4 hidden md:flex">
          
           <div className="flex gap-2 md:gap-6">
             {["Home", "Course", "Contact us", "About"].map((item, index) => (
@@ -100,8 +89,6 @@ const Banner = () => {
               />
             </div>
           )}
-
-        
         </div>
       </div>
     </div>

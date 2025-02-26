@@ -3,9 +3,9 @@ import SideSection from '../../../AdminComponents/SideSection'
 import DashboardLayout from '../../../AdminComponents/DashboardLayout'
 import MentorLayout from './MentorLayOut'
 import { useParams } from 'react-router-dom'
-import { InputField, UpdateInputField } from '../../../AdminComponents/InputField'
+import {  UpdateInputField } from '../../../AdminComponents/InputField'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useEffect} from 'react'
 import axios from 'axios'
 import { adminEndPoint } from '../../../utils/config'
 import toast from 'react-hot-toast'
@@ -14,8 +14,8 @@ import { useMentorStore } from '../../../store/useMentorStore'
 
 function EditMentor() {
   const{fetchMentorById,mentor} = useMentorStore()
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  const[isLoading,setIsLoading]=useState('true')
+  const { register, handleSubmit} = useForm();
+ 
 
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   const{ mentorId }= useParams() as any
@@ -105,9 +105,9 @@ function EditMentor() {
                                     
                                   />
                                   <button type="submit" className="w-full py-2 bg-green-500 text-white font-bold rounded-md">
-                                   {
-                                      isLoading ? <span className="">Updating Mentor... </span> : <span>Update Mentor</span>
-                                    }
+                                   
+                                       <span>Update Mentor</span>
+                                    
                                   </button>
                                 </form>
                               </div>

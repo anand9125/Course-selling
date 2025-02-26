@@ -6,7 +6,7 @@ import { adminEndPoint } from '../../../utils/config';
 import toast from 'react-hot-toast';
 
 const AddCourse = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit} = useForm();
     const[isLoading,setIsLoading]=useState('true')
     const [isCheckedCat, setIsChecked] = useState(false);
     const [isCheckedMen, setIsCheckedMen] = useState(false);

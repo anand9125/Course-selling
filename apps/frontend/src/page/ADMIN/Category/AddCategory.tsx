@@ -7,27 +7,26 @@ import toast from 'react-hot-toast';
 
 const AddCategory = () => {
     
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit } = useForm();
     const[isLoading,setIsLoading]=useState('true')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
     
     const onSubmit = async (data:any) => {
      data.index= Number(data.index)
- 
-    try{
-        const response= await axios.post(`${adminEndPoint}/category/create-category`,data,{
-          headers:{
-            "Authorization":token,
-            "Content-Type":"application/json"
+      try{
+          const response= await axios.post(`${adminEndPoint}/category/create-category`,data,{
+            headers:{
+              "Authorization":token,
+              "Content-Type":"application/json"
+            }
+          })
+          if(response.status==200){
+            setIsLoading("false")
+            toast.success("Category added successfully")
           }
-        })
-        if(response.status==200){
-          setIsLoading("false")
-          toast.success("Category added successfully")
-        }
       }
-    catch(error:any){
-       toast.error("Failed to add category",error)
+      catch(error:any){
+        toast.error("Failed to add category",error)
       }
     }
    

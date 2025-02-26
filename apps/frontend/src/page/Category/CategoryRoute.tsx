@@ -1,8 +1,4 @@
-
 import { useNavigate } from 'react-router-dom'
-
-
-
 function CategoryRoute() {
 
     const navigate= useNavigate()

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Swiper as  SwiperSlide } from 'swiper/react';
 // @ts-ignore
 import 'swiper/css';
 import Skeleton from '@mui/material/Skeleton'

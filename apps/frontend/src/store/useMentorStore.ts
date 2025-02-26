@@ -85,12 +85,12 @@ export const useMentorStore = create<MentorStore>((set)=>({
    fetchCateogryByMentorId:async(mentorId)=>{
     set({ isLoading: true });
     try {
-      console.log("i am mentor id",mentorId)
+    
       const response = await axios.get(`${userEndPoint}/category/mentor/${mentorId}`);
-      console.log(response.data.category,"i am chutiya")
+      
       set({ getCategory: response.data.category, isLoading: false });
     } catch (err) {
-      console.log(err," i am error")
+      
       set({ isLoading: false, error: "Failed to fetch category" });
     }
   },deleteMentor: async (mentorId) => {
