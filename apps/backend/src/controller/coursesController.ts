@@ -427,3 +427,37 @@ export const getCoursesByCategoryidMentorid = async(req:Request,res:Response)=>{
         })
     }
 }
+
+export const getCourseOfSelectedMentor = async (req:Request,res:Response)=>{
+    
+    try {
+        // Get selected mentor from the admin settings
+        const adminSetting = await client.adminSettings.findUnique({
+          where: { id: "admin-setting" },
+        });
+    
+        if (!adminSetting?.selectedMentorId) {
+          res.status(404).json({ error: "No mentor selected" });
+          return
+        }
+        const mentor = await client.mentor.findUnique({
+            where:{
+                mentorId: adminSetting.selectedMentorId
+            }
+        })
+    
+        // Fetch courses of the selected mentor
+        const courses = await client.course.findMany({
+          where: { mentorId: mentor?.id },
+        });
+    
+        res.status(200).json({
+            courses
+        })
+        ;
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        res.status(500).json({ error: "Failed to fetch courses" });
+      }
+    
+}

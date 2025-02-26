@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoWallet } from "react-icons/io5";
 import { MdCurrencyRupee } from "react-icons/md";
+
 import { FaRegCopy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast"; // Import toast for notifications
@@ -86,7 +87,7 @@ const Banner = () => {
       <div className="w-full bg-[#DC9814] flex items-center">
         <div className="h-12 flex space-x-2 items-center text-white font-semibold px-4 max-w-5xl mx-auto">
           <span className="text-sm md:text-base">
-            🎉 Refer & Earn! Share with friends and get <strong>20% reward</strong> on every course they buy.
+            🎉 Refer & Earn! Share with friends and get <strong>20% instant reward </strong> on every course they buy.
           </span>
 
         

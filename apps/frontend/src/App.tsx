@@ -23,6 +23,8 @@ import EditMentor from "./page/ADMIN/Mentors/EditMentor";
 import AdminCourses from "./page/ADMIN/Courses/Courses";
 import ManageCourse from "./page/ADMIN/Courses/ManageCourse";
 import EditCourse from "./page/ADMIN/Courses/EditCourse";
+import HandleLatestCourse from "./page/ADMIN/Courses/HandleLatestCourse";
+import CourseMainPage from "./page/Courses/CourseMainPage";
 
 function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -46,6 +48,7 @@ function App() {
           <Route path="/user-Profile" element={<User/>}></Route>
           <Route path="/user-Wallet" element={<Wallet/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
+          <Route path="/courses/:courseId" element={<CourseMainPage/>}></Route>
          
           {amiAdmin=="ADMIN" &&
           <Route path="/dashboard" element={<Dashboard/>}></Route>
@@ -76,6 +79,9 @@ function App() {
           }
           {amiAdmin=="ADMIN" &&
           <Route path="/dashboard/edit-course/:courseId" element={<EditCourse/>}></Route>
+          }
+          {amiAdmin=="ADMIN" &&
+          <Route path="/dashboard/handleLatestCourse" element={<HandleLatestCourse/>}></Route>
           }
          </Routes>
          <Footer />

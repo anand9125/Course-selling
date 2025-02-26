@@ -1,6 +1,13 @@
-import CoursesCardComponent from "../../componets/CoursesCard"
 import { IoLocationOutline } from "react-icons/io5";
+import LatestCoursesCard from "../../componets/LatestCourseCard";
+import { useCoursesStore } from "../../store/useCoursesStore";
+import { useEffect } from "react";
 function OurlatestCourses() {
+  const {fetchCourseByselectedMentorId,getSelectedMentorCourse} = useCoursesStore()
+ useEffect(()=>{
+  fetchCourseByselectedMentorId()
+ },[])
+
   return (
     <div>
         <div  className="sm:pl-3">
@@ -9,6 +16,7 @@ function OurlatestCourses() {
                     Our Latest Courses
                 </div>
                  <div>
+                 <LatestCoursesCard  courses={getSelectedMentorCourse}></LatestCoursesCard>
                  {/* <CoursesCardComponent /> */}
                 </div>
                <div className="text-center p-5">

@@ -42,6 +42,7 @@ interface MentorStore{
     fetchCateogryByMentorId:(mentorId:string)=>Promise<void>
     deleteMentor:(mentorId:string)=>Promise<void>
     fetchMentorById:(mentorId:string)=>Promise<void>
+    putLatestCourseMentorId:(mentorId:string)=>Promise<void>
 }
 const token = JSON.parse(localStorage.getItem("token") || "{}");
 export const useMentorStore = create<MentorStore>((set)=>({
@@ -119,5 +120,18 @@ export const useMentorStore = create<MentorStore>((set)=>({
     }
       
   },
+  putLatestCourseMentorId:async(mentorId)=>{
+    try {
+      const response=await axios.put(`${adminEndPoint}/mentor/selectedMentor`,mentorId,{
+        headers:{
+          "Authorization":token,
+          "Content-Type":"application/json"
+        }
+      }); // Update latest course ID API
+       if (response.status==200)toast.success("Latest Courses updated successfully")
+    } catch (error:any) {
+      toast.error("error",error)
+    }
+  }
 
 }))

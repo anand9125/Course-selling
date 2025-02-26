@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useUserStore } from "../../store/useUserStore";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+// import Banner from "../../componets/Profile-popup";
 function User() {
   const [formData, setFormData] = useState({
     name: '',
@@ -53,8 +54,10 @@ function User() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   
   return (
+    
     <div className="flex justify-center items-center pt-7 bg-gray-50 px-4">
       <div className="max-w-4xl w-full bg-white p-8 rounded-xl shadow-lg">
+      {/* <Banner></Banner> */}
         {/* Title */}
         {!isUserAviable 
          ?  <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Registration</h2>

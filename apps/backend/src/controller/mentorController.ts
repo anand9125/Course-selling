@@ -245,3 +245,24 @@ export const getCategroyMentor = async(req:Request,res:Response)=>{
     }
  
 }
+
+export const selectedMentor = async(req:Request,res:Response)=>{
+    const {mentorId} = req.body;
+    try{
+        const  updatedSetting = await client.adminSettings.upsert({
+            where: { id: "admin-setting" }, // Assume there's a single row for admin settings
+            update: { selectedMentorId: mentorId },
+            create: { id: "admin-setting", selectedMentorId: mentorId },
+        })
+        res.json({
+             message: "Mentor selection updated",
+             data: updatedSetting
+        });
+      } catch (error) {
+        console.error("Error updating mentor selection:", error);
+        res.status(500).json({
+          error: "Failed to update mentor selection"
+        });
+    }
+    }
+    

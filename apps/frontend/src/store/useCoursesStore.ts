@@ -49,16 +49,20 @@ interface CoursesWithMentorCategory{
 
 interface CourseStore {
     courses: Courses[];// Update type if you have a Course model
+    Courses: Courses[];
     allCourses: CoursesWithMentorCategory[];
     isLoading: boolean;
     singleCourse: Courses|null;
     error: string | null;
     mentor: Mentor | null; 
+    getSelectedMentorCourse:Courses[]
     fetchCourses: (categoryId: string, mentorId: string) => Promise<void>;
     fetchMentorById: (mentorId: string) => Promise<void>;
     fetchAllCourses: () => Promise<void>;
-   deleteCourse: (courseId: string) => Promise<void>;
-   fetchSingleCourse: (courseId: string) => Promise<void>;
+    deleteCourse: (courseId: string) => Promise<void>;
+    fetchSingleCourse: (courseId: string) => Promise<void>;
+    fetchCoursesByMentorId: (mentorId: string) => Promise<void>;
+    fetchCourseByselectedMentorId: () => Promise<void>;
   }
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   export const useCoursesStore = create<CourseStore>((set) => ({
@@ -68,6 +72,8 @@ interface CourseStore {
     mentor:null,
     allCourses:[],
     singleCourse: null,
+    Courses:[],
+    getSelectedMentorCourse:[],
   
   
     fetchCourses: async (categoryId, mentorId) => {
@@ -125,6 +131,24 @@ interface CourseStore {
         set({ isLoading: false, error: "Failed to fetch course" });
       }
     },
+    fetchCoursesByMentorId: async (mentorId) => {
+      set({ isLoading: true });
+      try {
+        const response = await axios.get(`${userEndPoint}/course/mentor/${mentorId}`);
+        set({ Courses: response.data.courses, isLoading: false });
+      } catch (err) {
+        set({ isLoading: false, error: "Failed to fetch courses" });
+      }
+    },
+    fetchCourseByselectedMentorId : async()=>{
+      set({ isLoading: true });
+      try {
+        const response = await axios.get(`${userEndPoint}/course/getCourseByMentorId/selected-mentor`);
+        set({  getSelectedMentorCourse: response.data. courses, isLoading: false });
+      } catch (err) {
+        set({ isLoading: false, error: "Failed to fetch courses" });
+      }
+    }
   
   }));
 

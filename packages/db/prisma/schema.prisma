@@ -104,3 +104,8 @@ enum Role {
   STUDENT
   ADMIN
 }
+model AdminSettings {
+  id              String  @id @default(uuid())
+  selectedMentorId String? @unique
+  updatedAt       DateTime @updatedAt
+}

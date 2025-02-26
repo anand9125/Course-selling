@@ -19,8 +19,8 @@ function Wallet() {
           className="w-32 h-32 mb-4"
         />
         <h2 className="flex items-center text-2xl font-semibold text-gray-700">
-          Your current balance is{userDetails["walletBalance"]}
-          <MdCurrencyRupee className="text-3xl text-primary ml-2" /> 0.00
+          Your current balance is
+          <MdCurrencyRupee className="text-3xl text-primary ml-2" /> {userDetails["walletBalance"]}.00
         </h2>
       </div>
 

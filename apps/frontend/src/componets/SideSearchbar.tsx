@@ -91,6 +91,10 @@ function SideSearchbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const handleCourseClick = (courseId:string) => {
+    navigate(`/courses/${courseId}`);
+  };
+
   
 
   return (
@@ -112,7 +116,7 @@ function SideSearchbar() {
             <div className="absolute left-0 top-full w-full flex justify-center z-50">
             <div className="bg-white shadow-lg rounded-md max-w-3xl w-full p-2 max-h-60 overflow-auto">
           
-              <CourseList /> {/* Render CourseList when searching */}
+              <CourseList onCourseClick={handleCourseClick}/> {/* Render CourseList when searching */}
             </div>
             </div>
           )}

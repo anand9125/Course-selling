@@ -13,6 +13,7 @@ export const SignupSchema = z.object({
     }), 
     year: z.number().int().min(1).max(5).optional(),
     referralCode: z.string().optional(),
+    referredById : z.string().optional(),
     role:z.enum(["STUDENT","ADMIN"]).default("STUDENT")
 })
     

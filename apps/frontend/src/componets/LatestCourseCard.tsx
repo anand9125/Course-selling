@@ -22,17 +22,11 @@ interface Courses {
   index: number;
 }
 
-interface Mentor {
-  id: string;
-  mentorId: string;
-  name: string;
-  image: string;
-  index: number;
-}
+
 
 interface CoursesCardProps {
   courses: Courses[];
-  mentor: Mentor | null;
+
  
 }
 
@@ -147,7 +141,7 @@ const ImgMediaCard: React.FC<
   );
 };
 
-const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
+const LatestCoursesCard: React.FC<CoursesCardProps> = ({ courses }) => {
   const { addToCart } = useCartAction(); // Get addToCart function
   const { isLoading } = useMentorStore();
   const navigate = useNavigate();
@@ -161,7 +155,6 @@ const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
 
   return (
     <div>
-     <div className="text-3xl font-semibold pt-3 md:text-4xl">{mentor?.name}</div>
       <Box sx={{ maxWidth: "1300px", margin: "auto", padding: 2 }}>
         <Box
           sx={{
@@ -187,4 +180,4 @@ const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
   );
 };
 
-export default CoursesCard;
+export default LatestCoursesCard;

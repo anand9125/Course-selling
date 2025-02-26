@@ -2,7 +2,11 @@ import { useRecoilValue } from "recoil";
 import { searchQueryState } from "../store/Searchbar/atom";
 import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
 
-const CourseList = () => {
+interface CourseListProps {
+  onCourseClick: (courseId: string) => void;
+}
+
+const CourseList: React.FC<CourseListProps>  = ({  onCourseClick }) => {
   const searchQuery = useRecoilValue(searchQueryState);
   const allCourses = useRecoilValue(allCoursesWithMetadata);
   
@@ -23,7 +27,8 @@ const CourseList = () => {
 
       {filteredCourses.length > 0 ? (
         filteredCourses.map((course) => (
-          <div key={course.id} className="flex  gap-4 p-3 border-b border-gray-300 last:border-b-0">
+          <div key={course.id} onClick={()=>onCourseClick(course.courseId)}
+           className="flex  gap-4 p-3 border-b border-gray-300 last:border-b-0 cursor-pointer hover:bg-gray-100">
             <img 
               src={course.image} 
               alt={course.title} 

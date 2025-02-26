@@ -7,6 +7,7 @@ import DashboardLayout from '../../../AdminComponents/DashboardLayout';
 import RevenueChart from './MonthlyRevenu';
 function Dashboard() {
   
+  
     return (
       <div>
           <div className='max-w-7xl mx-auto pl-8'>

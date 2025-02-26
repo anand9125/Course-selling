@@ -101,18 +101,13 @@ function ManageCategory() {
                                                 </tr> 
                                                 ))
                                             }
-                            
-
                                         </tbody>
 
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     </section>
-  
-
                       </div>
                     </div>
                  </div>

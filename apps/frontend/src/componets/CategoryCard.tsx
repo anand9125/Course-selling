@@ -72,7 +72,9 @@ const CategoryCardComponent: React.FC<CategoryCardProps> = ({ categories }) => {
     navigate(`/category/${categoryId}`);
   };
     // Sort categories by index before rendering so that we can arrange accoding to what we want
-    const sortedCategories = [...categories].sort((a, b) => a.index - b.index);  //Spreads categories into a new array ([...categories]) to avoid mutating the original array.
+    const sortedCategories = [...categories]
+     .filter(cat => cat.index >= 1 && cat.index <= 10)
+     .sort((a, b) => a.index - b.index);  //Spreads categories into a new array ([...categories]) to avoid mutating the original array.
   return (
     <Box  sx={{ maxWidth: '1300px', margin: 'auto', padding: 2, overflow: "visible", position: "relative" }}>
       {/* @ts-ignore */}

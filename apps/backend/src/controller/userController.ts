@@ -7,100 +7,100 @@ import { JWT_PASSWORD } from "../config"
 import { adminPassword } from "../types/config";
 const client = new PrismaClient()
 
-export const userSignUp = async (req: Request, res: Response)=>{
-   
+export const userSignUp = async (req: Request, res: Response) => {
     const parseData = SignupSchema.safeParse(req.body);
-    if(!parseData.success){
-        res.status(401).json({
-            message:parseData.error
-        })
-        return;
+    if (!parseData.success) {
+         res.status(401).json({
+             message: parseData.error
+         });
+        return
     }
+
     const hashedPassword = await bcrypt.hash(parseData.data.password, 10);
-    try{
-        const exitUser = await client.user.findFirst({
-            where:{
-                email:parseData.data.email
-            }
-        })
-        if(exitUser){
+
+    try {
+        
+        const existingUser = await client.user.findFirst({
+            where: { email: parseData.data.email }
+        });
+
+        if (existingUser) {
             res.status(403).json({
-                message:"User already exist"
-            })
-            return;
+              message: "User already exists"
+             });
+         return
         }
+
+        
+        let referredById = null;
+        if (parseData.data.referralCode) {
+            const referrer = await client.user.findFirst({
+                where: { referralCode: parseData.data.referralCode },
+                select: { id: true }
+            });
+
+            if (referrer) {
+                referredById = referrer.id; 
+            } else {
+                res.status(400).json({
+                   message: "Invalid referral code"
+                });
+                return
+            }
+        }
+
+      
         function generateReferralCode(length: number = 5): string {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let referralCode = '';
-            
             for (let i = 0; i < length; i++) {
-              const randomIndex = Math.floor(Math.random() * characters.length);
-              referralCode += characters[randomIndex];
+                referralCode += characters[Math.floor(Math.random() * characters.length)];
             }
-          
             return referralCode;
-          }
-          const referralCode = generateReferralCode(5);
-        //   const categories = await client.category.findMany({
-        //     where:{
-        //         name:{
-        //             in:parseData.data.categoryNames
-        //         }
-        //     },
-        //     select:{
-        //         id:true
-        //     }
-        //   })
+        }
+
+        const referralCode = generateReferralCode(5);
+
+        
         const user = await client.user.create({
-            data:{
-                name:parseData.data.name,
-                email:parseData.data.email,
-                password:hashedPassword,
-                isInCollege:parseData.data.isInCollage,
-                college:parseData.data.college,
-                branch:parseData.data.branch,
-                year:parseData.data.year,
-                referralCode:referralCode,
-                // userCategories:{
-                //     create:categories.map((category)=>({  //Loops through the categories array
-                //         category:{
-                //             connect:{
-                //                 id:category.id   //For each category, it connects the user to that category by category.id
-                //             }
-                //         }
-                //     }))
-                // },
-                profileCompleted:true
+            data: {
+                name: parseData.data.name,
+                email: parseData.data.email,
+                password: hashedPassword,
+                isInCollege: parseData.data.isInCollage,
+                college: parseData.data.college,
+                branch: parseData.data.branch,
+                year: parseData.data.year,
+                referralCode: referralCode,
+                profileCompleted: true
             }
-        })
-        const token = jwt.sign({userId:user.id},JWT_PASSWORD)
+        });
+
+       
+        const token = jwt.sign({ userId: user.id }, JWT_PASSWORD);
+
         res.json({
-            user:{
-                id:user.id,
-                name:user.name,
-                email:user.email,
-                college:user.college,
-                branch:user.branch,
-                year:user.year,
-                referralCode:user.referralCode,
-                walletBalance:user.walletBalance,
-                profileCompleted:user.profileCompleted,
-                role:user.role
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                college: user.college,
+                branch: user.branch,
+                year: user.year,
+                referralCode: user.referralCode,
+                walletBalance: user.walletBalance,
+                profileCompleted: user.profileCompleted,
+                role: user.role,
+                referredById: user.referredById
             },
-            token:{
-                token:token
-            }
-        })
+            token: { token: token }
+        });
+
+    } catch (error: any) {
+         res.status(500).json({ message: "Something went wrong", error });
     }
-    catch(e){
-        res.status(500).json({
-            message:"Something went wrong"
-        })
-    }
+};
 
-
-
-}
 
 export const userSignIn= async(req:Request,res:Response)=>{
     const parseData = SigninSchema.safeParse(req.body)
