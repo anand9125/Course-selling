@@ -6,7 +6,9 @@ import { adminEndPoint } from '../../../utils/config';
 import toast from 'react-hot-toast';
 
 const AddCategory = () => {
-    
+  
+  
+  
   const { register, handleSubmit } = useForm();
     const[isLoading,setIsLoading]=useState('true')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
