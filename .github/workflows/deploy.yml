@@ -24,11 +24,11 @@ jobs:
         context: .
         file: ./docker/Dockerfile.backend
         push: true
-        tags: anand687/course-selling:latest  # Replace with your Docker Hub username and repository
+        tags: anand687/course-selling:latest
 
     - name: Verify Pushed Image
-      run: docker pull anand687/course-selling # Replace with your Docker Hub username and repository
-    
+      run: docker pull anand687/course-selling
+
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
@@ -40,4 +40,7 @@ jobs:
           sudo docker pull anand687/course-selling:latest
           sudo docker stop web-app || true
           sudo docker rm web-app || true
-          sudo docker run -d --name web-app -p 3005:3000 anand687/course-selling
+
+          echo "DATABASE_URL='postgresql://course-selling_owner:npg_kyK5lfsBbGM3@ep-restless-firefly-a5sxlyv0-pooler.us-east-2.aws.neon.tech/course-selling?sslmode=require'" > .env
+
+          sudo docker run -d --name web-app -p 3005:8080 --env-file .env anand687/course-selling
