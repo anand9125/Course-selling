@@ -40,7 +40,4 @@ jobs:
           sudo docker pull anand687/course-selling:latest
           sudo docker stop web-app || true
           sudo docker rm web-app || true
-
-          echo "DATABASE_URL='postgresql://course-selling_owner:npg_kyK5lfsBbGM3@ep-restless-firefly-a5sxlyv0-pooler.us-east-2.aws.neon.tech/course-selling?sslmode=require'" > .env
-
-          sudo docker run -d --name web-app -p 3005:8080 --env-file .env anand687/course-selling
+          sudo docker run -d --name web-app -p 3005:8080 anand687/course-selling

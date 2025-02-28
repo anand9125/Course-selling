@@ -2,30 +2,17 @@ FROM node:20.12.0-alpine3.19
 
 WORKDIR /usr/src/app
 
-# Copy package files
 COPY package.json package-lock.json turbo.json tsconfig.json ./
 
-# Copy all apps and packages
 COPY apps ./apps
 COPY packages ./packages
 
-# Copy .env file (ensure it's available in the root of your project)
-COPY .env .env
-
 # Install dependencies
 RUN npm install
+# Can you add a script to the global package.json that does this?
+RUN npm run db:generate
 
-# Set database URL for Prisma migrations
-ENV DATABASE_URL="postgresql://course-selling_owner:npg_kyK5lfsBbGM3@ep-restless-firefly-a5sxlyv0-pooler.us-east-2.aws.neon.tech/course-selling?sslmode=require"
-
-# Navigate to the database package and generate Prisma client
-RUN cd packages/db && npx prisma generate
-
-# Apply database migrations
-RUN cd packages/db && npx prisma migrate deploy
-
-# Build the backend
+# Can you filter the build down to just one app?
 RUN npm run build
 
-# Start the backend service
 CMD ["npm", "run", "start-backend"]
