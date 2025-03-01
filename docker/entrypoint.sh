@@ -7,10 +7,10 @@ if [ -z "$DATABASE_URL" ]; then
   exit 1
 fi
 
-# Navigate to Prisma package and run migrations
+# Run database migrations inside packages/db
 echo "Running database migrations..."
 cd /usr/src/app/packages/db && npx prisma migrate deploy
 
-# Start the backend application
+# Start the backend from the correct directory
 echo "Starting backend..."
-cd /usr/src/app/apps/backend && exec npm run start-backend
+cd /usr/src/app/apps/backend && exec npm run start

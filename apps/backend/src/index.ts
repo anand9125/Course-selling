@@ -37,4 +37,4 @@ app.use("/api/v1/admin/mentor",adminMentorRouter)
 app.use("/api/v1/admin/category",adminCategoryRouter)
 
 
-app.listen(8080, () => console.log('Server started on port 5000'));
+app.listen(8080, () => console.log('Server started on port 8080'));

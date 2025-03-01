@@ -1,5 +1,6 @@
 FROM node:20.12.0-alpine3.19
 
+# Set working directory
 WORKDIR /usr/src/app
 
 # Copy package files first for better caching
@@ -16,16 +17,14 @@ RUN npm install
 WORKDIR /usr/src/app/packages/db
 RUN npx prisma generate
 
-# Move back to backend directory
-WORKDIR /usr/src/app/apps/backend
-
-# Build the application
+# Move to backend directory for build
+WORKDIR /usr/src/app
 RUN npm run build
 
 # Expose the port your app runs on
 EXPOSE 8080
 
-# Use an entrypoint script to handle database connection
+# Copy entrypoint script and give execute permissions
 COPY docker/entrypoint.sh /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
