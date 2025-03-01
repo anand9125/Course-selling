@@ -2,17 +2,35 @@ FROM node:20.12.0-alpine3.19
 
 WORKDIR /usr/src/app
 
+# Copy package files first for better caching
 COPY package.json package-lock.json turbo.json tsconfig.json ./
 
+# Copy the entire monorepo structure
 COPY apps ./apps
 COPY packages ./packages
 
 # Install dependencies
 RUN npm install
-# Can you add a script to the global package.json that does this?
-RUN npm run db:generate
 
-# Can you filter the build down to just one app?
+# Generate Prisma client inside packages/db
+WORKDIR /usr/src/app/packages/db
+RUN npx prisma generate
+
+# Move back to backend directory
+WORKDIR /usr/src/app/apps/backend
+
+# Build the application
 RUN npm run build
 
-CMD ["npm", "run", "start-backend"]
+# Expose the port your app runs on
+EXPOSE 8080
+
+# Use an entrypoint script to handle database connection
+COPY docker/entrypoint.sh /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
+# Set environment variables at runtime
+ENV DATABASE_URL=""
+ENV NODE_ENV="production"
+
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

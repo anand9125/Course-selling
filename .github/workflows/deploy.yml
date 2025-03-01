@@ -40,4 +40,8 @@ jobs:
           sudo docker pull anand687/course-selling:latest
           sudo docker stop web-app || true
           sudo docker rm web-app || true
-          sudo docker run -d --name web-app -p 3005:8080 anand687/course-selling
+          sudo docker run -d --name web-app \
+            -p 3005:8080 \
+            -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            -e NODE_ENV="production" \
+            anand687/course-selling
