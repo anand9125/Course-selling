@@ -1,3 +1,5 @@
-export const adminEndPoint = "http://localhost:5000/api/v1/admin"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-export const userEndPoint = "http://localhost:5000/api/v1"
+export const adminEndPoint = `${BASE_URL}/api/v1/admin`;
+
+export const userEndPoint = `${BASE_URL}/api/v1`

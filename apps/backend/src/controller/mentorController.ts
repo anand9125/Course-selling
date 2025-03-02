@@ -8,7 +8,7 @@ const client = new PrismaClient()
 
 export const createMentor = async(req:Request, res:Response)=>{
    const parseData = createMentorSchema.safeParse(req.body)
-   console.log(parseData.error)
+
    if(!parseData.success){
     res.status(400).json({
         
@@ -17,13 +17,13 @@ export const createMentor = async(req:Request, res:Response)=>{
     return;
    }
    try{
-    const mentor=await client.$transaction(async(tx)=>{
+    const mentor=await client.$transaction(async(tx:any)=>{
     let categories=await client.category.findUnique({
         where:{
             categoryId:parseData.data.categoryId
         }
     })
-    console.log(categories,"i have calledd")
+  
 
      let Categoryindex = parseData.data.categoryIndex; 
      if(!categories){
@@ -169,7 +169,7 @@ export const updateMentor = async(req:Request, res:Response)=>{
                 mentorId
             }
         })
-        console.log(existingMentor,"hey sir i am reached")
+
         if(!existingMentor){
             res.status(404).json({
                 message:"Mentor not found"
@@ -219,14 +219,13 @@ export const deleteMentor=async(req:Request,res:Response)=>{
 export const getCategroyMentor = async(req:Request,res:Response)=>{
     const categoryId = req.params.categoryId;
 
-    console.log(categoryId)
     try{
         const category = await client.category.findUnique({
             where:{
                 categoryId
             }
         })
-        console.log(category)
+   
         const mentors = await client.mentor.findMany({
             where:{
                 categoryId:category?.id

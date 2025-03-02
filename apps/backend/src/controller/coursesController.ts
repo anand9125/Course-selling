@@ -5,7 +5,7 @@ import { Request,Response } from "express";
 const client = new PrismaClient()
 export const createCourses = async(req:Request,res:Response)=>{
     const parseData = CreatecoursesSchema.safeParse(req.body);
-    console.log( parseData.error)
+
     if(!parseData.success){
         res.status(400).json({
             message: "Invalid data"
@@ -13,7 +13,7 @@ export const createCourses = async(req:Request,res:Response)=>{
         return;
     }
     try{
-    const course = await client.$transaction(async(tx)=>{
+    const course = await client.$transaction(async(tx:any)=>{
     let category = await client.category.findUnique({
         where:{
             categoryId:parseData.data.categoryId

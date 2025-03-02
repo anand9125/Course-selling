@@ -17,6 +17,17 @@ dotenv.config();
 app.use(cors());
 
 
+app.use(
+    cors({
+      origin: "https://coursehubb.store", // Allow only your frontend domain
+      credentials: true, // If using cookies or authentication headers
+      methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+      allowedHeaders: "Content-Type,Authorization",
+    })
+  );
+  
+
+
 app.use(express.json())
 
 

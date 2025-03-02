@@ -54,7 +54,7 @@ const ImgMediaCard: React.FC<Category & { onClick?: () => void; loading?: boolea
       </>
     ) : (
       <>
-        <CardMedia component="img" alt={name} height="200" image={image} sx={{ objectFit: 'cover' }} />
+        <CardMedia component="img"  loading="lazy" alt={name} height="200" image={image} sx={{ objectFit: 'cover' }} />
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography gutterBottom variant="h5">{name}</Typography>
         </CardContent>

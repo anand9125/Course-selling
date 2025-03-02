@@ -19,7 +19,8 @@ function HeroSection() {
                   {/* Right Image */}
                     <div className="w-full lg:w-1/2 flex justify-center items-center lg:justify-end ">
                       <img 
-                        src={aditi} 
+                        src={aditi}
+                        loading="lazy" 
                         alt="Premium Learning" 
                         className="max-w-64 h-auto rounded-xl "
                       />

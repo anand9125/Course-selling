@@ -69,6 +69,7 @@ const ImgMediaCard: React.FC<
         <>
           <CardMedia
             component="img"
+            loading="lazy"
             alt={title}
             image={image}
             sx={{

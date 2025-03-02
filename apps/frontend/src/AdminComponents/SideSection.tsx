@@ -13,7 +13,8 @@ function SideSection() {
             >
         <img 
         src={aditi}
-            alt="Dashboard" 
+            alt="Dashboard"
+            loading="lazy" 
             className="w-12 h-12 drop-shadow-md"
         />
         <h2 className="text-lg font-semibold text-gray-500">Dashboard</h2>
@@ -28,6 +29,7 @@ function SideSection() {
         <img 
             src="https://www.shutterstock.com/image-vector/category-icon-flat-illustration-vector-600nw-2431883211.jpg" 
             alt="Category-icons" 
+            loading="lazy"
             className="w-12 h-12 drop-shadow-md "
         />
         <h2 className="text-lg font-semibold text-gray-500">Category</h2>
@@ -41,6 +43,7 @@ function SideSection() {
         <img 
             src="https://cdn-icons-png.freepik.com/512/1430/1430954.png" 
             alt="Mentors" 
+            loading="lazy"
             className="w-12 h-12 drop-shadow-md"
         />
         <h2 className="text-lg font-semibold text-gray-500">Mentors</h2>
@@ -54,6 +57,7 @@ function SideSection() {
         <img 
             src="https://cdn-icons-png.flaticon.com/512/4762/4762311.png" 
             alt="Course" 
+            loading="lazy"
             className="w-12 h-12 drop-shadow-md"
         />
         <h2 className="text-lg font-semibold text-gray-500">Course</h2>

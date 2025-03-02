@@ -79,7 +79,7 @@ function Navbar() {
       
           <div className="flex items-center pl-8 ">
             <a href="/" className="text-xl font-semibold text-gray-800">
-             <img src={aditi} alt="aditi.png"  className="w-30 h-20"/>
+             <img src={aditi} loading="lazy" alt="aditi.png"  className="w-30 h-20"/>
             </a>
           </div>
       
@@ -113,6 +113,7 @@ function Navbar() {
             <button onClick={() => navigate("/user-Profile")} aria-label="User Menu">
                 <img
                   src={avatarImg}
+                  loading="lazy"
                   alt="User Avatar"
                   className="w-8 h-8 rounded-full ring-2 ring-blue-500"
                 />

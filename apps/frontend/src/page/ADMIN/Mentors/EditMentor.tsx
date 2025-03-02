@@ -28,7 +28,6 @@ function EditMentor() {
 
   const onSubmit = async (data:any) => {
     data.index= Number(data.index)
-    console.log(data)
  
     try{
       const response= await axios.put(`${adminEndPoint}/mentor/update/${mentorId}`,data,{

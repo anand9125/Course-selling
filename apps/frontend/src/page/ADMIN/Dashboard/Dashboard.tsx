@@ -44,7 +44,7 @@ function Dashboard() {
                             </div>
                             <div className="flex items-center p-8 bg-white shadow rounded-lg">
                                 <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
-                                    <img src="https://www.shutterstock.com/image-vector/category-icon-flat-illustration-vector-600nw-2431883211.jpg" alt="" />
+                                    <img loading="lazy" src="https://www.shutterstock.com/image-vector/category-icon-flat-illustration-vector-600nw-2431883211.jpg" alt="" />
                                 </div>
                                 <div>
                                     <span className="block text-2xl font-bold">Total category</span>

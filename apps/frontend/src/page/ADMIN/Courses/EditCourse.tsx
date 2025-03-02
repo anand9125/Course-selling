@@ -23,7 +23,7 @@ function EditCourse() {
       data.index= Number(data.index)
       data.price = Number(data.price)
       data.actualPrice = Number(data.actualPrice)
-      console.log(data)
+     
 
 
       try{

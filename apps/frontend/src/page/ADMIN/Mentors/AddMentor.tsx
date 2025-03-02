@@ -15,7 +15,7 @@ const AddMentor = () => {
      const onSubmit = async (data:any) => {
     data.index= Number(data.index)
     data.categoryIndex = Number(data.categoryIndex)
-    console.log(data)
+
  
     try{
       const response= await axios.post(`${adminEndPoint}/mentor/create`,data,{

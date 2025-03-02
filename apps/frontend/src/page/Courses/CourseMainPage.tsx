@@ -44,12 +44,14 @@ function CourseMainPage() {
                   {/* Aditi Image */}
                   <img
                     src={aditi}
+                    loading="lazy"
                     alt="Aditi"
                     className="absolute top-0 left-1/2 transform -translate-x-1/2 w-36 h-36 object-cover  b  z-10"
                   />
                   {/* Single Course Image */}
                   <img
                     src={singleCourse?.image}
+                    loading="lazy"
                     alt={singleCourse?.title}
                     className="w-full h-auto object-cover rounded-md mt-24"
                   />
@@ -113,6 +115,7 @@ function CourseMainPage() {
                   <img
                     className="w-full  rounded-md "
                     decoding="async"
+                    loading="lazy"
                     src="https://i.imgur.com/PdJ2k92.png"
                     alt="Payment Methods"
                   />

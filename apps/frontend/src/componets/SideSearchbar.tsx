@@ -33,7 +33,7 @@ function SideSearchbar() {
 
 
   const handleCategoryClick = (categoryId: string) => {
-    console.log(categoryId)
+ 
     navigate(`/category/${categoryId}`);
   };
 
@@ -47,7 +47,7 @@ function SideSearchbar() {
     } else {
       console.error("Category not found for mentor:", mentorId);
     }
-      console.log(updatedCategory);
+  
     }, 300); // Small timeout to allow state update
   
   };

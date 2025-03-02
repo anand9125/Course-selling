@@ -16,7 +16,7 @@ function EditCategory() {
     const { register, handleSubmit } = useForm();
     // const[isLoading,setIsLoading]=useState('falae')
     const token = JSON.parse(localStorage.getItem("token") || "{}");
-     console.log(token)
+    
 
      useEffect(() =>{
         fetchSingleCategory(categoryId)

@@ -45,7 +45,7 @@ const ImgMediaCard: React.FC<Mentors & { onClick?: () => void; loading?: boolean
       </>
     ) : (
       <>
-        <CardMedia component="img" alt={name}   image={image} sx={{ objectFit: 'cover',
+        <CardMedia component="img" alt={name} loading="lazy"  image={image} sx={{ objectFit: 'cover',
         height:300
           
         }} />

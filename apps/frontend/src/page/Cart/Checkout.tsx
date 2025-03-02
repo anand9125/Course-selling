@@ -101,6 +101,7 @@ function Checkout() {
                 <li key={product.id} className="flex py-6 items-center">
                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <img
+                      loading="lazy"
                       alt={product.title}
                       src={product.image}
                       className="h-full w-full object-cover"

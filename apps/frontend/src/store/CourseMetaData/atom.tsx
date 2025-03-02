@@ -42,7 +42,7 @@ export const  allCoursesWithMetadata=selector< CourseWithMetadata[]>({
       
       try {
         const response = await axios.get(`${userEndPoint}/course`);
-        console.log(response.data,"fdg")
+       
         return  response.data.courses
         
         }catch(err){

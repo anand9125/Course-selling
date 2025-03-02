@@ -13,7 +13,7 @@ function HandleLatestCourse() {
 
      
      const onSubmit = async (data:any) => {
-        console.log(data)
+      
       await putLatestCourseMentorId(data)
      }
   return (

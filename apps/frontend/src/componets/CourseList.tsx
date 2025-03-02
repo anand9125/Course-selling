@@ -31,6 +31,7 @@ const CourseList: React.FC<CourseListProps>  = ({  onCourseClick }) => {
            className="flex  gap-4 p-3 border-b border-gray-300 last:border-b-0 cursor-pointer hover:bg-gray-100">
             <img 
               src={course.image} 
+              loading="lazy"
               alt={course.title} 
               className="h-14 w-14 object-cover rounded-md"
             />

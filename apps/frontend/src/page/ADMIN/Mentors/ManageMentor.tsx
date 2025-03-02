@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 function ManageMentor() {
     const{ allMentors,fetchAllMentors,deleteMentor} = useMentorStore()
-    console.log(allMentors)
+   
     useEffect(()=>{
         fetchAllMentors()
     },[])

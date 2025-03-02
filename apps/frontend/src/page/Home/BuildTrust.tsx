@@ -20,6 +20,7 @@ function BuildTrust() {
                         <img
                            src="https://courseheistshop.click/wp-content/uploads/2024/09/1106292-200-150x150-1.webp"
                            alt=""
+                           loading="lazy"
                            className="w-24 h-24 object-cover mb-4"
                         />
                       </div>
@@ -35,6 +36,7 @@ function BuildTrust() {
                         <img
                           src="https://courseheistshop.click/wp-content/uploads/2024/09/delivery-150x150-1.webp"
                           alt=""
+                          loading="lazy"
                           className="w-24 h-24 object-cover mb-4"
                         />
                       </div>
@@ -50,6 +52,7 @@ function BuildTrust() {
                         <img
                           src="https://courseheistshop.click/wp-content/uploads/2024/09/infinity-400x400-1.png"
                           alt=""
+                          loading="lazy"
                           className="w-24 h-24 object-cover mb-4"
                         />
                       </div>

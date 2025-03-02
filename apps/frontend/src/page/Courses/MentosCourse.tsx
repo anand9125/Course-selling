@@ -16,7 +16,7 @@ function MentosCourse() {
       fetchMentorById(mentorId);
     }, [categoryId, mentorId, fetchCourses, fetchMentorById]); // Add functions as dependencies if they are not stable
     
-    console.log(mentor)
+  
   return (
       <div className="flex">
      

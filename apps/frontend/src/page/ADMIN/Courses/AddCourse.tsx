@@ -19,7 +19,7 @@ const AddCourse = () => {
         data.actualPrice = Number(data.actualPrice)
         data.categoryIndex = Number(data.categoryIndex)
         data.mentorIndex = Number(data.mentorIndex)
-        console.log(data)
+ 
  
         try{
           const response= await axios.post(`${adminEndPoint}/courses/create`,data,{

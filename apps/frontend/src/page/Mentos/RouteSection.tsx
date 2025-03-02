@@ -9,7 +9,7 @@ function RouteSection() {
     const navigate= useNavigate()
     useEffect(()=>{
         getCategoryByCategoryId(categoryId!)
-        console.log(category)
+       
      },[categoryId,getCategoryByCategoryId])
   return (
     <div>

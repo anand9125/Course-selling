@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JWT_PASSWORD } from "../config";
+import { JWT_PASSWORD } from "../types/config";
 
 interface AuthenticatedRequest extends Request {
   id?: string; 
@@ -8,7 +8,7 @@ interface AuthenticatedRequest extends Request {
 
 export function userAuthMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const token = req.headers.authorization;
-   console.log(token)
+ 
   if (!token) {
     res.status(401).json({ message: "Token required" });
     return; 

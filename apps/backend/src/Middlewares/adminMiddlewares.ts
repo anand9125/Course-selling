@@ -8,16 +8,16 @@ interface AuthenticatedRequest extends Request {
 }
 
 export function adminAuthMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
-  console.log("some one is higiing me")
+
   const token = req.headers.authorization;
-   console.log(token)
+  
   if (!token) {
     res.status(401).json({ message: "Token required" });
     return; 
   }
 
   try {
-    console.log("hii")
+
     const payload = jwt.verify(token, adminPassword) as { userId: string }; 
    
    req.id = payload.userId 

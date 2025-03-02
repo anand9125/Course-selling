@@ -15,6 +15,7 @@ function Wallet() {
         <img
           src="https://cdn-icons-png.freepik.com/256/16783/16783114.png"
           alt="Wallet Icon"
+          loading="lazy"
           className="w-32 h-32 mb-4"
         />
         <h2 className="flex items-center text-2xl font-semibold text-gray-700">

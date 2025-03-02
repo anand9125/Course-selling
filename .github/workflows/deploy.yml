@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'apps/backend/**'
+      - 'packages/db/**'
+      - 'docker/Dockerfile.backend'
+      - '.github/workflows/backend-deploy.yml'
 
 jobs:
   build-and-push:

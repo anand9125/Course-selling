@@ -1,91 +1,79 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./page/Home/Home";
+import React, { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
+import { RecoilRoot } from "recoil";
 import Navbar from "./componets/Navbar";
 import Banner from "./componets/Banner";
 import Footer from "./componets/Footer";
-import Mentors from "./page/Mentos/Mentors";
-import Courses from "./page/Courses/Courses";
-import Cart from "./page/Cart/Cart";
-import { RecoilRoot } from "recoil";
-import Category from "./page/Category/Category";
-import User from "./page/User-Profile/User"
-import Wallet from "./page/Wallet/wallet";
 import PopupCard from "./componets/PopupCard";
-import Login from "./page/User-Profile/login";
-import AdminCategory from "./page/ADMIN/Category/Category"
-import Dashboard from "./page/ADMIN/Dashboard/Dashboard";
-import ManageCategory from "./page/ADMIN/Category/ManageCategory";
-import EditCategory from "./page/ADMIN/Category/Editcategory";
-import ManageMentor from "./page/ADMIN/Mentors/ManageMentor";
-import AdminMentor from "./page/ADMIN/Mentors/Mentor";
-import EditMentor from "./page/ADMIN/Mentors/EditMentor";
-import AdminCourses from "./page/ADMIN/Courses/Courses";
-import ManageCourse from "./page/ADMIN/Courses/ManageCourse";
-import EditCourse from "./page/ADMIN/Courses/EditCourse";
-import HandleLatestCourse from "./page/ADMIN/Courses/HandleLatestCourse";
-import CourseMainPage from "./page/Courses/CourseMainPage";
+
+// Lazy Load Pages
+const Home = React.lazy(() => import("./page/Home/Home"));
+const Mentors = React.lazy(() => import("./page/Mentos/Mentors"));
+const Courses = React.lazy(() => import("./page/Courses/Courses"));
+const Cart = React.lazy(() => import("./page/Cart/Cart"));
+const Category = React.lazy(() => import("./page/Category/Category"));
+const User = React.lazy(() => import("./page/User-Profile/User"));
+const Wallet = React.lazy(() => import("./page/Wallet/wallet"));
+const Login = React.lazy(() => import("./page/User-Profile/login"));
+const CourseMainPage = React.lazy(() => import("./page/Courses/CourseMainPage"));
+
+// Lazy Load Admin Pages
+const Dashboard = React.lazy(() => import("./page/ADMIN/Dashboard/Dashboard"));
+const AdminCategory = React.lazy(() => import("./page/ADMIN/Category/Category"));
+const ManageCategory = React.lazy(() => import("./page/ADMIN/Category/ManageCategory"));
+const EditCategory = React.lazy(() => import("./page/ADMIN/Category/Editcategory"));
+const AdminMentor = React.lazy(() => import("./page/ADMIN/Mentors/Mentor"));
+const ManageMentor = React.lazy(() => import("./page/ADMIN/Mentors/ManageMentor"));
+const EditMentor = React.lazy(() => import("./page/ADMIN/Mentors/EditMentor"));
+const AdminCourses = React.lazy(() => import("./page/ADMIN/Courses/Courses"));
+const ManageCourse = React.lazy(() => import("./page/ADMIN/Courses/ManageCourse"));
+const EditCourse = React.lazy(() => import("./page/ADMIN/Courses/EditCourse"));
+const HandleLatestCourse = React.lazy(() => import("./page/ADMIN/Courses/HandleLatestCourse"));
 
 function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
-  let amiAdmin = "STUDENT"
-  if(userData["role"] === "ADMIN"){
-    amiAdmin = "ADMIN";
-  }
- 
+  const isAdmin = userData["role"] === "ADMIN";
+
   return (
     <RecoilRoot>
       <Router>
         <Navbar />
         <Banner />
-        <PopupCard></PopupCard>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/category/:categoryId" element={<Mentors />} />
-          <Route path="/mentors/:categoryId/:mentorId" element={<Courses />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/home/categories" element={<Category/>}></Route>
-          <Route path="/user-Profile" element={<User/>}></Route>
-          <Route path="/user-Wallet" element={<Wallet/>}></Route>
-          <Route path="/login" element={<Login/>}></Route>
-          <Route path="/courses/:courseId" element={<CourseMainPage/>}></Route>
-         
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard" element={<Dashboard/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/add-category" element={<AdminCategory/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/manage-category" element={<ManageCategory/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/edit-category/:categoryId" element={< EditCategory/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/add-mentor" element={< AdminMentor/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/manage-mentor" element={<ManageMentor/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/edit-mentor/:mentorId" element={<EditMentor/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/add-courses" element={<AdminCourses/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/manage-courses" element={<ManageCourse/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/edit-course/:courseId" element={<EditCourse/>}></Route>
-          }
-          {amiAdmin=="ADMIN" &&
-          <Route path="/dashboard/handleLatestCourse" element={<HandleLatestCourse/>}></Route>
-          }
-         </Routes>
-         <Footer />
-         <Toaster />
+        <PopupCard />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/category/:categoryId" element={<Mentors />} />
+            <Route path="/mentors/:categoryId/:mentorId" element={<Courses />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/home/categories" element={<Category />} />
+            <Route path="/user-Profile" element={<User />} />
+            <Route path="/user-Wallet" element={<Wallet />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/courses/:courseId" element={<CourseMainPage />} />
+
+            {/* Admin Routes */}
+            {isAdmin && (
+              <>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard/add-category" element={<AdminCategory />} />
+                <Route path="/dashboard/manage-category" element={<ManageCategory />} />
+                <Route path="/dashboard/edit-category/:categoryId" element={<EditCategory />} />
+                <Route path="/dashboard/add-mentor" element={<AdminMentor />} />
+                <Route path="/dashboard/manage-mentor" element={<ManageMentor />} />
+                <Route path="/dashboard/edit-mentor/:mentorId" element={<EditMentor />} />
+                <Route path="/dashboard/add-courses" element={<AdminCourses />} />
+                <Route path="/dashboard/manage-courses" element={<ManageCourse />} />
+                <Route path="/dashboard/edit-course/:courseId" element={<EditCourse />} />
+                <Route path="/dashboard/handleLatestCourse" element={<HandleLatestCourse />} />
+              </>
+            )}
+          </Routes>
+        </Suspense>
+        <Footer />
+        <Toaster />
       </Router>
     </RecoilRoot>
   );
