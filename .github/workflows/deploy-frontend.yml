@@ -24,11 +24,32 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Prune & Install Dependencies (Optimized for Monorepo)
+        run: |
+          npm install -g turbo
+          turbo prune --scope=apps/frontend --docker
+          npm ci
+
+      - name: Debug Secrets
+        run: |
+          echo "AWS_ACCESS_KEY_ID is set"
+          echo "AWS_SECRET_ACCESS_KEY is set"
+          if [ -z "${{ secrets.VITE_API_URL }}" ]; then
+            echo " VITE_API_URL is MISSING!"
+            exit 1
+          else
+            echo " VITE_API_URL is set"
+          fi
+          if [ -z "${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" ]; then
+            echo " CLOUDFRONT_DISTRIBUTION_ID is MISSING!"
+            exit 1
+          else
+            echo " CLOUDFRONT_DISTRIBUTION_ID is set"
+          fi
 
       - name: Create .env File
-        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > apps/frontend/.env
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > apps/frontend/.env
 
       - name: Build Frontend
         run: npm run build --workspace=apps/frontend
@@ -45,7 +66,7 @@ jobs:
           SOURCE_DIR: "apps/frontend/dist/"
 
       - name: Invalidate CloudFront Cache
-        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+        if: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID != null }}
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}

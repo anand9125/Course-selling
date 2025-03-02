@@ -1,10 +1,10 @@
-FROM node:20.12.0-alpine3.19
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
 
 # Copy package files first for better caching
-COPY package.json package-lock.json turbo.json tsconfig.json ./
+COPY package.json package-lock.json turbo.json  ./
 
 # Copy the entire monorepo structure
 COPY apps ./apps

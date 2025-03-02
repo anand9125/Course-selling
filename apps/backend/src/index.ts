@@ -19,8 +19,8 @@ app.use(cors());
 
 app.use(
     cors({
-      origin: "https://coursehubb.store", // Allow only your frontend domain
-      credentials: true, // If using cookies or authentication headers
+      origin: "https://coursehubb.store", 
+      credentials: true, 
       methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
       allowedHeaders: "Content-Type,Authorization",
     })
@@ -38,7 +38,6 @@ app.use("/api/v1/course",courseRouter)
 app.use("/api/v1/mentor",mentorRouter)
 
 app.use("/api/v1/category",categoryRouter)
-
 
 
 app.use("/api/v1/admin/courses",adminCoursesRouter)
