@@ -8,6 +8,7 @@ function Topcategories() {
   useEffect(() => {
     fetchCategories();
   }, []);
+  console.log(categories)
   
   return (
     <div>
@@ -23,7 +24,7 @@ function Topcategories() {
                     Show all categories 
                   </a>
                 </div>
-
+               
                 <CategoryCardComponent categories={categories}></CategoryCardComponent>
             </div>
         </div>

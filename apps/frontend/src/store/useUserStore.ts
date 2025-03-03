@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { create } from 'zustand';
 import { userEndPoint } from '../config';
+import toast from 'react-hot-toast';
 
 interface User {
   id:string,
@@ -40,18 +41,28 @@ export const useUserStore = create<UserStore>((set) => ({
       const response = await axios.post(`${userEndPoint}/user/signup`, formData);
       const userData = response.data.user;
       const token = response.data.token;
-  
+      console.log(response)
       if (userData) {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token",JSON.stringify(token)); 
         set({ user: userData, isLoading: false });
+        toast.success("Signin successful")
         return "success";
       } else {
         set({ isLoading: false });
         return "failure";
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error("Signup failed:", error);
+      if(error.status==403){
+        toast.error("User already exists please login")
+      }
+      if(error.status==401){
+        toast.error("Invalid Credentials")
+      }
+      if(error.status==500){
+        toast.error("Internal Server Error")
+      }
       set({ isLoading: false });
       return "failure";
     }
@@ -62,20 +73,34 @@ export const useUserStore = create<UserStore>((set) => ({
       const response = await axios.post(`${userEndPoint}/user/signin`, formData);
       const userData = response.data.user;
       const token = response.data.token;
-
+     
       if (userData) {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token",JSON.stringify(token)); 
         set({ user: userData, isLoading: false });
+        toast.success("Signin successful")
         return "success";
       } else {
         set({ isLoading: false });
+        
         return "failure";
       }
     }
-    catch(error){
+    catch(error:any){
       console.error("Signin failed:", error);
       set({ isLoading: false });
+      if(error.status==401){
+        toast.error("Invalid Credentials")
+      }
+      if(error.status==404){
+        toast.error("User is not found please Signup")
+      }
+      if(error.status==403){
+        toast.error("Invalid Password")
+      }
+      if(error.status==500){
+        toast.error("Internal Server Error")
+      }
       return "failure";
     }
   }}

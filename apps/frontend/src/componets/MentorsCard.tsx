@@ -20,35 +20,47 @@ interface MentorsCardProps {
   categoryId :string|undefined
 }
 const ImgMediaCard: React.FC<Mentors & { onClick?: () => void; loading?: boolean }> = ({ name, image, onClick, loading }) => (
-  <Card
-    onClick={onClick}
-    sx={{
-      width: '100%',
-      maxWidth: 300,
-      height: 370,
-      transition: 'transform 0.3s ease-in-out',
-      cursor: loading ? 'default' : 'pointer',
-      boxShadow:3,
-      zIndex: 1,
-      '&:hover': {
-        transform: loading ? 'none' : 'scale(1.03) translateY(-10px)',
-        zIndex: 10,
-      },
-    }}
-  >
+      <Card
+      onClick={onClick}
+      sx={{
+        width: '100%',
+        maxWidth: 270,
+        height: 330,
+        transition: 'transform 0.3s ease-in-out',
+        cursor: loading ? 'default' : 'pointer',
+        zIndex: 1,
+        '&:hover': {
+          transform: loading ? 'none' : 'scale(1.03) translateY(-10px)',
+          zIndex: 10,
+          backgroundColor: '#f0f0f0', // Light gray on hover
+        },
+      }}
+    >
     {loading ? (
       <>
         <Skeleton variant="rectangular" width="100%" height={280} />
-        <CardContent sx={{ textAlign: 'center' }}>
+        <CardContent sx={{ textAlign: 'center', paddingTop: '20px' }}>
           <Skeleton variant="text" width="80%" height={30} />
         </CardContent>
       </>
     ) : (
       <>
-        <CardMedia component="img" alt={name} loading="lazy"  image={image} sx={{ objectFit: 'cover',
-        height:300
-          
-        }} />
+         <CardMedia
+              component="img"
+              loading="lazy"
+              alt={name}
+              image={image}
+              sx={{
+                width: 250, // Fixed width to ensure a circle
+                height: 250, // Fixed height to ensure a circle
+                borderRadius: '50%', // Makes the image circular
+                objectFit: 'cover', // Ensures the image fills the circle without distortion
+                objectPosition: 'center', // Centers the image within the circle
+                display: 'block',
+                margin: '10px auto', // Centers the circle within the card
+              }}
+            />
+
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography gutterBottom variant="h5">{name}</Typography>
         </CardContent>

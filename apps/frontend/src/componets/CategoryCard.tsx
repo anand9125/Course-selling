@@ -42,6 +42,7 @@ const ImgMediaCard: React.FC<Category & { onClick?: () => void; loading?: boolea
       '&:hover': {
         transform: loading ? 'none' : 'scale(1.03) translateY(-10px)',
         zIndex: 10,
+        backgroundColor: '#f0f0f0', // Light gray on hover
       },
     }}
   >
@@ -54,7 +55,22 @@ const ImgMediaCard: React.FC<Category & { onClick?: () => void; loading?: boolea
       </>
     ) : (
       <>
-        <CardMedia component="img"  loading="lazy" alt={name} height="200" image={image} sx={{ objectFit: 'cover' }} />
+        <CardMedia
+              component="img"
+              loading="lazy"
+              alt={name}
+              image={image}
+              sx={{
+                width: 220, // Fixed width to ensure a circle
+                height: 220, // Fixed height to ensure a circle
+                borderRadius: '50%', // Makes the image circular
+                objectFit: 'cover', // Ensures the image fills the circle without distortion
+                objectPosition: 'center', // Centers the image within the circle
+                display: 'block',
+                margin: '10px auto', // Centers the circle within the card
+              }}
+            />
+
         <CardContent sx={{ textAlign: 'center' }}>
           <Typography gutterBottom variant="h5">{name}</Typography>
         </CardContent>
@@ -66,6 +82,7 @@ const ImgMediaCard: React.FC<Category & { onClick?: () => void; loading?: boolea
 
 const CategoryCardComponent: React.FC<CategoryCardProps> = ({ categories }) => {
   const { loading } = useCategoryStore();
+  console.log("Loading state:", loading);
   const navigate = useNavigate();
 
   const handleCardClick = (categoryId: string) => {
@@ -76,7 +93,8 @@ const CategoryCardComponent: React.FC<CategoryCardProps> = ({ categories }) => {
      .filter(cat => cat.index >= 1 && cat.index <= 10)
      .sort((a, b) => a.index - b.index);  //Spreads categories into a new array ([...categories]) to avoid mutating the original array.
   return (
-    <Box  sx={{ maxWidth: '1300px', margin: 'auto', padding: 2, overflow: "visible", position: "relative" }}>
+    <Box sx={{ maxWidth: '1300px', margin: 'auto', padding: 2, overflow: "visible", position: "relative", minHeight: '300px' }}>
+
       {/* @ts-ignore */}
       <SwiperContainer
       style={{ overflow: "visible" }} // Allow hover scaling to be visible

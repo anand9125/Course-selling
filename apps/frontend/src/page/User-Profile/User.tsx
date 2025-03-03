@@ -1,9 +1,9 @@
 import { Input} from "../../componets/InputBox";
 import React, { useState, useEffect } from 'react';
 import { useUserStore } from "../../store/useUserStore";
-import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { LuLogOut } from "react-icons/lu";
+import FancyLoader from "../../componets/Skeleton/loderSkelton";
 // import Banner from "../../componets/Profile-popup";
 function User() {
   const [formData, setFormData] = useState({
@@ -17,7 +17,7 @@ function User() {
   });
   const navigate = useNavigate()
   const isUserAviable = localStorage.getItem("user")
-  const {userSignup} = useUserStore()
+  const {userSignup ,isLoading} = useUserStore()
    
   useEffect(() => {
     const savedData = localStorage.getItem('userFormData');
@@ -40,28 +40,22 @@ function User() {
     navigate("/")
   }
   
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-  
-    const result = await userSignup(formData); 
-  
-    if (result === "success") {
-      toast.success("Signup successful!");
-    } else {
-      alert("Signup failed. Please try again.");
-    }
+    await userSignup(formData); 
   };
+
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
+  if(isLoading) {
+    return <div>
+      <FancyLoader></FancyLoader>
+    </div>
+  }
   
   return (
     
     <div className="flex justify-center items-center pt-7 bg-gray-50 px-4">
       <div className="max-w-4xl w-full bg-white p-8 rounded-xl shadow-lg">
-  
-        {/* Title */}
         {!isUserAviable 
          ? 
          <div>
@@ -80,42 +74,37 @@ function User() {
        </div>       
         
         }
-       
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input placeholder="Enter your name" label="Full Name" name="name" value={userData["name"]} onChange={handleChange} type="text" />
 
           <div className="w-full ">
             <div className="">
-            <Input placeholder="Enter your email" label="Email" name="email" value={userData["email"]} onChange={handleChange} type="email" />
-            {!isUserAviable && 
-            <Input placeholder="Enter your password" label="Password" name="password" value={userData["password"]} onChange={handleChange} type="password" />}
+               <Input placeholder="Enter your email" label="Email" name="email" value={userData["email"]} onChange={handleChange} type="email" />
+               {!isUserAviable && 
+               <Input placeholder="Enter your password" label="Password" name="password" value={userData["password"]} onChange={handleChange} type="password" />}
             </div>
           </div>
 
-          <Input placeholder="Enter your college name" label="College Name" name="college" value={userData["college"]} onChange={handleChange} type="text" />
+            <Input placeholder="Enter your college name" label="College Name" name="college" value={userData["college"]} onChange={handleChange} type="text" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input placeholder="Enter your branch" label="Branch" name="branch" value={userData["branch"]} onChange={handleChange} type="text" />
             <Input placeholder="Enter your year" label="Year" name="year" value={userData["year"]} onChange={handleChange} type="number" />
-           
-           
           </div>
 
           <div className="flex justify-center mt-6">
             {!isUserAviable 
-            ?  <div>
-               <button
-                  type="submit"
-                  className="bg-indigo-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
-                  >
-                  Submit Details
-              </button>
-              <div className="text-center mt-2">
-                or <Link to="/login" className="text-indigo-600 hover:underline">Login</Link>
+            ? <div>
+                <button
+                    type="submit"
+                    className="bg-indigo-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
+                    >
+                    Submit Details
+                  </button>
+                  <div className="text-center mt-2">
+                    or <Link to="/login" className="text-indigo-600 hover:underline">Login</Link>
+                  </div>
               </div>
-            </div>
               
             : ""}
            

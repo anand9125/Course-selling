@@ -6,6 +6,12 @@ import Navbar from "./componets/Navbar";
 import Banner from "./componets/Banner";
 import Footer from "./componets/Footer";
 import PopupCard from "./componets/PopupCard";
+import FancyLoader from "./componets/Skeleton/loderSkelton";
+
+const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
+const PrivacyPolicy = React.lazy(() => import('./page/Legal/Privacy-Poliicy'));
+const ShippingPolicy = React.lazy(() => import('./page/Legal/ShipingPolicy'));
+const RefundCancellationPolicy = React.lazy(() => import("./page/Legal/Refund"));
 
 
 // Lazy Load Pages
@@ -42,9 +48,9 @@ function App() {
         <Navbar />
         <Banner />
         <PopupCard />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<FancyLoader />}>
           <Routes>
-            {/* Public Routes */}
+            
             <Route path="/" element={<Home />} />
             <Route path="/category/:categoryId" element={<Mentors />} />
             <Route path="/mentors/:categoryId/:mentorId" element={<Courses />} />
@@ -54,9 +60,13 @@ function App() {
             <Route path="/user-Wallet" element={<Wallet />} />
             <Route path="/login" element={<Login />} />
             <Route path="/courses/:courseId" element={<CourseMainPage />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/return-policy" element={<RefundCancellationPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
          
 
-            {/* Admin Routes */}
+          
             {isAdmin && (
               <>
                 <Route path="/dashboard" element={<Dashboard />} />
