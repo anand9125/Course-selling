@@ -1,6 +1,6 @@
 import { GoMail } from "react-icons/go";
 import { FaTelegram, FaWhatsapp, FaDiscord, FaInstagram } from "react-icons/fa";
-
+import { IoIosContact } from "react-icons/io";
 function Footer() {
   return (
     <footer className="bg-black text-white py-8">
@@ -28,36 +28,40 @@ function Footer() {
                   WhatsApp
                 </a>
               </li>
+              <li className="flex items-center mb-2">
+              <IoIosContact className="mr-2 " />
+                 <a href="/contact" className="hover:underline">Contact Us</a>
+              </li> 
             </ul>
           </div>
 
           {/* Help Section */}
-          <div>
-            <h3 className="text-lg font-medium mb-4">Help</h3>
-            <ul>
-              <li className="mb-2">
-                <a href="/account" className="hover:underline">
-                  My Account
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="/help" className="hover:underline">
-                  Customer Help
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="/contact" className="hover:underline">
-                  Contact Us
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="/faq" className="hover:underline">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
+        <div>
+          <h3 className="text-lg font-medium mb-4">Help</h3>
+          <ul>
+            {/* <li className="mb-2">
+              <a href="/account" className="hover:underline">My Account</a>
+            </li>
+            
+            */}
+           
+            <li className="mb-2">
+              <a href="/terms" className="hover:underline">Terms & Conditions</a>
+            </li>
+            <li className="mb-2">
+              <a href="/privacy-policy" className="hover:underline">Privacy Policy</a>
+            </li>
+            <li className="mb-2">
+              <a href="/return-policy" className="hover:underline">Return & Refund Policy</a>
+            </li>
+            <li className="mb-2">
+              <a href="/shipping-policy" className="hover:underline">Shipping Policy</a>
+            </li>
+            <li className="mb-2">
+              <a href="/help" className="hover:underline">Customer Help</a>
+            </li>
+          </ul>
+        </div>
           {/* Follow Section */}
           <div>
             <h3 className="text-lg font-medium mb-4">Follow</h3>

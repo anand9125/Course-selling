@@ -32,15 +32,15 @@ jobs:
           echo "AWS_ACCESS_KEY_ID is set"
           echo "AWS_SECRET_ACCESS_KEY is set"
           if [ -z "${{ secrets.VITE_API_URL }}" ]; then
-            echo "❌ VITE_API_URL is MISSING!"
+            echo " VITE_API_URL is MISSING!"
             exit 1
           else
-            echo "✅ VITE_API_URL is set"
+            echo " VITE_API_URL is set"
           fi
           if [ -z "${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}" ]; then
-            echo "❌ CLOUDFRONT_DISTRIBUTION_ID is MISSING!"
+            echo " CLOUDFRONT_DISTRIBUTION_ID is MISSING!"
           else
-            echo "✅ CLOUDFRONT_DISTRIBUTION_ID is set"
+            echo " CLOUDFRONT_DISTRIBUTION_ID is set"
           fi
 
       - name: Set CloudFront Distribution ID as Env

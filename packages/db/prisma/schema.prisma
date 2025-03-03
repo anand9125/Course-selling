@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Change to your DB provider
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+ 
 }
 
 model User {
@@ -18,94 +19,91 @@ model User {
   year             Int?
   walletBalance    Float          @default(0.0)
   referralCode     String         @unique @default(uuid())
-  //relation represents a self-referencing many-to-one relationship within usermodel
-  referredById     String?       // Stores the ID of the user who referred this user
-  referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id]) //Tracks who referred them (referredBy field).
-  referrals        User[]         @relation("UserReferrals") // Tracks who they referred (referrals field).उन्होंने किसे refer karav  A list of users that this user has referred.
-  role             Role     @default(STUDENT)
+  referredById     String?
   profileCompleted Boolean        @default(false)
+  role             Role           @default(STUDENT)
   purchases        Purchase[]
-  reviews          Review[] // Added opposite relation
+  reviews          Review[]
+  referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id])
+  referrals        User[]         @relation("UserReferrals")
   userCategories   UserCategory[]
 }
 
-model UserCategory {  //UserCategory table acts as a join table to connect User and Category
+model UserCategory {
   id         String   @id @default(cuid())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String   //userId field is a foreign key referencing the User table
+  userId     String
+  categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String   //categoryId field is a foreign key referencing the Category table.
+  user       User     @relation(fields: [userId], references: [id])
 }
 
-//  UserCategory model represents a Many to many realtion etween User and Category. 
-// Each User can be part of multiple categories.
-// Each Category can have multiple users.
 model Category {
   id             String         @id @default(cuid())
+  name           String
   categoryId     String         @unique
-  name           String 
+  index          Int            @default(0)
   image          String
+  courses        Course[]
   mentors        Mentor[]
   userCategories UserCategory[]
-  courses Course[] // One category has many courses
-   index  Int      @default(0) // Indexing for sorting categories
- }
+}
 
 model Mentor {
-  id              String            @id @default(cuid())
-  mentorId        String            @unique
-  name            String
-  image           String
-  categoryId      String
-  category        Category          @relation(fields: [categoryId], references: [id])
-  courses         Course[]
-  rating          Float             @default(0.0)
-  index           Int            @default(0)    
+  id         String   @id @default(cuid())
+  name       String
+  categoryId String
+  rating     Float    @default(0.0)
+  image      String
+  mentorId   String   @unique
+  index      Int      @default(0)
+  courses    Course[]
+  category   Category @relation(fields: [categoryId], references: [id])
 }
 
 model Course {
   id          String     @id @default(cuid())
-  image       String
   courseId    String     @unique
   title       String
   description String
   price       Float
-  actualPrice Float
   mentorId    String
+  image       String
+  categoryId  String
+  actualPrice Float
+  index       Int
+  category    Category   @relation(fields: [categoryId], references: [id])
   mentor      Mentor     @relation(fields: [mentorId], references: [id])
   purchases   Purchase[]
   reviews     Review[]
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-   index       Int         // Indexing for sorting courses
 }
 
 model Purchase {
   id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
   userId      String
-  course      Course   @relation(fields: [courseId], references: [id])
   courseId    String
   purchasedAt DateTime @default(now())
+  course      Course   @relation(fields: [courseId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 model Review {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  course    Course   @relation(fields: [courseId], references: [id])
   courseId  String
   rating    Int      @default(5)
   comment   String?
   createdAt DateTime @default(now())
+  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model AdminSettings {
+  id               String   @id @default(uuid())
+  selectedMentorId String?  @unique
+  updatedAt        DateTime @updatedAt
 }
 
 enum Role {
   STUDENT
   ADMIN
-}
-model AdminSettings {
-  id              String  @id @default(uuid())
-  selectedMentorId String? @unique
-  updatedAt       DateTime @updatedAt
 }

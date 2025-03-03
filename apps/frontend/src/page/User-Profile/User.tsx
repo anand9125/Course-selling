@@ -2,7 +2,8 @@ import { Input} from "../../componets/InputBox";
 import React, { useState, useEffect } from 'react';
 import { useUserStore } from "../../store/useUserStore";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LuLogOut } from "react-icons/lu";
 // import Banner from "../../componets/Profile-popup";
 function User() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function User() {
     year: 0,
     category: '',
   });
+  const navigate = useNavigate()
   const isUserAviable = localStorage.getItem("user")
   const {userSignup} = useUserStore()
    
@@ -33,6 +35,10 @@ function User() {
       [name]: name === "year" ? Number(value) : value, 
     });
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/")
+  }
   
 
 
@@ -57,8 +63,22 @@ function User() {
   
         {/* Title */}
         {!isUserAviable 
-         ?  <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Registration</h2>
-         : <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Info</h2>
+         ? 
+         <div>
+            <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Registration</h2>
+         </div>
+         :
+         <div className="p-4">
+         <div className="flex justify-center items-center text-2xl font-bold text-gray-800 text-center mb-6">
+           User Info
+         </div>
+         <div className="flex justify-end items-center gap-2 text-gray-600 cursor-pointer hover:text-gray-800 transition"
+            onClick={()=>handleLogout()}>
+           <LuLogOut className="text-xl" />
+           <span className="font-medium">Logout</span>
+         </div>
+       </div>       
+        
         }
        
 

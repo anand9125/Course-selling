@@ -7,6 +7,7 @@ import Banner from "./componets/Banner";
 import Footer from "./componets/Footer";
 import PopupCard from "./componets/PopupCard";
 
+
 // Lazy Load Pages
 const Home = React.lazy(() => import("./page/Home/Home"));
 const Mentors = React.lazy(() => import("./page/Mentos/Mentors"));
@@ -53,6 +54,7 @@ function App() {
             <Route path="/user-Wallet" element={<Wallet />} />
             <Route path="/login" element={<Login />} />
             <Route path="/courses/:courseId" element={<CourseMainPage />} />
+         
 
             {/* Admin Routes */}
             {isAdmin && (

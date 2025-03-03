@@ -6,8 +6,10 @@ WORKDIR /usr/src/app
 # Copy package files first for better caching
 COPY package.json package-lock.json turbo.json  ./
 
-# Copy the entire monorepo structure
-COPY apps ./apps
+# Copy only the backend directory instead of the entire apps directory
+COPY apps/backend ./apps/backend
+
+# Copy only the necessary packages (e.g., database)
 COPY packages ./packages
 
 # Install dependencies
