@@ -7,7 +7,10 @@ const RefundCancellationPolicy = () => {
       <h1 className="text-3xl font-bold mb-6">Refund and Cancellation Policy</h1>
 
       <ol style={{ listStyleType: 'decimal', paddingLeft: '20px' }}>
-        <li style={{ marginBottom: '15px' }}>
+      <li style={{ marginBottom: '15px' }}>
+      After the payment has been made, we do not provide any cancellations or refunds through the website.
+        </li>
+        {/* <li style={{ marginBottom: '15px' }}>
           This refund and cancellation policy outlines how you can cancel or seek a refund for a product/service
           that you have purchased through the Platform. Under this policy:
         </li>
@@ -72,7 +75,7 @@ const RefundCancellationPolicy = () => {
             Their is no refund after the payment are been made
             </li>
           </ul>
-        </li>
+        </li> */}
       </ol>
     </div>
     </div>

@@ -19,19 +19,14 @@ const TermsAndConditions = () => {
           including the related mobile site and mobile application{' '}
           <a href="https://coursehubb.store/ " className="text-blue-500">https://coursehubb.store/</a> (hereinafter referred to as 'Platform').
         </li>
-        <li style={{ marginBottom: '15px' }}>
-          The Platform is owned by coursehubb WebWorks, a company incorporated under the Companies Act, 1956
-          with its registered office at 248, Gurumauli Apartment, Sahakar Nagar, Nagpur, India
-          (hereinafter referred to as ‘Platform Owner’, 'we', 'us', 'our').
-        </li>
+        
         <li style={{ marginBottom: '15px' }}>
           Your use of the Platform and services and tools are governed by the following terms and
           conditions (“Terms of Use”) as applicable to the Platform including the applicable policies which
           are incorporated herein by way of reference. If You transact on the Platform, You shall be subject
           to the policies that are applicable to the Platform for such transaction. By mere use of the Platform,
           You shall be contracting with the Platform Owner and these terms and conditions including the
-          policies constitute Your binding obligations, with Platform Owner. These Terms of Use relate to
-          your use of our website, goods (as applicable) or services (as applicable) (collectively, 'Services').
+          policies constitute Your binding obligations, with Platform Owner.
         </li>
         <li style={{ marginBottom: '15px' }}>
           Any terms and conditions proposed by You which are in addition to or which conflict with these
@@ -121,6 +116,10 @@ const TermsAndConditions = () => {
           All concerns or communications relating to these Terms must be communicated to us using
           the contact information provided on this website.
         </li>
+        <li style={{ marginBottom: '15px' }}>
+          This website is managed by Anand Chaudhary
+        </li>
+        
       </ol>
     </div>
     </div>

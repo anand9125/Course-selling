@@ -103,7 +103,7 @@ function CourseMainPage() {
                   Immediately on Email!
                 </div>
                 <ul className="list-none space-y-2 mb-6">
-                  <li className="flex items-center gap-2">✅UPI, Paypal or Cryptocurrency Accepted. </li>
+                  <li className="flex items-center gap-2">✅UPI , Netbanking & Credit Card. </li>
                   <li className="flex items-center gap-2">✅Premium Courses Up to 90% OFF </li>
                   <li>
                   ✅Join us to get Updates:{" "}

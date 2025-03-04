@@ -8,9 +8,9 @@ import Footer from "./componets/Footer";
 import PopupCard from "./componets/PopupCard";
 import FancyLoader from "./componets/Skeleton/loderSkelton";
 
+
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
 const PrivacyPolicy = React.lazy(() => import('./page/Legal/Privacy-Poliicy'));
-const ShippingPolicy = React.lazy(() => import('./page/Legal/ShipingPolicy'));
 const RefundCancellationPolicy = React.lazy(() => import("./page/Legal/Refund"));
 
 
@@ -41,10 +41,11 @@ const HandleLatestCourse = React.lazy(() => import("./page/ADMIN/Courses/HandleL
 function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   const isAdmin = userData["role"] === "ADMIN";
+ 
 
   return (
     <RecoilRoot>
-      <Router>
+      <Router> 
         <Navbar />
         <Banner />
         <PopupCard />
@@ -63,7 +64,6 @@ function App() {
             <Route path="/terms" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
-            <Route path="/shipping-policy" element={<ShippingPolicy />} />
          
 
           

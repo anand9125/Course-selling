@@ -39,7 +39,7 @@ const ImgMediaCard: React.FC<
       sx={{
         width: "100%",
         maxWidth: 320,
-        height: 380,
+        height: 350,
         transition: "transform 0.3s ease-in-out",
         cursor: loading ? "default" : "pointer",
         zIndex: 1,
@@ -48,6 +48,7 @@ const ImgMediaCard: React.FC<
         "&:hover": {
           transform: loading ? "none" : "scale(1.03) translateY(-10px)",
           zIndex: 10,
+          backgroundColor: '#f0f0f0', 
         },
       }}
     >

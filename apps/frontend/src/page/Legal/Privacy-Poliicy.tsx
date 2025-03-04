@@ -161,14 +161,9 @@ const PrivacyPolicy = () => {
         </li>
 
         <li style={{ marginBottom: '15px' }}>
-          <strong>Grievance Officer</strong>
+         
           <p>
-            <strong>Name:</strong> [courseHub]
-            <br />
-    
-            <strong>Company Name and Address:</strong> [courseHub,Delhi]
-            <br />
-            <strong>Contact Us:</strong> [coursehubb@gmial.com]
+            <strong>Contact Us:</strong> [coursehubb@gmail.com]
             <br />
             <strong>Phone:</strong> [7347713620] (Monday - Friday, 9:00 AM - 6:00 PM)
           </p>

@@ -12,11 +12,11 @@ function Footer() {
             <ul>
               <li className="flex items-center mb-2">
                 <GoMail className="mr-2" />
-                <a href="mailto:admin@CourseHub.live" className="hover:underline">
-                  admin@CourseHub.live
+                <a href="mailto:coursehubb.store@gmail.com" className="hover:underline">
+                  coursehubb.store@gmail.com
                 </a>
               </li>
-              <li className="flex items-center mb-2">
+              {/* <li className="flex items-center mb-2">
                 <FaTelegram className="mr-2" />
                 <a href="https://t.me/CourseHub" className="hover:underline">
                   Telegram
@@ -31,7 +31,7 @@ function Footer() {
               <li className="flex items-center mb-2">
               <IoIosContact className="mr-2 " />
                  <a href="/contact" className="hover:underline">Contact Us</a>
-              </li> 
+              </li>  */}
             </ul>
           </div>
 
@@ -54,12 +54,10 @@ function Footer() {
             <li className="mb-2">
               <a href="/return-policy" className="hover:underline">Return & Refund Policy</a>
             </li>
-            <li className="mb-2">
-              <a href="/shipping-policy" className="hover:underline">Shipping Policy</a>
-            </li>
-            <li className="mb-2">
+           
+            {/* <li className="mb-2">
               <a href="/help" className="hover:underline">Customer Help</a>
-            </li>
+            </li> */}
           </ul>
         </div>
           {/* Follow Section */}

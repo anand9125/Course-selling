@@ -4,6 +4,7 @@ import { useUserStore } from "../../store/useUserStore";
 import { Link, useNavigate } from "react-router-dom";
 import { LuLogOut } from "react-icons/lu";
 import FancyLoader from "../../componets/Skeleton/loderSkelton";
+import toast from "react-hot-toast";
 // import Banner from "../../componets/Profile-popup";
 function User() {
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ function User() {
   };
   const handleLogout = () => {
     localStorage.clear();
+    toast.success("Logged out successfully")
     navigate("/")
   }
   

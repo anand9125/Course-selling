@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const Banner = () => {
   const navigate = useNavigate();
-
+ 
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   let amiAdmin = "STUDENT"
   if(userData["role"] === "ADMIN"){
@@ -72,25 +72,26 @@ const Banner = () => {
         </div>
       </div>
 
-    
-      <div className="w-full bg-[#DC9814] flex items-center">
-        <div className="h-12 flex space-x-2 items-center text-white font-semibold px-4 max-w-5xl mx-auto">
-          <span className="text-sm md:text-base">
-            🎉 Refer & Earn! Share with friends and get <strong>20% instant reward </strong> on every course they buy.
-          </span>
+   
+        <div className="w-full bg-[#DC9814] flex items-center">
+          <div className="h-12 flex space-x-2 items-center text-white font-semibold px-4 max-w-5xl mx-auto">
+            <span className="text-sm md:text-base">
+              🎉 Refer & Earn! Share with friends and get <strong>20% instant reward </strong> on every course they buy.
+            </span>
 
-        
-          {userData["referralCode"] && (
-            <div className="flex items-center  bg-white text-[#DC9814] px-3 py-1 rounded-md text-sm font-bold hover:bg-opacity-90 transition-all">
-              <span className="text-red-600 font-semibold pr-1">{userData["referralCode"]}</span>
-              <FaRegCopy
-                className="cursor-pointer hover:text-red-500 transition-transform transform hover:scale-110"
-                onClick={handleCopy}
-              />
-            </div>
-          )}
+          
+            {userData["referralCode"] && (
+              <div className="flex items-center  bg-white text-[#DC9814] px-3 py-1 rounded-md text-sm font-bold hover:bg-opacity-90 transition-all">
+                <span className="text-red-600 font-semibold pr-1">{userData["referralCode"]}</span>
+                <FaRegCopy
+                  className="cursor-pointer hover:text-red-500 transition-transform transform hover:scale-110"
+                  onClick={handleCopy}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+    
     </div>
   );
 };

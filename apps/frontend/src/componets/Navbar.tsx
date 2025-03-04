@@ -12,6 +12,7 @@ import { allCoursesWithMetadata } from "../store/CourseMetaData/atom";
 import CourseList from "./CourseList"; // Import the CourseList component
 import { useNavigate } from "react-router-dom";
 import { cartState } from "../store/cart/atom";
+// import AlertBanner from "./AlertBanner";
 interface Courses {
   id: string;
   title: string;
@@ -34,6 +35,7 @@ function Navbar() {
   const searchRef = useRef(null);
   const navigate = useNavigate()
   const userDetails = JSON.parse(localStorage.getItem("user") || "{}");
+  // const isUserAviable = localStorage.getItem("user")
   // Update screen size dynamically
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -41,7 +43,6 @@ function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Filter courses based on search input
   const filteredCourses = allCourses.filter((course) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -54,16 +55,11 @@ function Navbar() {
     navigate(`/courses/${courseId}`);
   };
 
-  // function handleLogOut() {
-  //    Logout logic here
-  // }
-
-    // Close dropdown when clicking outside
     useEffect(() => {
       function handleClickOutside(event: MouseEvent) {
         // @ts-ignore
         if (searchRef.current && !searchRef.current.contains(event.target)) {
-          setSearchQuery(""); // Close dropdown
+          setSearchQuery(""); 
         }
       }
   
@@ -75,8 +71,15 @@ function Navbar() {
 
   return (
     <header className="bg-white pt-4 w-full relative">
+       {/* {
+          !isUserAviable ? <div>
+            <AlertBanner></AlertBanner>
+          </div>
+          :""
+        } */}
       <nav className="max-w-7xl mx-auto flex items-center justify-between">
-      
+
+     
           <div className="flex items-center pl-8 ">
             <a href="/" className="text-xl font-semibold text-gray-800">
              <img src={aditi} loading="lazy" alt="aditi.png"  className="w-30 h-20"/>
