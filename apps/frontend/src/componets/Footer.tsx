@@ -1,6 +1,6 @@
 import { GoMail } from "react-icons/go";
 import { FaTelegram, FaWhatsapp, FaDiscord, FaInstagram } from "react-icons/fa";
-import { IoIosContact } from "react-icons/io";
+
 function Footer() {
   return (
     <footer className="bg-black text-white py-8">
