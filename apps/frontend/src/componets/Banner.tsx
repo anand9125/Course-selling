@@ -17,7 +17,7 @@ const Banner = () => {
     if (e === "Home") navigate("/");
     if (e === "About") navigate("/about");
     if (e === "Contact us") navigate("/contact");
-    if (e === "Course") navigate(`/category/`);
+    if (e === "Course") navigate(`/category/webdev`);
   };
   const handleCopy = () => {
     if (userData["referralCode"]) {

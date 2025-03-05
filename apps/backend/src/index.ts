@@ -7,6 +7,7 @@ import { courseRouter } from './routes/user/course';
 import { mentorRouter } from './routes/user/mentor';
 import { categoryRouter } from './routes/user/category';
 import { adminCategoryRouter } from './routes/admin/category';
+import { paymentRouter } from './routes/user/payment';
 
 
 const app = express();
@@ -39,6 +40,8 @@ app.use("/api/v1/course",courseRouter)
 app.use("/api/v1/mentor",mentorRouter)
 
 app.use("/api/v1/category",categoryRouter)
+
+app.use("api/vi",paymentRouter)
 
 
 app.use("/api/v1/admin/courses",adminCoursesRouter)

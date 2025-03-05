@@ -1,6 +1,6 @@
 import { GoMail } from "react-icons/go";
 import { FaTelegram, FaWhatsapp, FaDiscord, FaInstagram } from "react-icons/fa";
-
+import { IoMdCall } from "react-icons/io";
 function Footer() {
   return (
     <footer className="bg-black text-white py-8">
@@ -15,14 +15,15 @@ function Footer() {
                 <a href="mailto:coursehubb.store@gmail.com" className="hover:underline">
                   coursehubb.store@gmail.com
                 </a>
-              </li>
-              {/* <li className="flex items-center mb-2">
-                <FaTelegram className="mr-2" />
-                <a href="https://t.me/CourseHub" className="hover:underline">
-                  Telegram
-                </a>
+               
               </li>
               <li className="flex items-center mb-2">
+                <IoMdCall  className="mr-2" />+91 
+                <a href="tel:7347713620" className="hover:underline pl-1">
+                  7347713620
+                </a>
+              </li>
+              {/* <li className="flex items-center mb-2">
                 <FaWhatsapp className="mr-2" />
                 <a href="https://wa.me/1234567890" className="hover:underline">
                   WhatsApp
@@ -66,19 +67,19 @@ function Footer() {
             <ul>
               <li className="flex items-center mb-2">
                 <FaTelegram className="mr-2" />
-                <a href="https://t.me/CourseHub" className="hover:underline">
+                <a href="https://t.me/coursehubbstore" className="hover:underline">
                   Telegram
                 </a>
               </li>
               <li className="flex items-center mb-2">
                 <FaWhatsapp className="mr-2" />
-                <a href="https://wa.me/1234567890" className="hover:underline">
+                <a href="https://chat.whatsapp.com/FyWbrdQ7ncwGlaAlsxTlGO" className="hover:underline">
                   WhatsApp Group
                 </a>
               </li>
               <li className="flex items-center mb-2">
                 <FaDiscord className="mr-2" />
-                <a href="https://discord.gg/CourseHub" className="hover:underline">
+                <a href="https://discord.gg/EcT8j7sS" className="hover:underline">
                   Discord
                 </a>
               </li>
