@@ -27,8 +27,8 @@ function BuildTrust() {
                       </div>
                       <div className="font-medium text-xl mb-2">Payments Option</div>
                         <div>
-                          You can pay with <span className="font-medium">UPI, Paypal</span> or{" "}
-                         <span className="font-medium">CryptoCurrency.</span>
+                          You can pay with <span className="font-medium">UPI , Netbanking &</span> 
+                         <span className="font-medium"> Credit Card</span>
                         </div>
                     </div>
 

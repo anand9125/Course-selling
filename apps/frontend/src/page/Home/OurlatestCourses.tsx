@@ -62,7 +62,7 @@ function OurlatestCourses() {
                   <IoLocationOutline className="text-xl text-gray-600 w-8 h-6" />
                   <div className="flex flex-col  ">
                     <span className="font-semibold  text-gray-800">100% Secure Checkout</span>
-                    <span className="text-sm text-gray-600">UPI / Crypto / Paypal</span>
+                    <span className="text-sm text-gray-600">UPI/Netbanking/Credit Card.</span>
                    </div>
                 </div>
             </div>
