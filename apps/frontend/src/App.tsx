@@ -7,6 +7,8 @@ import Banner from "./componets/Banner";
 import Footer from "./componets/Footer";
 import PopupCard from "./componets/PopupCard";
 import FancyLoader from "./componets/Skeleton/loderSkelton";
+import Contact from "./page/Legal/Contact";
+import AboutUs from "./page/Legal/AboutUs";
 
 
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
@@ -64,6 +66,8 @@ function App() {
             <Route path="/terms" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
+            <Route path="/contact" element={<Contact/>} />
+            <Route path="/about" element={<AboutUs/>} />
          
 
           

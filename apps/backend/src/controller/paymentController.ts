@@ -6,7 +6,7 @@ const PHONEPE_BASE_URL = 'https://api-preprod.phonepe.com/apis/hermes';
 const MERCHANT_ID = 'YOUR_MERCHANT_ID';  // Get from PhonePe UAT Dashboard
 const SALT_KEY = 'YOUR_SALT_KEY';        // Get from PhonePe UAT Dashboard
 const SALT_INDEX = 'YOUR_SALT_INDEX';    // Usually '1' in test mode
-const CALLBACK_URL = 'https://yourbackend.com/api/payment/callback';
+const CALLBACK_URL = `http://localhost:3001/api/v1 status`;
 
 export const paymentController = async (req:Request,res:Response) => {
     const { amount, userId, courseId } = req.body;
@@ -48,3 +48,36 @@ export const paymentController = async (req:Request,res:Response) => {
     }
 }
 
+
+export const paymentCallBackController = async (req: Request, res: Response) => {
+    const { transactionId, code, message } = req.body;
+
+    if (code === 'PAYMENT_SUCCESS') {
+        console.log(`Payment Success for TXN: ${transactionId}`);
+        // Grant course access to user in database
+    } else {
+        console.log(`Payment Failed: ${message}`);
+    }
+
+    res.status(200).send('OK');
+}
+
+export const paymentStatusController = async (req: Request, res: Response) => {
+    const { transactionId } = req.params;
+
+    const checksum = crypto
+        .createHash('sha256')
+        .update(`/pg/v1/status/${MERCHANT_ID}/${transactionId}` + SALT_KEY)
+        .digest('hex') + `###${SALT_INDEX}`;
+
+    try {
+        const response = await axios.get(
+            `${PHONEPE_BASE_URL}/pg/v1/status/${MERCHANT_ID}/${transactionId}`,
+            { headers: { 'X-VERIFY': checksum, 'X-MERCHANT-ID': MERCHANT_ID } }
+        );
+
+         res.json(response.data);
+    } catch (error:any) {
+        res.status(500).json({ error: error.message });
+    }
+}
