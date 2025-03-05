@@ -114,7 +114,7 @@ function Checkout() {
                          {/* @ts-ignore */}
                         <Link to="/">{product.title}</Link>
                       </h3>
-                      <p className="sm:ml-4">${product.price}</p>
+                      <p className="sm:ml-4">₹{product.price}</p>
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
                       <strong>Category:</strong> {product.title}
@@ -155,7 +155,7 @@ function Checkout() {
         <div className="border-t border-gray-200 pt-6">
           <div className="flex justify-between text-base font-medium text-gray-900">
             <p>Subtotal</p>
-            <p>${Subtotal.toFixed(2)}</p>
+            <p>₹{Subtotal.toFixed(2)}</p>
           </div>
           <p className="mt-1 text-sm text-gray-500">
             Shipping and taxes calculated at checkout.
