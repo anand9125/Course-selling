@@ -9,6 +9,9 @@ import PopupCard from "./componets/PopupCard";
 import FancyLoader from "./componets/Skeleton/loderSkelton";
 import Contact from "./page/Legal/Contact";
 import AboutUs from "./page/Legal/AboutUs";
+import Payment from "./page/Payment/Payment";
+import PaymentSuccess from "./page/Payment/PaymentSuccess";
+import PaymentFailure from "./page/Payment/PayemntFailure";
 
 
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
@@ -68,6 +71,9 @@ function App() {
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/about" element={<AboutUs/>} />
+            <Route path="/pay" element={<Payment/>} />
+            <Route path="/payment-failure" element={<PaymentFailure/>} />
+            <Route path="/payment-success" element={<PaymentSuccess/>} />
          
 
           

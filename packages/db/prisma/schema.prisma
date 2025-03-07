@@ -68,6 +68,7 @@ model Course {
   price       Float
   mentorId    String
   image       String
+  CourseLink  String ?
   categoryId  String
   actualPrice Float
   index       Int
@@ -75,21 +76,24 @@ model Course {
   mentor      Mentor     @relation(fields: [mentorId], references: [id])
   purchases   Purchase[]
   reviews     Review[]
-  courseLink  CourseLink?
+  // courseLink  CourseLink?
 }
 
-model CourseLink {
-  id        String  @id @default(cuid())
-  courseId  String  @unique
-  link      String
-  course    Course  @relation(fields: [courseId], references: [id])
-}
+// model CourseLink {
+//   id        String  @id @default(cuid())
+//   courseId  String  @unique
+//   link      String
+//   course    Course  @relation(fields: [courseId], references: [id])
+// }
 
 
 model Purchase {
   id          String   @id @default(cuid())
   userId      String
   courseId    String
+  amount      Float
+  transactionId String
+  status        Status  
   purchasedAt DateTime @default(now())
   course      Course   @relation(fields: [courseId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
@@ -116,3 +120,11 @@ enum Role {
   STUDENT
   ADMIN
 }
+enum Status{
+  PENDING
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+ 
