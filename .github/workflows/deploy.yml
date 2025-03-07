@@ -41,7 +41,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: 22
-        timeout: 60  # Increase timeout to 60 seconds
+        timeout: 60s  # Fix: Add "s" to specify seconds
         script: |
           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
           sudo docker pull anand687/course-selling:latest
@@ -51,6 +51,6 @@ jobs:
             -p 3005:8080 \
             -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
             -e NODE_ENV="production" \
-            -e MERCHANT_KEY="${{ secrets.MERCHANT_KEY }}" \
-            -e MERCHANT_ID="${{ secrets.MERCHANT_ID  }}" \
+            -e MERCHANT_KEY="${{ secrets.MERCHANT_KEY }}" \  
+            -e MERCHANT_ID="${{ secrets.MERCHANT_ID }}" \  
             anand687/course-selling

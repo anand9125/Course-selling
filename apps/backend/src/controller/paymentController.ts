@@ -7,8 +7,8 @@ const prisma = new PrismaClient();
 const { v4: uuidv4 } = require('uuid');
 
 
-const MERCHANT_KEY=  process.env.MERCHANT_KEY;
-const MERCHANT_ID=  process.env.MERCHANT_ID;
+const MERCHANT_KEY =  process.env.MERCHANT_KEY;
+const MERCHANT_ID =  process.env.MERCHANT_ID;
 
 const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay"
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status"
