@@ -44,13 +44,17 @@ jobs:
         timeout: 60s  
         script: |
           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-          sudo docker pull anand687/course-selling:latest
-          sudo docker stop web-app || true
-          sudo docker rm web-app || true
-          sudo docker run -d --name web-app \
+          docker pull anand687/course-selling:latest
+          
+         
+          docker stop web-app || true
+          docker rm web-app || true
+          
+          docker run -d --name web-app \
             -p 3005:8080 \
             -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
             -e NODE_ENV="production" \
-            -e MERCHANT_KEY="${{ secrets.MERCHANT_KEY }}" \  
-            -e MERCHANT_ID="${{ secrets.MERCHANT_ID }}" \  
-            anand7/course-selling
+            -e MERCHANT_KEY="${{ secrets.MERCHANT_KEY }}" \
+            -e MERCHANT_ID="${{ secrets.MERCHANT_ID }}" \
+            anand687/course-selling:latest
+
