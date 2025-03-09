@@ -7,7 +7,7 @@ import { courseRouter } from './routes/user/course';
 import { mentorRouter } from './routes/user/mentor';
 import { categoryRouter } from './routes/user/category';
 import { adminCategoryRouter } from './routes/admin/category';
-import { paymentRouter } from './routes/user/payment';
+ import { paymentRouter } from './routes/user/payment';
 
 
 const app = express();
