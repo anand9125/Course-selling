@@ -178,7 +178,7 @@ export const userSignIn= async(req:Request,res:Response)=>{
         }
         catch(e){
             res.status(500).json({
-                message:"Internal Server Error"
+            message:"Internal Server Error"
             })
         }
 }

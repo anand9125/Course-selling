@@ -8,7 +8,7 @@ on:
       - 'apps/backend/**'
       - 'packages/db/**'
       - 'docker/Dockerfile.backend'
-      - '.github/workflows/backend-deploy.yml'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   build-and-push:
