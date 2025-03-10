@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3004";
 
 
 export const adminEndPoint = `${BASE_URL}/api/v1/admin`;

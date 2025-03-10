@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  paymentController,paymentStatusController} from "../../controller/paymentController"
+import {  paymentController} from "../../controller/phonepe"
 
 
 const router = Router();
@@ -7,8 +7,7 @@ const router = Router();
 router.post("/pay", paymentController)
 
 
-
- router.post("/status" ,paymentStatusController)
+  router.post("/status" )
 
 
 export const paymentRouter = router

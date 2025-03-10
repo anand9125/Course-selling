@@ -54,7 +54,7 @@ jobs:
             -p 3005:8080 \
             -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
             -e NODE_ENV="production" \
-            -e MERCHANT_KEY="${{ secrets.MERCHANT_KEY }}" \
-            -e MERCHANT_ID="${{ secrets.MERCHANT_ID }}" \
+            -e CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" \
+            -e CLIENT_ID="${{ secrets.CLIENT_ID }}" \
             anand687/course-selling:latest
 

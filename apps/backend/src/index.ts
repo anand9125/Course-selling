@@ -51,4 +51,4 @@ app.use("/api/v1/admin/category",adminCategoryRouter)
 
 
 
-app.listen(8080, () => console.log('Server started on port 8080'));
+app.listen(3004, () => console.log('Server started on port 8080'));

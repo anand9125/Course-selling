@@ -25,7 +25,8 @@ function Payment() {
               headers:{
                 "Content-Type":"application/json"
               }})
-              window.location.href = response.data.url;
+              console.log(response)
+              window.location.href = response.data.paymentUrl;
         };
   return (
     <div>
