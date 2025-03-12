@@ -4,15 +4,16 @@ import Confetti from "react-confetti";
 
 export default function PaymentSuccess() {
   const [showConfetti, setShowConfetti] = useState(true);
-
+    
   useEffect(() => {
     setTimeout(() => setShowConfetti(false), 5000); // Stop confetti after 5s
+  
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-6">
       {showConfetti && <Confetti />}
-
+       
       <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md text-center">
         <CheckCircle className="text-green-500 w-16 h-16 mx-auto" />
         <h2 className="text-2xl font-bold mt-4 text-gray-800">Payment Successful!</h2>

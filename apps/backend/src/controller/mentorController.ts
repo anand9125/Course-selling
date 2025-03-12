@@ -1,11 +1,10 @@
 import { Request,Response } from "express"
 import { createMentorSchema, updateMentorSchema } from "../types"
-import {PrismaClient} from "@prisma/client";
+import {prismaClient} from "@repo/db/src";
 import { parse } from "dotenv";
 
 
-const client = new PrismaClient()
-
+const client =  prismaClient
 export const createMentor = async(req:Request, res:Response)=>{
    const parseData = createMentorSchema.safeParse(req.body)
 

@@ -14,8 +14,8 @@ function BuildTrust() {
 
              </div>
              <div className="w-full">
-                     {/* 3 */}
-                  <div className="max-w-7xl mx-auto p-8 space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-8"> 
+                    
+                  <div className="max-w-7xl mx-auto p-8 space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-8"> 
                     <div className="flex flex-col items-center text-center bg-white p-6 rounded-lg shadow-md">
                       <div>
                         <img
@@ -32,7 +32,7 @@ function BuildTrust() {
                         </div>
                     </div>
 
-                    {/* <div className="flex flex-col items-center text-center bg-white p-6 rounded-lg shadow-md">
+                    <div className="flex flex-col items-center text-center bg-white p-6 rounded-lg shadow-md">
                       <div>
                         <img
                           src="https://courseheistshop.click/wp-content/uploads/2024/09/delivery-150x150-1.webp"
@@ -46,7 +46,7 @@ function BuildTrust() {
                         We know your time is valuable, that's why we deliver courses quickly and{" "}
                         <span className="font-medium">give you instant access</span>.
                       </div>
-                    </div> */}
+                    </div>
 
                     <div className="flex flex-col items-center text-center bg-white p-6 rounded-lg shadow-md">
                       <div>

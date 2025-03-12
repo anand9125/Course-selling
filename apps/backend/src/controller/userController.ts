@@ -1,11 +1,11 @@
-import {PrismaClient} from "@prisma/client";
+import {prismaClient} from "@repo/db/src";
 import{ Request, Response } from "express" 
 import { SigninSchema, SignupSchema } from "../types";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { JWT_PASSWORD } from "../types/config"
 import { adminPassword } from "../types/config";
-const client = new PrismaClient()
+const client =  prismaClient
 
 export const userSignUp = async (req: Request, res: Response) => {
     const parseData = SignupSchema.safeParse(req.body);

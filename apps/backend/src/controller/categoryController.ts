@@ -1,8 +1,8 @@
-import {PrismaClient} from "@prisma/client";
+import {prismaClient} from "@repo/db/src";
 import { Request,Response } from "express";
 import { createCategorySchema, updateCategoryIndexSchema, updateCategorySchema } from "../types";
 
-const client = new PrismaClient()
+const client =  prismaClient
 export const createCategory = async (req: Request, res: Response) => {
     const parseData = createCategorySchema.safeParse(req.body);
 

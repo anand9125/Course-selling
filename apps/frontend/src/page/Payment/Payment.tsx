@@ -4,11 +4,10 @@ import axios from 'axios';
 import { userEndPoint } from '../../config';
 function Payment() {
     const[formData,setFormData] = useState({
-      name:"",
+      userId:"",
         amount:0,
-        mobileNumber:""
+        courseId:""
     })
-    
      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
        
             const { name, value } = e.target;
@@ -25,8 +24,10 @@ function Payment() {
               headers:{
                 "Content-Type":"application/json"
               }})
-              console.log(response)
-              window.location.href = response.data.paymentUrl;
+              if(response){
+                window.location.href = response.data.paymentUrl;
+              }
+              
         };
   return (
     <div>
@@ -34,8 +35,8 @@ function Payment() {
               <div className="max-w-4xl w-full bg-white p-8 rounded-xl shadow-lg">
                 <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">User Signin</h2>
                   <form onSubmit={handleSubmit} className="space-y-4">  
-                      <Input placeholder="Enter your courseId" label="name" name="name" value={formData.name} onChange={handleChange} type="text" />
-                      <Input placeholder="Enter your userId" label="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} type="text" />
+                      <Input placeholder="Enter your userId" label="userId" name="userId" value={formData.userId} onChange={handleChange} type="text" />
+                      <Input placeholder="Enter your courseId" label="courseId" name="courseId" value={formData.courseId} onChange={handleChange} type="text" />
                       <Input placeholder="Enter your amount" label="amount" name="amount" value={formData.amount} onChange={handleChange} type="number" />
                       
                       <div className='flex justify-center items-center'>
