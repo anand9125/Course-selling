@@ -25,22 +25,23 @@ export const SigninSchema = z.object({
 
 
 export const CreatecoursesSchema = z.object({
-    image:z.string(),
+    image: z.string(),
     courseId: z.string().min(1, "Course ID is required"),
-    title:z.string(),
-    description:z.string(),
+    title: z.string(),
+    description: z.string(),
     price: z.number().positive("Price must be greater than 0"), 
     actualPrice: z.number().positive("Price must be greater than 0"), 
-    index: z.number().optional(),
+    index: z.number().optional().nullable(),
     categoryId: z.string(),
-    categoryName:z.string().optional(),
-    categoryImg: z.string().optional(),
-    categoryIndex:z.number().optional(),
+    categoryName: z.string().optional().default(""),
+    categoryImg: z.string().optional().default(""),
+    categoryIndex: z.number().optional().default(0).nullable(),
     mentorId: z.string(),
-    mentorName: z.string().optional(),
-    mentorImage: z.string().optional(), 
-    mentorIndex: z.number().optional(),
- });
+    mentorName: z.string().optional().default(""),
+    mentorImage: z.string().optional().default(""), 
+    mentorIndex: z.number().optional().default(0).nullable(),
+});
+
     
 
 export const updateCourseSchema = z.object({
@@ -146,9 +147,5 @@ export const phonePeWebhookSchema = z.object({
     })
 });
 
-export const purchasesSchema = z.object({
-    userId:z.string(),
-    courseId:z.string(),
-    amount:z.number(),
-})
+
 

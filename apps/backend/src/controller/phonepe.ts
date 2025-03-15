@@ -2,8 +2,9 @@ import {prismaClient} from "@repo/db/src";
 import axios from 'axios';
 import { Request, Response } from 'express';
 import dotenv from "dotenv";
-import { phonePeWebhookSchema, purchasesSchema } from '../types';
+import { phonePeWebhookSchema } from '../types';
 import { paymentQueue } from '../queue';
+import { connect } from "http2";
 
 
 
@@ -18,7 +19,6 @@ const BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
 const client =  prismaClient
 
 async function getAccessToken(): Promise<string> {
-  const currentTime = Date.now();
   const data = new URLSearchParams({
     client_id: clientId!,
     client_version: '1',
@@ -63,7 +63,7 @@ async function initiatePayment(amount: number): Promise<{ paymentUrl: string; me
         Authorization: `O-Bearer ${accessToken}`,
       },
     });
-   console.log(response.data,merchantOrderId)
+
     return { paymentUrl: response.data.redirectUrl,merchantOrderId  };
   } catch (error: any) {
     console.error('Error initiating payment:', error.response?.data || error.message);
@@ -71,22 +71,29 @@ async function initiatePayment(amount: number): Promise<{ paymentUrl: string; me
   }
 }
 
-export const paymentController = async (req: Request, res: Response) => {
+export const paymentinitationController = async (req: Request, res: Response) => {
   try {
-    const parseData = purchasesSchema.safeParse(req.body)
-    if(!parseData.success){
-      res.status(400).json({message:"Invalid data"})
-      return
+    const{amount,userId,courseIds}=req.body
+    if (!Array.isArray(courseIds) || courseIds.length === 0) {
+     res.status(400).json({ message: "At least one course must be selected." });
+     return
     }
-    const { paymentUrl, merchantOrderId } = await initiatePayment(parseData.data?.amount);
-    console.log(paymentUrl,merchantOrderId)
+    const { paymentUrl, merchantOrderId } = await initiatePayment(amount)
     await client.purchase.create({
        data:{
-        userId:parseData.data.userId,
-        courseId:parseData.data.courseId,
-        amount:parseData.data.amount,
-        merchantOrderId, 
-        status:"PENDING"
+        userId,
+        amount,
+        merchantOrderId,
+        status:"PENDING",
+        courses:{   //Creates multiple entries in PurchaseCourse, each linking the purchase to a course
+          create:courseIds.map((courseId: string) =>({
+            course:{
+              connect:{
+                id:courseId  //Each course is connected to the purchase 
+              }
+            }
+          }))
+        }
        }
     })
     
@@ -99,10 +106,11 @@ export const paymentController = async (req: Request, res: Response) => {
 
 export const paymentStatusController = async (req: Request, res: Response) => {
   const merchantOrderId = req.query.merchantOrderId as string | undefined;
+  console.log(merchantOrderId,"i am merchantOrderId")
   try {  
     if (!merchantOrderId || typeof merchantOrderId !== 'string') {
-       res.status(400).json({ error: 'Invalid or missing order ID' });
-       return
+        res.status(400).json({ error: 'Invalid or missing order ID' });
+        return
     }
     const accessToken = await getAccessToken();
     const response = await axios.get(`${BASE_URL}/checkout/v2/order/${merchantOrderId}/status`, {
@@ -142,7 +150,7 @@ export const paymentStatusController = async (req: Request, res: Response) => {
 };
 
 
-export const verifyPayment = async(req:Request,res:Response)=>{
+export const webhookHandler = async(req:Request,res:Response)=>{
   const parseData = phonePeWebhookSchema.safeParse(req.body)
   if(!parseData.success){
     res.status(400).json({
@@ -151,22 +159,33 @@ export const verifyPayment = async(req:Request,res:Response)=>{
     return;
   }
   try{
-    await paymentQueue.add("processPayment", parseData.data)
-    res.status(200).json({
-      message:"got the messages"
+   if(parseData.data.event=="checkout.order.completed" && parseData.data.payload.state=="COMPLETED"){
+    const merchantOrderId =parseData.data.payload.merchantOrderId;
+    
+      await paymentQueue.add("processPayment", merchantOrderId)
+        res.status(200).json({
+          message:"merchant added successfull"
+        })
+    }
+    if(parseData.data.event=="checkout.order.failed" && parseData.data.payload.state =="FAILED"){
+      const merchantOrderId =parseData.data.payload.merchantOrderId;
+      await client.purchase.update({
+        where: { merchantOrderId },
+        data:{
+          status:"FAILED"
+        }
+      })
+    }
+  }catch(e){
+    res.status(500).json({
+      message:"Internal server error"
     })
   }
-   catch(e){
-    res.json({
-      message:"error while hiting webhook"
-    })
-   }
-  // Add job to queue job name procesPyament
-   
-
-
-    //  res.status(200).json({
-    //   message:"got the messages"
-    // })
-   
 }
+
+
+// {
+//   "userId": "user123",
+//   "courseIds": ["course1", "course2", "course3"],
+//   "amount": 999
+// }

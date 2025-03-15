@@ -29,7 +29,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@repo/db":"*",
+    "@repo/db": "*",
     "@types/bcrypt": "^5.0.2",
     "@types/ws": "^8.5.13",
     "axios": "^1.8.1",
@@ -49,6 +49,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "redis": "^4.7.0",
+    "resend": "^4.1.2",
     "socket.io": "^4.8.1",
     "ws": "^8.18.0"
   },

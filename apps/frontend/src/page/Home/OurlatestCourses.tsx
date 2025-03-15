@@ -17,12 +17,8 @@ function OurlatestCourses() {
                 </div>
                  <div>
                  <LatestCoursesCard  courses={getSelectedMentorCourse}></LatestCoursesCard>
-                 {/* <CoursesCardComponent /> */}
                 </div>
                <div className="text-center p-5">
-                 {/* <button className="bg-primary text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-xl transition-all duration-300 ease-in-out">
-                    Browse Courses
-                 </button> */}
                </div>
             </div>
             <div className="w-full h-px bg-slate-200"></div>

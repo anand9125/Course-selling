@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Input } from '../../componets/InputBox'
 import { useUserStore } from '../../store/useUserStore';
-import FancyLoader from "../../componets/Skeleton/loderSkelton";
+import Spinner from '../../componets/Skeleton/ButtonSkeleton';
+import { Link } from 'react-router-dom';
 function Login() {
     const[formData,setFormData] = useState({
         email: '',
@@ -20,13 +21,6 @@ function Login() {
         e.preventDefault();
         await userSignin(formData); 
     };
-
-
-    if(isLoading) {
-      return <div>
-        <FancyLoader></FancyLoader>
-      </div>
-    }
     
   return (
     <div className="flex justify-center items-center pt-7 bg-gray-50 px-4">
@@ -41,9 +35,14 @@ function Login() {
                     type="submit"
                     className="bg-indigo-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
                     >
-                    Submit Details
+                    {isLoading ? <Spinner size={20} className="mx-auto" /> : "Submit details"}
                 </button>
+                
             </div>
+            <div className='flex justify-center items-center '>or
+            <Link to="/user-Profile" className="text-indigo-600 hover:underline pl-1">Signup</Link>
+            </div>
+             
           </form>
       </div>
     </div>

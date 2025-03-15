@@ -1,14 +1,20 @@
 import { useEffect } from "react";
 import CategoryCardComponent from "../../componets/CategoryCard"
 import { useCategoryStore } from "../../store/useCategoryStore";
+import FancyLoader from "../../componets/Skeleton/loderSkelton";
+
 
 function Topcategories() {
-  const { categories, fetchCategories} = useCategoryStore();
+  const { categories, fetchCategories,loading} = useCategoryStore();
   
   useEffect(() => {
     fetchCategories();
   }, []);
-  console.log(categories)
+  if(loading){
+    return <div>
+      <FancyLoader></FancyLoader>
+    </div>
+  }
   
   return (
     <div>

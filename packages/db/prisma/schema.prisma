@@ -19,13 +19,13 @@ model User {
   year             Int?
   walletBalance    Float          @default(0.0)
   referralCode     String         @unique @default(uuid())
-  referredById     String?
+  referredById     String?        //Each user can have one referrer (referredById)
   profileCompleted Boolean        @default(false)
   role             Role           @default(STUDENT)
   purchases        Purchase[]
   reviews          Review[]
-  referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id])
-  referrals        User[]         @relation("UserReferrals")
+  referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id])  //self-referential referral system,(each user can refer other users and also be referred by another user.)
+  referrals        User[]         @relation("UserReferrals")   //Each user can refer multiple users (referrals).
   userCategories   UserCategory[]
 }
 
@@ -68,30 +68,35 @@ model Course {
   price       Float
   mentorId    String
   image       String
-  CourseLink  String ?
+  CourseLink  String?
   categoryId  String
   actualPrice Float
   index       Int
   category    Category   @relation(fields: [categoryId], references: [id])
   mentor      Mentor     @relation(fields: [mentorId], references: [id])
-  purchases   Purchase[]
+  purchases   PurchaseCourse[]  // Many-to-many relation with purchases
   reviews     Review[]
 }
-
-
-
 
 model Purchase {
   id               String   @id @default(cuid())
   userId           String
-  courseId         String
   amount           Float
-merchantOrderId    String   @unique
+  merchantOrderId  String   @unique
   status           Status  
   purchasedAt      DateTime @default(now())
-  course           Course   @relation(fields: [courseId], references: [id])
   user             User     @relation(fields: [userId], references: [id])
+  courses          PurchaseCourse[] // Many-to-many relation with courses
 }
+
+model PurchaseCourse {  // Junction table to link purchases and courses to make many to many realtion
+  purchaseId String
+  courseId   String
+  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@id([purchaseId, courseId]) // Composite primary key   ensures each course is only linked once per purchase.
+}
+
 
 model Review {
   id        String   @id @default(cuid())
@@ -122,3 +127,4 @@ enum Status{
 }
 
  
+//UserReferrals relation is a self-referential relation that links users together.

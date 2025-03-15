@@ -20,6 +20,8 @@ interface UserStore {
   isLoading: boolean;
   userSignup: (formData: any) => Promise<"success" | "failure">;
   userSignin: (formData: any) => Promise<"success" | "failure">;
+  userWalletBalance:(userId:string)=>Promise<void>
+  walletBalance:null|number
 }
 interface FormData{
     name: string;
@@ -33,15 +35,18 @@ interface FormData{
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
   isLoading: false,
+  walletBalance:null,
+  
 
   userSignup: async (formData: FormData) => {
     set({ isLoading: true });
 
     try {
       const response = await axios.post(`${userEndPoint}/user/signup`, formData);
+      if(response.status==202)toast.success("Admin login successfull")
+        console.log(response.status)
       const userData = response.data.user;
       const token = response.data.token;
-      console.log(response)
       if (userData) {
         localStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("token",JSON.stringify(token)); 
@@ -103,5 +108,14 @@ export const useUserStore = create<UserStore>((set) => ({
       }
       return "failure";
     }
-  }}
+  },
+userWalletBalance:async(userId:string)=>{
+    try{
+      const response = await axios.get(`${userEndPoint}/user/wallet/${userId}`);
+      set({walletBalance:response.data.walletBalance}) 
+     }
+    catch(error:any){
+      console.error("Failed to get wallet balance:", error)
+    }
+}}
 ));

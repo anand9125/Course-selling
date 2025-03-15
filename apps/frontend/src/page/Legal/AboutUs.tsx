@@ -21,7 +21,7 @@ const AboutUs = () => {
           <div className="mt-6">
             <button
               onClick={() => window.location.href = "/contact"}
-              className="bg-primary text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
             >
               Contact Us
             </button>

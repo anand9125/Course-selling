@@ -1,10 +1,10 @@
 import { Router } from "express";
-import {  paymentController,paymentStatusController} from "../../controller/phonepe"
+import { paymentinitationController,paymentStatusController} from "../../controller/phonepe"
 
 
 const router = Router();
 
-router.post("/pay", paymentController)
+router.post("/pay", paymentinitationController)
 
 
 router.get("/status",paymentStatusController )

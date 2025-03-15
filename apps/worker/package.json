@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@repo/db": "*",
     "@types/express": "github:types/express",
     "bullmq": "^5.41.9",
     "express": "^4.21.2"

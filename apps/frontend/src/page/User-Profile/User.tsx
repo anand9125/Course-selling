@@ -1,10 +1,11 @@
 import { Input} from "../../componets/InputBox";
 import React, { useState, useEffect } from 'react';
 import { useUserStore } from "../../store/useUserStore";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LuLogOut } from "react-icons/lu";
-import FancyLoader from "../../componets/Skeleton/loderSkelton";
+
 import toast from "react-hot-toast";
+import Spinner from "../../componets/Skeleton/ButtonSkeleton";
 // import Banner from "../../componets/Profile-popup";
 function User() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ function User() {
     year: 0,
     category: '',
   });
-  const navigate = useNavigate()
+ 
   const isUserAviable = localStorage.getItem("user")
   const {userSignup ,isLoading} = useUserStore()
    
@@ -39,7 +40,8 @@ function User() {
   const handleLogout = () => {
     localStorage.clear();
     toast.success("Logged out successfully")
-    navigate("/")
+    window.location.href = "/";
+
   }
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,11 +50,7 @@ function User() {
   };
 
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
-  if(isLoading) {
-    return <div>
-      <FancyLoader></FancyLoader>
-    </div>
-  }
+  
   
   return (
     
@@ -101,7 +99,7 @@ function User() {
                     type="submit"
                     className="bg-indigo-600 text-white px-6 py-3 rounded-lg transform hover:scale-105 hover:opacity-90 hover:shadow-lg transition-all duration-300 ease-in-out"
                     >
-                    Submit Details
+                   {isLoading ? <Spinner size={20} className="mx-auto" /> : "Submit details"}
                   </button>
                   <div className="text-center mt-2">
                     or <Link to="/login" className="text-indigo-600 hover:underline">Login</Link>

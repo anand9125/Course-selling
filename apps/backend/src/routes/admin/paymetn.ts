@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { phonePeMiddleware } from "../../Middlewares/phonePeMIddleware";
-import { verifyPayment } from "../../controller/phonepe";
+import {  webhookHandler } from "../../controller/phonepe";
 
 const router = Router();
 
-router.post("/verify",phonePeMiddleware,verifyPayment)
+router.post("/webhook",phonePeMiddleware,webhookHandler)
 
 
 

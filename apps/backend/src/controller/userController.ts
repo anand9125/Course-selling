@@ -18,38 +18,16 @@ export const userSignUp = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(parseData.data.password, 10);
 
-    try {
-        
+    try {       
         const existingUser = await client.user.findFirst({
             where: { email: parseData.data.email }
         });
-
         if (existingUser) {
             res.status(403).json({
               message: "User already exists"
              });
          return
-        }
-
-        
-        let referredById = null;
-        if (parseData.data.referralCode) {
-            const referrer = await client.user.findFirst({
-                where: { referralCode: parseData.data.referralCode },
-                select: { id: true }
-            });
-
-            if (referrer) {
-                referredById = referrer.id; 
-            } else {
-                res.status(400).json({
-                   message: "Invalid referral code"
-                });
-                return
-            }
-        }
-
-      
+        }    
         function generateReferralCode(length: number = 5): string {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let referralCode = '';
@@ -58,10 +36,7 @@ export const userSignUp = async (req: Request, res: Response) => {
             }
             return referralCode;
         }
-
-        const referralCode = generateReferralCode(5);
-
-        
+        const referralCode = generateReferralCode(5);     
         const user = await client.user.create({
             data: {
                 name: parseData.data.name,
@@ -74,11 +49,8 @@ export const userSignUp = async (req: Request, res: Response) => {
                 referralCode: referralCode,
                 profileCompleted: true
             }
-        });
-
-       
+        });      
         const token = jwt.sign({ userId: user.id }, JWT_PASSWORD);
-
         res.status(200).json({
             user: {
                 id: user.id,
@@ -95,7 +67,6 @@ export const userSignUp = async (req: Request, res: Response) => {
             },
             token: { token: token }
         });
-
     } catch (error: any) {
          res.status(500).json({ message: "Something went wrong", error });
     }
@@ -133,7 +104,7 @@ export const userSignIn= async(req:Request,res:Response)=>{
                  }
              })
              const token = jwt.sign({userId:user.id},adminPassword)
-              res.json({
+              res.status(202).json({
                  message:"Admin login successful",
                  user:{
                     id:user.id,
@@ -181,4 +152,66 @@ export const userSignIn= async(req:Request,res:Response)=>{
             message:"Internal Server Error"
             })
         }
+}
+
+export const walletBalance = async (req:Request,res:Response)=>{
+
+    const {userId} = req.params;
+    try{
+        const user = await prismaClient.user.findUnique({
+            where:{
+                id:userId
+            }
+        })
+        if(!user){
+            res.status(404).json({
+                message:"User not found"
+            })
+            return;
+        }
+        res.json({
+            walletBalance:user.walletBalance
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+}
+
+export const verifyRefrellCode = async (req:Request,res:Response)=>{
+    const {referralCode,userId} = req.body;
+    try{
+        const referrer = await prismaClient.user.findUnique({
+            where:{
+                referralCode:referralCode
+            }
+        })
+        if(!referrer){
+            res.status(400).json({
+                message:"Referral code is not valid"
+            })
+            return;
+        }
+        else{
+            await prismaClient.user.update({
+                where:{
+                    id:userId
+                },
+                data:{
+                    referredById:referrer.id,
+                }
+            })
+            res.status(200).json({
+               message:"Referral code is valid"
+           })
+        }         
+    }
+    catch(e){
+        res.status(400).json({
+            message:"Referral code is not valid"
+        })
+        
+    }
 }

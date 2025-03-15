@@ -20,7 +20,7 @@ const AddCourse = () => {
         data.categoryIndex = Number(data.categoryIndex)
         data.mentorIndex = Number(data.mentorIndex)
  
- 
+        console.log(data)
         try{
           const response= await axios.post(`${adminEndPoint}/courses/create`,data,{
             headers:{
@@ -28,6 +28,7 @@ const AddCourse = () => {
               "Content-Type":"application/json"
             }
           })
+          console.log(response.data)
           if(response.status==201){
             setIsLoading("false")
             toast.success("Course created successfully")

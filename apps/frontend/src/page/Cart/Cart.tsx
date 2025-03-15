@@ -1,5 +1,6 @@
+import CartItem from "./CartItem"
 
-import Checkout from './Checkout'
+
 
 function Cart() {
     
@@ -8,7 +9,7 @@ function Cart() {
         <div className='max-w-7xl mx-auto sm:pl-1 md:pl-5'>
             <div className='px-4'>
            
-            <Checkout></Checkout>
+            <CartItem></CartItem>
             </div>
         </div>
     </div>

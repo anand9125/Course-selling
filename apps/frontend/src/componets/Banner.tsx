@@ -3,9 +3,11 @@ import { MdCurrencyRupee } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast"; 
+import { useUserStore } from "../store/useUserStore";
 
 const Banner = () => {
   const navigate = useNavigate();
+  const{walletBalance}=useUserStore()
  
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   let amiAdmin = "STUDENT"
@@ -60,7 +62,7 @@ const Banner = () => {
               <div className="flex items-center gap-1">
                 {/* @ts-ignore */}
                 <MdCurrencyRupee className="text-lg" />
-                <span>{userData["walletBalance"]}.00</span>
+                <span>{walletBalance}.00</span>
               </div>
               {/* @ts-ignore */}
               <div className="pl-1">

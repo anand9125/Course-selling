@@ -3,15 +3,13 @@ import { CreatecoursesSchema,updateCourseIndexSchema,updateCourseSchema } from "
 import { Request,Response } from "express";
 
 const client =  prismaClient
-export const createCourses = async(req:Request,res:Response)=>{
+export const createCourses = async(req:Request,res:Response)=>{  
     const parseData = CreatecoursesSchema.safeParse(req.body);
-
-    if(!parseData.success){
-        res.status(400).json({
-            message: "Invalid data"
-        })
-        return;
-    }
+    if (!parseData.success) {
+      console.error("Validation Error:", parseData.error);
+     res.status(400).json({ message: "Invalid data", errors: parseData.error });
+     return
+    }   
     try{
     const course = await client.$transaction(async(tx:any)=>{
     let category = await client.category.findUnique({
@@ -49,7 +47,6 @@ export const createCourses = async(req:Request,res:Response)=>{
         })
         
     }
-
     let mentor = await client.mentor.findUnique({
         where:{
             mentorId:parseData.data.mentorId

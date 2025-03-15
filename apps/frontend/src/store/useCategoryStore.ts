@@ -46,7 +46,6 @@ interface CategoryStore {
         set({ loading: false });
       }
     },
-    
   
     updateCategoryIndex: async (categoryId, index) => {
       set({ loading: true });
@@ -89,5 +88,6 @@ interface CategoryStore {
       console.error(" Error while fetching category")
       set({ loading: false });
     }
-  }}
+  },
+}
 ));

@@ -14,6 +14,7 @@ import PaymentSuccess from "./page/Payment/PaymentSuccess";
 import PaymentFailure from "./page/Payment/PayemntFailure";
 
 
+
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
 const PrivacyPolicy = React.lazy(() => import('./page/Legal/Privacy-Poliicy'));
 const RefundCancellationPolicy = React.lazy(() => import("./page/Legal/Refund"));
@@ -29,6 +30,7 @@ const User = React.lazy(() => import("./page/User-Profile/User"));
 const Wallet = React.lazy(() => import("./page/Wallet/wallet"));
 const Login = React.lazy(() => import("./page/User-Profile/login"));
 const CourseMainPage = React.lazy(() => import("./page/Courses/CourseMainPage"));
+
 
 // Lazy Load Admin Pages
 const Dashboard = React.lazy(() => import("./page/ADMIN/Dashboard/Dashboard"));
@@ -71,9 +73,10 @@ function App() {
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/about" element={<AboutUs/>} />
-            <Route path="/pay" element={<Payment/>} />
+            <Route path="/payment" element={<Payment/>} />
             <Route path="/payment-failure" element={<PaymentFailure/>} />
             <Route path="/payment-success" element={<PaymentSuccess/>} />
+      
          
 
           
