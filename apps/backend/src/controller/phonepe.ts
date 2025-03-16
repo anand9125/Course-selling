@@ -13,7 +13,7 @@ const clientSecret = process.env.CLIENT_SECRET;
 const redirectUrl = "https://api.coursehubb.store/api/v1/payment/status";
 const successUrl = "https://coursehubb.store/payment-success";
 const failureUrl =  "https://coursehubb.store/payment-failure";
-const BASE_URL = "https://api.phonepe.com/apis";;
+const BASE_URL = "https://api.phonepe.com/apis";
 const client =  prismaClient
 let walletbalance:number;
 async function getAccessToken(): Promise<string> {
