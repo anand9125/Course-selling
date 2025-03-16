@@ -13,7 +13,7 @@ const clientSecret = process.env.CLIENT_SECRET;
 const redirectUrl = "https://api.coursehubb.store/api/v1/payment/status";
 const successUrl = "https://coursehubb.store/payment-success";
 const failureUrl =  "https://coursehubb.store/payment-failure";
-const BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
+const BASE_URL = "https://api.phonepe.com/apis";;
 const client =  prismaClient
 let walletbalance:number;
 async function getAccessToken(): Promise<string> {
@@ -25,7 +25,7 @@ async function getAccessToken(): Promise<string> {
   });
   try {
     const response = await axios.post(
-      `${BASE_URL}/v1/oauth/token`,
+      `${BASE_URL}/identity-manager/v1/oauth/token`,
       data.toString(),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
@@ -55,7 +55,7 @@ async function initiatePayment(amount: number): Promise<{ paymentUrl: string; me
   };
 
   try {
-    const response = await axios.post(`${BASE_URL}/checkout/v2/pay`, data, {
+    const response = await axios.post(`${BASE_URL}/pg/checkout/v2/pay`, data, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `O-Bearer ${accessToken}`,
@@ -115,7 +115,7 @@ export const paymentStatusController = async (req: Request, res: Response) => {
         return
     }
     const accessToken = await getAccessToken();
-    const response = await axios.get(`${BASE_URL}/checkout/v2/order/${merchantOrderId}/status`, {
+    const response = await axios.get(`${BASE_URL}/pg/checkout/v2/order/${merchantOrderId}/status`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `O-Bearer ${accessToken}`,

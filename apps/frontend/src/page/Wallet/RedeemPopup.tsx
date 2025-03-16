@@ -14,6 +14,8 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
    const { walletBalance } = useUserStore();
+     const{userWalletBalance}=useUserStore()
+    const userDetails= JSON.parse(localStorage.getItem("user") || "{}");
   useEffect(() => {
     setIsOpen(true);
   }, []);
@@ -43,12 +45,12 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
           confirmButtonText: "OK"
         }).then(async() => {
           await axios.post(`${userEndPoint}/user/removeBalance/${userData?.id}`)
-              .then(() => {
-                  location.reload(); // Refresh the page after API call success
+              .then(async() => {
+                await userWalletBalance(userDetails?.id);
               })
               .catch(error => {
                   console.error("Error removing balance:", error);
-                  location.reload(); // Refresh even if there's an error
+                   
               });
       });
     })

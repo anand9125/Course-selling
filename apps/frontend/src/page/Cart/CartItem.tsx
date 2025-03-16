@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import  {  useState } from "react";
 import {  useRecoilState } from "recoil";
 import { cartState } from "../../store/cart/atom";
 import { Link } from "react-router-dom";
@@ -23,6 +23,7 @@ interface Courses {
 }
 
 function CartItem() {
+  
   const [cartItems, setCartItems] = useRecoilState<Courses[]>(cartState);
   const{walletBalance}=useUserStore()
   const [checkbox,setCheckbox]= useState(false)
@@ -31,22 +32,12 @@ function CartItem() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   const[isLoading,setIsLoading]=useState(false)
    console.log(cartItems)
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cartItems");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
-    }
-  }, []);
+  
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckbox(event.target.checked);
   }
   console.log(userData?.id)
 
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  
   const handleClearFromCart = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -59,7 +50,6 @@ function CartItem() {
     }).then((result) => {
       if (result.isConfirmed) {
         setCartItems([]);
-        localStorage.removeItem("cartItems");
         Swal.fire("Cleared!", "Your cart is now empty.", "success");
       }
     });

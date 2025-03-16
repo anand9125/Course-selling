@@ -49,7 +49,7 @@ function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   const isAdmin = userData["role"] === "ADMIN";
   const{userWalletBalance}=useUserStore()
-   const userDetails= JSON.parse(localStorage.getItem("user") || "{}");
+  const userDetails= JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(()=>{
     userWalletBalance(userDetails?.id);

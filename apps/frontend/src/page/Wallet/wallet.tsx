@@ -11,7 +11,6 @@ function Wallet() {
 
   const handleRedeem = () => {
     setPopUp(true);
-  
   };
 
   return (
