@@ -1,4 +1,4 @@
- FROM node:20-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 # Copy package files first for better caching
 COPY package.json package-lock.json turbo.json  ./
 
-# Copy only the backend directory and worker instead of the entire apps directory
+# Copy only the backend and worker directories instead of the entire apps directory
 COPY apps/backend ./apps/backend
 COPY apps/worker  ./apps/worker
 
@@ -24,7 +24,7 @@ RUN npx prisma generate
 WORKDIR /usr/src/app
 RUN npm run build
 
-# Expose the port your app runs on
+# Expose the ports your app and worker use
 EXPOSE 8080
 
 # Copy entrypoint script and give execute permissions

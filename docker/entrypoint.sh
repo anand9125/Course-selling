@@ -11,6 +11,14 @@ fi
 echo "Running database migrations..."
 cd /usr/src/app/packages/db && npx prisma migrate deploy
 
-# Start the backend from the correct directory
-echo "Starting backend..."
-cd /usr/src/app/apps/backend && exec npm run start
+# Start both backend and worker processes
+echo "Starting backend and worker..."
+
+# Start backend in the background
+cd /usr/src/app/apps/backend && npm run start &
+
+# Start worker in the background
+cd /usr/src/app/apps/worker && npm run start &
+
+# Wait for both processes to prevent the container from exiting
+wait

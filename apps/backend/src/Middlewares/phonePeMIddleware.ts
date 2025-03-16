@@ -5,6 +5,8 @@ const USERNAME = "anand_chau9125";
 const PASSWORD = "Pramatma9936";
 
 export const phonePeMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body)
+    console.log(req.headers)
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
      res.status(401).send("Unauthorized: Missing Authorization header");

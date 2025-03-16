@@ -111,7 +111,7 @@ const worker = new Worker(
    },
   {
     connection: {
-      host: "172.31.34.237 172.17.0.1",  // # Use the EC2 private IP
+      host: "172.31.34.237",   // # Use the EC2 private IP
       port: 6379,
     },
   }
