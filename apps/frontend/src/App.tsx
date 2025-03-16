@@ -9,10 +9,10 @@ import PopupCard from "./componets/PopupCard";
 import FancyLoader from "./componets/Skeleton/loderSkelton";
 import Contact from "./page/Legal/Contact";
 import AboutUs from "./page/Legal/AboutUs";
-import Payment from "./page/Payment/Payment";
 import PaymentSuccess from "./page/Payment/PaymentSuccess";
 import PaymentFailure from "./page/Payment/PayemntFailure";
-
+import { useEffect } from "react"
+import { useUserStore } from "./store/useUserStore";
 
 
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
@@ -48,7 +48,13 @@ const HandleLatestCourse = React.lazy(() => import("./page/ADMIN/Courses/HandleL
 function App() {
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   const isAdmin = userData["role"] === "ADMIN";
- 
+  const{userWalletBalance}=useUserStore()
+   const userDetails= JSON.parse(localStorage.getItem("user") || "{}");
+
+  useEffect(()=>{
+    userWalletBalance(userDetails?.id);
+   },[])
+
 
   return (
     <RecoilRoot>
@@ -73,7 +79,6 @@ function App() {
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/about" element={<AboutUs/>} />
-            <Route path="/payment" element={<Payment/>} />
             <Route path="/payment-failure" element={<PaymentFailure/>} />
             <Route path="/payment-success" element={<PaymentSuccess/>} />
       

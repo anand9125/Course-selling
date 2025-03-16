@@ -4,20 +4,18 @@ import { Request, Response } from 'express';
 import dotenv from "dotenv";
 import { phonePeWebhookSchema } from '../types';
 import { paymentQueue } from '../queue';
-import { connect } from "http2";
-
-
+import { Resend } from "resend";
 
 dotenv.config();
-
+const resend = new Resend("re_TdcBvneT_5DbUwu19BWBNR3MJ6CEUxB7o"); // Resend API key
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-const redirectUrl = "http://localhost:3003/api/v1/payment/status";
-const successUrl = "http://localhost:5173/payment-success";
-const failureUrl = "http://localhost:5173/payment-failure";
+const redirectUrl = "https://api.coursehubb.store/api/v1/payment/status";
+const successUrl = "https://coursehubb.store/payment-success";
+const failureUrl =  "https://coursehubb.store/payment-failure";
 const BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
 const client =  prismaClient
-
+let walletbalance:number;
 async function getAccessToken(): Promise<string> {
   const data = new URLSearchParams({
     client_id: clientId!,
@@ -31,7 +29,7 @@ async function getAccessToken(): Promise<string> {
       data.toString(),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
-    console.log(response.data.access_token)
+
     return response.data.access_token;
   } catch (error: any) {
     console.error('Error obtaining access token:', error.response?.data || error.message);
@@ -73,7 +71,9 @@ async function initiatePayment(amount: number): Promise<{ paymentUrl: string; me
 
 export const paymentinitationController = async (req: Request, res: Response) => {
   try {
-    const{amount,userId,courseIds}=req.body
+    const{amount,userId,courseIds,walletBalance}=req.body
+    walletbalance=walletBalance
+
     if (!Array.isArray(courseIds) || courseIds.length === 0) {
      res.status(400).json({ message: "At least one course must be selected." });
      return
@@ -98,15 +98,17 @@ export const paymentinitationController = async (req: Request, res: Response) =>
     })
     
     res.status(200).json({ paymentUrl });
+    return
   } catch (error) {
     console.error('Payment process error:', error);
     res.status(500).json({ error: 'Payment process failed' });
   }
+  return
 };
 
 export const paymentStatusController = async (req: Request, res: Response) => {
   const merchantOrderId = req.query.merchantOrderId as string | undefined;
-  console.log(merchantOrderId,"i am merchantOrderId")
+ 
   try {  
     if (!merchantOrderId || typeof merchantOrderId !== 'string') {
         res.status(400).json({ error: 'Invalid or missing order ID' });
@@ -119,14 +121,24 @@ export const paymentStatusController = async (req: Request, res: Response) => {
         Authorization: `O-Bearer ${accessToken}`,
       }
     });
+   
 
     if (response.data.state === 'COMPLETED') {
-      await client.purchase.update({
+      const purchaseData = await client.purchase.update({
         where: { merchantOrderId },
         data:{
           status:"COMPLETED"
         }
       })
+      if(walletbalance){
+        await client.user.update({
+          where:{
+            id:purchaseData.userId
+          },data:{
+            walletBalance:0
+          }
+        })
+      }
       return res.redirect(successUrl);
     } else {
       await client.purchase.update({
@@ -158,10 +170,48 @@ export const webhookHandler = async(req:Request,res:Response)=>{
     })
     return;
   }
+  const purchaseDetails = await client.purchase.findUnique({
+    where:{
+      merchantOrderId: parseData.data.payload.merchantOrderId 
+    },include:{
+      user:true
+    }
+  })
   try{
+  if(parseData.data.payload.amount!==purchaseDetails?.amount){
+    await resend.emails.send({
+      from: "anand.chaudhary@coursehubb.store",
+      replyTo: "coursehubb.store@gmail.com",
+      to: `${purchaseDetails?.user?.email}`, 
+      subject: "⚠️ Payment Amount Not Valid",
+      text: `Dear User,
+      We have received your  of ${parseData.data.payload.amount}, but the amount provided is not valid for the selected course. Please ensure that the correct amount is submitted.
+      Rest assured, your payment will be refunded within 24 hours.
+      If you have any questions, feel free to contact our support team at coursehubb.store@gmail.com.
+      Best regards,  
+      Course Hub Support Team`
+      });
+      await resend.emails.send({
+        from: "anand.chaudhary@coursehubb.store",
+        replyTo: "coursehubb.store@gmail.com",
+        to: "akdon9936@gmail.com", 
+        subject: "🔄 Refund Required for Invalid Payment",
+        text: `Dear Admin,      
+      A user has made an invalid payment for a course, and a refund needs to be processed.     
+      User Details:
+      - Email: ${purchaseDetails?.user?.email}  
+      - Paid Amount: ${parseData.data.payload.amount}  
+      - Expected Amount: ${purchaseDetails?.amount}  
+      Please process the refund within 24 hours and notify the user once completed.
+      If you need any further details, please reach out.
+      Best regards,  
+      Course Hub Support Team`
+      });
+    return;
+  }
+ 
    if(parseData.data.event=="checkout.order.completed" && parseData.data.payload.state=="COMPLETED"){
     const merchantOrderId =parseData.data.payload.merchantOrderId;
-    
       await paymentQueue.add("processPayment", merchantOrderId)
         res.status(200).json({
           message:"merchant added successfull"
@@ -180,12 +230,7 @@ export const webhookHandler = async(req:Request,res:Response)=>{
     res.status(500).json({
       message:"Internal server error"
     })
+    return
   }
 }
 
-
-// {
-//   "userId": "user123",
-//   "courseIds": ["course1", "course2", "course3"],
-//   "amount": 999
-// }

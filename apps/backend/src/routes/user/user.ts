@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userSignIn, userSignUp, verifyRefrellCode, walletBalance } from "../../controller/userController";
+import { postEmail, removeBalance, userSignIn, userSignUp, verifyRefrellCode, walletBalance } from "../../controller/userController";
 
 
 
@@ -14,6 +14,9 @@ router.get("/wallet/:userId",walletBalance)
 
 router.post("/verify/referralCode",verifyRefrellCode)
 
+router.post("/removeBalance/:userId",removeBalance)
+
+router.post("/postEmail",postEmail)
 
 
 

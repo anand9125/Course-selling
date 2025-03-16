@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
-
+import { useUserStore } from "../../store/useUserStore";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { userEndPoint } from "../../config";
 interface RedeemPopupProps {
   setPopUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
 export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-
+  const userData = JSON.parse(localStorage.getItem("user") || "{}");
+   const { walletBalance } = useUserStore();
   useEffect(() => {
     setIsOpen(true);
   }, []);
@@ -20,14 +23,41 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
     setPopUp(false);
   };
 
-  const handleRedeem = () => {
+  const handleRedeem = async() => {
     if (!/^\d{10}$/.test(phoneNumber)) {
       toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
-    toast.success("Reward redemption request submitted!");
+    // @ts-ignore
+    if(walletBalance =>10){
+       await axios.post(`${userEndPoint}/user/postEmail`,{
+        email: userData.email,
+        phoneNumber: phoneNumber,
+        walletBalance: walletBalance,
+        name: userData.name,
+      }).then(async() => {
+         Swal.fire({
+          title: "🎉 Success!",
+          text: "Your balance will be added to your bank account shortly.",
+          icon: "success",
+          confirmButtonText: "OK"
+        }).then(async() => {
+          await axios.post(`${userEndPoint}/user/removeBalance/${userData?.id}`)
+              .then(() => {
+                  location.reload(); // Refresh the page after API call success
+              })
+              .catch(error => {
+                  console.error("Error removing balance:", error);
+                  location.reload(); // Refresh even if there's an error
+              });
+      });
+    })
+      
+    }
+    else{
+      toast.error("Minimum balance required is ₹10")
+    }
   };
-
   return (
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">

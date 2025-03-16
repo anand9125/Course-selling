@@ -81,6 +81,7 @@ export const createMentor = async(req:Request, res:Response)=>{
         message:"Mentor created successfully",
         mentors:mentor
     })
+    return
     }
     )}
     catch(err){
@@ -88,6 +89,7 @@ export const createMentor = async(req:Request, res:Response)=>{
             message:"Error while creating mentor"
         })
     }
+    return
 }
 
 export const getAllMentor = async(req:Request, res:Response)=>{
@@ -102,11 +104,13 @@ export const getAllMentor = async(req:Request, res:Response)=>{
         message:"Mentors fetched successfully",
         mentors:mentor
     })
+    return
     }
     catch(err){
         res.status(500).json({
             message:"Error while fetching mentors"
         })
+        return
     }
 
 }
@@ -130,11 +134,13 @@ export const getSingleMentor= async(req:Request, res:Response)=>{
             message:"Mentor fetched successfully",
             mentor:mentor
         })
+        return
        }
        catch(err){
         res.status(500).json({
             message:"Error while fetching mentor"
         })
+        return
        }
 }
 
@@ -185,6 +191,7 @@ export const updateMentor = async(req:Request, res:Response)=>{
             message:"Mentor updated successfully",
             data:updatedMentor
         })
+        return
         
     }
     catch(err){
@@ -192,6 +199,7 @@ export const updateMentor = async(req:Request, res:Response)=>{
             message:"Error while updating mentor"
             ,err
         })
+        return
     }
 }
 
@@ -207,11 +215,13 @@ export const deleteMentor=async(req:Request,res:Response)=>{
         res.status(200).json({
             message:"Mentor deleted successfully"
         })
+        return
     }
     catch(err){
         res.status(500).json({
             message:"Error while deleting mentor"
         })
+        return
     }
 }
 
@@ -235,11 +245,13 @@ export const getCategroyMentor = async(req:Request,res:Response)=>{
             message:"Mentors fetched successfully for the given category",
             mentors
         })
+        return
     }
     catch(err){
         res.status(500).json({
             message:"Error while fetching mentors for the given category"
         })
+        return
     }
  
 }
@@ -256,11 +268,13 @@ export const selectedMentor = async(req:Request,res:Response)=>{
              message: "Mentor selection updated",
              data: updatedSetting
         });
+        return
       } catch (error) {
         console.error("Error updating mentor selection:", error);
         res.status(500).json({
           error: "Failed to update mentor selection"
         });
+        return
     }
     }
     

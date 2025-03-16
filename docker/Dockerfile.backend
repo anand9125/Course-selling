@@ -1,37 +1,38 @@
  FROM node:20-alpine
 
-# # Set working directory
-# WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /usr/src/app
 
-# # Copy package files first for better caching
-# COPY package.json package-lock.json turbo.json  ./
+# Copy package files first for better caching
+COPY package.json package-lock.json turbo.json  ./
 
-# # Copy only the backend directory instead of the entire apps directory
-# COPY apps/backend ./apps/backend
+# Copy only the backend directory and worker instead of the entire apps directory
+COPY apps/backend ./apps/backend
+COPY apps/worker  ./apps/worker
 
-# # Copy only the necessary packages (e.g., database)
-# COPY packages ./packages
+# Copy only the necessary packages (e.g., database)
+COPY packages ./packages
 
-# # Install dependencies
-# RUN npm install
+# Install dependencies
+RUN npm install
 
-# # Generate Prisma client inside packages/db
-# WORKDIR /usr/src/app/packages/db
-# RUN npx prisma generate
+# Generate Prisma client inside packages/db
+WORKDIR /usr/src/app/packages/db
+RUN npx prisma generate
 
-# # Move to backend directory for build
-# WORKDIR /usr/src/app
-# RUN npm run build
+# Move to backend directory for build
+WORKDIR /usr/src/app
+RUN npm run build
 
-# # Expose the port your app runs on
-# EXPOSE 8080
+# Expose the port your app runs on
+EXPOSE 8080
 
-# # Copy entrypoint script and give execute permissions
-# COPY docker/entrypoint.sh /usr/src/app/entrypoint.sh
-# RUN chmod +x /usr/src/app/entrypoint.sh
+# Copy entrypoint script and give execute permissions
+COPY docker/entrypoint.sh /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
 
-# # Set environment variables at runtime
-# ENV DATABASE_URL=""
-# ENV NODE_ENV="production"
+# Set environment variables at runtime
+ENV DATABASE_URL=""
+ENV NODE_ENV="production"
 
-# ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

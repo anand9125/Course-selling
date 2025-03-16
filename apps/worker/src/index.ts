@@ -33,11 +33,9 @@ const worker = new Worker(
         }
       
         const purchasedCourseIds = purchaseData.courses.map((c) => c.course.courseId);
-      
-        
-        const isCourseLinkMissing = !purchaseData.courses
-          .map((c) => c.course.CourseLink)
-          .some((link) => link);
+        console.log("📚 Purchased Course IDs:", purchasedCourseIds);
+        const isCourseLinkMissing = purchaseData.courses  //If at least one course has a missing CourseLink, .some() returns true, making isCourseLinkMissing true.
+        .some((c) => !c.course.CourseLink); //This checks if at least one CourseLink is missing.
       
         if (isCourseLinkMissing) {
           console.log("⚠️ Course link missing, notifying admin and user...");
@@ -84,15 +82,15 @@ const worker = new Worker(
           if (referredUser) {
             await prismaClient.user.update({
               where: { id: referredUser.id },
-              data: { walletBalance: { increment: 20 } },
+              data: { walletBalance: { increment: 30 } },
             });
-      
+            console.log(referredUser.email)
             await resend.emails.send({
               from: "anand.chaudhary@coursehubb.store",
               replyTo: "coursehubb.store@gmail.com",
               to: referredUser.email,
               subject: "🎉 Referral Reward Earned!",
-              text: `Dear ${referredUser.name},\n\nYou have earned a ₹20 reward for referring ${purchaseData.user.name}!\n\nYour reward has been credited to your wallet. Claim the money or apply it towards your next course.\n\nClick here to explore more: https://coursehubb.store\n\nBest regards,\nCourseHubb Team`,
+              text: `Dear ${referredUser.name},\n\nYou have earned a ₹30 reward for referring ${purchaseData.user.name}!\n\nYour reward has been credited to your wallet. Claim the money or apply it towards your next course.\n\nClick here to explore more: https://coursehubb.store\n\nBest regards,\nCourseHubb Team`,
             });
           }
         }
@@ -113,7 +111,7 @@ const worker = new Worker(
    },
   {
     connection: {
-      host: "localhost",
+      host: "172.31.34.237 172.17.0.1",  // # Use the EC2 private IP
       port: 6379,
     },
   }

@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
 
-const USERNAME = "anand9125";
-const PASSWORD = "password";
+const USERNAME = "anand_chau9125";
+const PASSWORD = "Pramatma9936";
 
 export const phonePeMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers["authorization"];

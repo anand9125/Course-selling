@@ -55,6 +55,7 @@ export const createCategory = async (req: Request, res: Response) => {
             message: "Category created successfully",
             category
         });
+        return
 
     } catch (error: any) {
         console.error("Error creating category:", error);
@@ -101,12 +102,14 @@ export const updateCategory= async(req:Request,res:Response)=>{
             message: "Category updated successfully",
             category
         })
+        return
     }
     catch(error){
         res.status(500).json({
             message: "Internal Server Error",
             error
         })
+        return
     }
 }
 
@@ -121,12 +124,14 @@ export const deleteCategory= async(req:Request,res:Response)=>{
         res.status(200).json({
             message: "Category deleted successfully"
         })
+        return
     }
     catch(error){
         res.status(500).json({
             message: "Internal Server Error",
             error
         })
+        return
     }
 }
 
@@ -137,12 +142,14 @@ export const getAllCategories = async(req:Request,res:Response)=>{
             message: "Categories fetched successfully",
             categories: categories
         })
+        return
     }
     catch(error){
         res.status(500).json({
             message: "Internal Server Error",
             error
         })
+        return
     }
 }
 
@@ -164,12 +171,14 @@ export const getSingleCategory=async(req:Request,res:Response)=>{
             message: "Category fetched successfully",
              category
         })
+        return
     }
     catch(error){
         res.status(500).json({
             message: "Internal Server Error",
             error
         })
+        return
     }
 }
 
@@ -203,12 +212,14 @@ export const updateCategoryIndex = async (req:Request, res:Response) => {
     res.status(200).json({
       message: "Category index updated successfully",
     });
+    return
   }
   catch (error) {
     console.error(error);
     res.status(500).json({
       message: "Internal Server Error",
     });
+    return
   }
 }
 
@@ -227,11 +238,13 @@ export const getCategoryByMentorId = async (req:Request, res:Response) => {
             message: "Category fetched successfully",
             category: category
         })
+        return
     }catch(err) {
         res.status(500).json({
             message: "Internal Server Error",
             err
         })
+        return
     }
 
 }

@@ -1,7 +1,7 @@
 import  { useEffect, useState } from "react";
 import {  useRecoilState } from "recoil";
 import { cartState } from "../../store/cart/atom";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUserStore } from "../../store/useUserStore";
 import axios from "axios";
@@ -25,13 +25,12 @@ interface Courses {
 function CartItem() {
   const [cartItems, setCartItems] = useRecoilState<Courses[]>(cartState);
   const{walletBalance}=useUserStore()
-  const navigate = useNavigate();
   const [checkbox,setCheckbox]= useState(false)
   const[referralCode,setReferralCode]=useState("")
   const[isValid,setIsValid] = useState(false)
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
   const[isLoading,setIsLoading]=useState(false)
- 
+   console.log(cartItems)
   useEffect(() => {
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
@@ -71,11 +70,16 @@ function CartItem() {
     const updatedCart = cartItems.filter((item) => item.id !== product.id);
     setCartItems(updatedCart);
   };
+  const Subtotal = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+  let Total = Subtotal + 5; 
+  if (checkbox) {
+      Total -= walletBalance ?? 0; 
+  }
+  if (isValid) {
+      Total -= 20; 
+  }
 
- 
- 
-  
-  const handleClick = (event: any) => {
+  const handleClick = async (event: any) => {
     if (cartItems.length === 0) {
       event.preventDefault();
       Swal.fire({
@@ -84,10 +88,60 @@ function CartItem() {
         text: "Your cart is empty!",
         footer: '<a href="#">Please add items before proceeding to checkout.</a>',
       });
-    } else {
-      navigate("/checkout");
+      return;
+    }
+  
+    try {
+      let response
+      if(checkbox){
+        response = await axios.post(
+          `${userEndPoint}/payment/pay`,
+          {
+            amount: Total,
+            userId: userData.id,
+            courseIds: cartItems.map((c) => c.id),
+            walletBalance
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }else {
+         response = await axios.post(
+          `${userEndPoint}/payment/pay`,
+          {
+            amount: Total,
+            userId: userData.id,
+            courseIds: cartItems.map((c) => c.id),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+  
+      if (response?.data?.paymentUrl) {
+        window.location.href = response.data.paymentUrl;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: "Something went wrong. Please try again.",
+        });
+      }
+    } catch (error: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response?.data?.message || "Failed to initiate payment.",
+      });
     }
   };
+  
 
   const handleApplyReferralCode = async() => {
     if(!referralCode){
@@ -121,14 +175,7 @@ function CartItem() {
       
     }
   }
-  const Subtotal = cartItems.reduce((acc, curr) => acc + curr.price, 0);
-  let Total = Subtotal + 5; 
-  if (checkbox) {
-      Total -= walletBalance ?? 0; 
-  }
-  if (isValid) {
-      Total -= 20; 
-  }
+ 
   return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {cartItems.length === 0 ? (

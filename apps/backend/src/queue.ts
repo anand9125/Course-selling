@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 export const paymentQueue = new Queue("paymentQueue", {  //Creates a new BullMQ queue named "paymentQueue
     connection: {
-    host: "localhost",
+    host: "172.31.34.237 172.17.0.1",//localhost
     port: 6379   //
     }
 });

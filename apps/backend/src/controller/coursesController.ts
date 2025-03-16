@@ -123,6 +123,7 @@ export const createCourses = async(req:Request,res:Response)=>{
         message: "Course created successfully",
          course
     })
+    return
    })
 }
     catch(err){
@@ -145,6 +146,7 @@ export const getAllCourses = async(req:Request,res:Response)=>{
         res.json({
             courses: courses
         })
+        return
     }
     catch(err){
         console.error("Error fetching courses",err)
@@ -172,6 +174,7 @@ export const getSingleCourse = async(req:Request,res:Response)=>{
         res.json({
             course: course
         })
+        return
     }
     catch(err){
         console.error("Error fetching course by id",err)
@@ -230,6 +233,7 @@ export const updateCourse = async(req:Request,res:Response)=>{
             message: "Course updated successfully",
             data: updatedCourse
         })
+        return
 
     }
     catch(err){
@@ -237,6 +241,7 @@ export const updateCourse = async(req:Request,res:Response)=>{
         res.status(500).json({
             message: "Failed to update course"
         })
+        return
     }
     
 }
@@ -263,12 +268,14 @@ export const deleteCourse = async(req:Request,res:Response)=>{
         res.json({
             message: "Course deleted successfully"
         })
+        return
     }
     catch(err){
         console.error("Error deleting course by id",err)
         res.status(500).json({
             message: "Failed to delete course"
         })
+        return
     }
 }
     
@@ -296,12 +303,12 @@ export const getCoursesByCategoryid = async (req: Request, res: Response) => {
             message: "Courses fetched successfully",
             data: category.courses
         });
-
-
+        return
     } catch (err) {
         console.error("Error fetching courses", err);
          res.status(500).json({ message: "Failed to fetch courses" });
     }
+    return
 };
 
 
@@ -328,12 +335,14 @@ export const getCoursesByMentorid= async(req:Request,res:Response)=>{
             message: "Courses fetched successfully",
             data: Mentor.courses
         })
+        return
     }
     catch(err){
         console.error("Error fetching courses by mentor",err)
         res.status(500).json({
             message: "Failed to fetch courses"
         })
+        return
     
 }}
 
@@ -375,12 +384,13 @@ export const updateCourseIndex= async(req:Request,res:Response)=>{
         message: "Course index updated successfully",
         data: updatedCourse
       })
-
+      return
   }catch(err){
     console.error("Error updating course index",err)
     res.status(500).json({
       message: "Failed to update course index"
     })
+    return
   }
   
 }
@@ -416,12 +426,14 @@ export const getCoursesByCategoryidMentorid = async(req:Request,res:Response)=>{
             message: "Courses fetched successfully",
             courses: courses
         })
+        return
     }
     catch(err){
         console.error("Error fetching courses by category and mentor",err)
         res.status(500).json({
             message: "Failed to fetch courses"
         })
+        return
     }
 }
 
@@ -451,10 +463,11 @@ export const getCourseOfSelectedMentor = async (req:Request,res:Response)=>{
         res.status(200).json({
             courses
         })
-        ;
+        return
       } catch (error) {
         console.error("Error fetching courses:", error);
         res.status(500).json({ error: "Failed to fetch courses" });
       }
+      return
     
 }

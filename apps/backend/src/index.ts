@@ -23,7 +23,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "*", // Allow all origins (safe for Postman and local development)
+    origin: "https://coursehubb.store", // Allow all origins (safe for Postman and local development)
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -56,6 +56,6 @@ app.use("/api/v1/admin/category",adminCategoryRouter)
 app.use("/api/v1/admin/payment",verifyPaymentRouter)
 
 
-app.listen(3003, () => {
-    console.log("Server is running on port 3003");
+app.listen(8080, () => {
+    console.log("Server is running on port 8080");
 })

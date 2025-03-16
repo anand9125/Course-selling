@@ -1,60 +1,60 @@
-# name: Build and Deploy to Docker Hub
+name: Build and Deploy to Docker Hub
 
-# on:
-#   push:
-#     branches:
-#       - master
-#     paths:
-#       - 'apps/backend/**'
-#       - 'packages/db/**'
-#       - 'docker/Dockerfile.backend'
-#       - '.github/workflows/deploy.yml'
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'apps/backend/**'
+      - 'packages/db/**'
+      - 'docker/Dockerfile.backend'
+      - '.github/workflows/deploy.yml'
 
-# jobs:
-#   build-and-push:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Check Out Repo
-#       uses: actions/checkout@v2
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Repo
+      uses: actions/checkout@v2
 
-#     - name: Log in to Docker Hub
-#       uses: docker/login-action@v1
-#       with:
-#         username: ${{ secrets.DOCKER_USERNAME }}
-#         password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-#     - name: Build and Push Docker image
-#       uses: docker/build-push-action@v2
-#       with:
-#         context: .
-#         file: ./docker/Dockerfile.backend
-#         push: true
-#         tags: anand687/course-selling:latest
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./docker/Dockerfile.backend
+        push: true
+        tags: anand687/course-selling:latest
 
-#     - name: Verify Pushed Image
-#       run: docker pull anand687/course-selling
+    - name: Verify Pushed Image
+      run: docker pull anand687/course-selling
 
-#     - name: Deploy to EC2
-#       uses: appleboy/ssh-action@master
-#       with:
-#         host: ${{ secrets.SSH_HOST }}
-#         username: ${{ secrets.SSH_USERNAME }}
-#         key: ${{ secrets.SSH_KEY }}
-#         port: 22
-#         timeout: 60s  
-#         script: |
-#           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-#           docker pull anand687/course-selling:latest
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        timeout: 60s  
+        script: |
+          docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+          docker pull anand687/course-selling:latest
           
          
-#           docker stop web-app || true
-#           docker rm web-app || true
+          docker stop web-app || true
+          docker rm web-app || true
           
-#           docker run -d --name web-app \
-#             -p 3005:8080 \
-#             -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-#             -e NODE_ENV="production" \
-#             -e CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" \
-#             -e CLIENT_ID="${{ secrets.CLIENT_ID }}" \
-#             anand687/course-selling:latest
+          docker run -d --name web-app \
+            -p 3005:8080 \
+            -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            -e NODE_ENV="production" \
+            -e CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" \
+            -e CLIENT_ID="${{ secrets.CLIENT_ID }}" \
+            anand687/course-selling:latest
 

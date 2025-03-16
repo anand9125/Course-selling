@@ -44,7 +44,6 @@ export const useUserStore = create<UserStore>((set) => ({
     try {
       const response = await axios.post(`${userEndPoint}/user/signup`, formData);
       if(response.status==202)toast.success("Admin login successfull")
-        console.log(response.status)
       const userData = response.data.user;
       const token = response.data.token;
       if (userData) {
