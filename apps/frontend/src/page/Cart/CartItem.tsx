@@ -70,14 +70,17 @@ function CartItem() {
   }
 
   const handleClick = async (event: any) => {
-    if (cartItems.length === 0) {
-      event.preventDefault();
+    if(!userData.id){
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Your cart is empty!",
-        footer: '<a href="#">Please add items before proceeding to checkout.</a>',
-      });
+        text: "You are not signed in!",
+        footer: '<a href="/user-Profile" style="color: #007bff; font-weight: bold; text-decoration: underline;">Sign in here before proceeding to checkout</a>',
+      });   
+      return;
+    }
+    if (cartItems.length === 0) {
+      event.preventDefault();
       return;
     }
   
@@ -143,27 +146,35 @@ function CartItem() {
       toast.error("User not found please login")
       return
     }
-    setIsLoading(true)
-    const response = await axios.post(
-      `${userEndPoint}/user/verify/referralCode`,
-      {
+    try {
+      setIsLoading(true);
+    
+      const response = await axios.post(`${userEndPoint}/user/verify/referralCode`, {
         referralCode: referralCode,
         userId: userData.id,
-      }
-    ); 
-    console.log(response.status)
-   
+      });
   
-    if(response.status==200){
-      setIsLoading(false)
-      toast.success("Referral code applied")
-      setIsValid(true)
+    
+      if (response.status === 200) {
+        toast.success("Referral code applied");
+        setIsValid(true);
+      }
+    } catch (error:any) {
+    
+      if (error.response) {
+  
+        if (error.response.status === 400) {
+          toast.error("Invalid referral code");
+        } else {
+          toast.error("Something went wrong. Please try again.");
+        }
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
+    } finally {
+      setIsLoading(false);
     }
-    else if(response.status==401){
-      setIsLoading(false)
-        toast.error("Please provide correct referral code")
-      
-    }
+    
   }
  
   return (
@@ -247,19 +258,22 @@ function CartItem() {
 
               {/* Referral Code Section */}
               <div className="mt-8">
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="text"
-                    placeholder="Enter Referral Code..."
-                    className="flex-1 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 border border-gray-300 
-                    focus:ring-2 focus:ring-gray-600 focus:outline-none transition-shadow"
-                    onChange={(e) => setReferralCode(e.target.value)}
-                  />
-                  <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-                   onClick={()=> handleApplyReferralCode()}>
-                    {isLoading ? <Spinner size={20} className="mx-auto" /> : "Apply"}
-                  </button>
-                </div>
+              <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3 w-full">
+                <input
+                  type="text"
+                  placeholder="Enter Referral Code..."
+                  className="w-full sm:flex-1 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 border border-gray-300 
+                  focus:ring-2 focus:ring-gray-600 focus:outline-none transition-shadow"
+                  onChange={(e) => setReferralCode(e.target.value)}
+                />
+                <button 
+                  className="w-full sm:w-auto px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
+                  onClick={handleApplyReferralCode}
+                >
+                  {isLoading ? <Spinner size={20} className="mx-auto" /> : "Apply"}
+                </button>
+              </div>
+
                 <div className="pt-3">
                   <h2 className="text-xl font-bold text-gray-800">
                     Redeem Your Referral Code

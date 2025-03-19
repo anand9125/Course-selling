@@ -9,6 +9,12 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useCategoryStore } from '../store/useCategoryStore';
+// @ts-ignore
+import 'swiper/css';
+// @ts-ignore
+import 'swiper/css/navigation';
+// @ts-ignore
+import 'swiper/css/pagination';
 
 interface Category {
   id: string;

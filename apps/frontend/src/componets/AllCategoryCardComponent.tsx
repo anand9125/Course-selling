@@ -1,12 +1,5 @@
 import React from 'react';
-// @ts-ignore
-import 'swiper/css';
-import Skeleton from '@mui/material/Skeleton'
-// @ts-ignore
-import 'swiper/css/pagination';
-// @ts-ignore
-import 'swiper/css/navigation';
-
+import Skeleton from '@mui/material/Skeleton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -14,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useCategoryStore } from '../store/useCategoryStore';
-
 
 interface Category {
   id: string;
@@ -30,54 +22,52 @@ interface CategoryCardProps {
 
 const ImgMediaCard: React.FC<Category & { onClick?: () => void; loading?: boolean }> = ({ name, image, onClick, loading }) => (
   <Card
-      onClick={onClick}
-      sx={{
-        width: '100%',
-        maxWidth: 270,
-        height: 330,
-        transition: 'transform 0.3s ease-in-out',
-        cursor: loading ? 'default' : 'pointer',
-        zIndex: 1,
-        '&:hover': {
-          transform: loading ? 'none' : 'scale(1.03) translateY(-10px)',
-          zIndex: 10,
-          backgroundColor: '#f0f0f0', // Light gray on hover
-        },
-      }}
-    >
+    onClick={onClick}
+    sx={{
+      width: '100%',
+      maxWidth: 240,
+      height: 'auto',
+      transition: 'transform 0.3s ease-in-out',
+      cursor: loading ? 'default' : 'pointer',
+      zIndex: 1,
+      '&:hover': {
+        transform: loading ? 'none' : 'scale(1.03) translateY(-5px)',
+        zIndex: 10,
+        backgroundColor: '#f7f7f7',
+      },
+    }}
+  >
     {loading ? (
       <>
-        <Skeleton variant="rectangular" width="100%" height={280} />
+        <Skeleton variant="rectangular" width="100%" height={250} />
         <CardContent sx={{ textAlign: 'center', paddingTop: '20px' }}>
           <Skeleton variant="text" width="80%" height={30} />
         </CardContent>
       </>
     ) : (
       <>
-         <CardMedia
-              component="img"
-              loading="lazy"
-              alt={name}
-              image={image}
-              sx={{
-                width: 250, // Fixed width to ensure a circle
-                height: 250, // Fixed height to ensure a circle
-                borderRadius: '50%', // Makes the image circular
-                objectFit: 'cover', // Ensures the image fills the circle without distortion
-                objectPosition: 'center', // Centers the image within the circle
-                display: 'block',
-                margin: '10px auto', // Centers the circle within the card
-              }}
-            />
-
+        <CardMedia
+          component="img"
+          loading="lazy"
+          alt={name}
+          image={image}
+          sx={{
+            width: '90%',
+            height: 210,
+            borderRadius: '50%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            display: 'block',
+            margin: '0px auto',
+          }}
+        />
         <CardContent sx={{ textAlign: 'center' }}>
-          <Typography gutterBottom variant="h5">{name}</Typography>
+          <Typography gutterBottom variant="h6">{name}</Typography>
         </CardContent>
       </>
     )}
   </Card>
 );
-
 
 const AllCategoryCardComponent: React.FC<CategoryCardProps> = ({ categories }) => {
   const { loading } = useCategoryStore();
@@ -86,21 +76,26 @@ const AllCategoryCardComponent: React.FC<CategoryCardProps> = ({ categories }) =
   const handleCardClick = (categoryId: string) => {
     navigate(`/category/${categoryId}`);
   };
-    // Sort categories by index before rendering so that we can arrange accoding to what we want
-    const sortedCategories = [...categories].sort((a, b) => a.index - b.index);  //Spreads categories into a new array ([...categories]) to avoid mutating the original array.
+
+  const sortedCategories = [...categories].sort((a, b) => a.index - b.index);
+
   return (
-    <Box sx={{ maxWidth: '1300px', margin: 'auto', padding: 2 }}>
-     <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-          gap: 3,
-          justifyContent: 'center' 
-        }}>
+    <Box sx={{ maxWidth: '1400px', margin: 'auto', padding: 2 }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: 1,
+          justifyContent: 'center',
+          '@media (min-width: 600px)': { gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' },
+          '@media (min-width: 900px)': { gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' },
+          "@media (min-width: 1024px)": { gridTemplateColumns: "repeat(4, 1fr)" }, // Ensures 3 cards on big screens
+        }}
+      >
         {sortedCategories.map((category) => (
-            <ImgMediaCard {...category}  onClick={() => handleCardClick(category.categoryId)} loading={loading} />
-         ))}
-     
-        </Box>
+          <ImgMediaCard key={category.id} {...category} onClick={() => handleCardClick(category.categoryId)} loading={loading} />
+        ))}
+      </Box>
     </Box>
   );
 };

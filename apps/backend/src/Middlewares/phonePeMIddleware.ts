@@ -5,24 +5,33 @@ const USERNAME = "anand_chau9125";
 const PASSWORD = "Pramatma9936";
 
 export const phonePeMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body)
-    console.log(req.headers)
+    console.log("Request Body:", req.body);
+    console.log("Request Headers:", req.headers);
+
     const authHeader = req.headers["authorization"];
+
     if (!authHeader) {
-     res.status(401).send("Unauthorized: Missing Authorization header");
-     return
+        res.status(401).send("Unauthorized: Missing Authorization header");
+        return
     }
+
     try {
         const hashedAuth = crypto.createHash("sha256").update(`${USERNAME}:${PASSWORD}`).digest("hex");
 
-        if(authHeader !== `SHA256(${hashedAuth})`) {
-          res.status(401).send("Unauthorized: Invalid credentials");
-          return
+        const expectedAuthHeader = `${hashedAuth}`;     
+
+        console.log("Expected Authorization Header:",expectedAuthHeader);
+
+        if (authHeader !== expectedAuthHeader) {
+             res.status(401).send("Unauthorized: Invalid credentials");
+             return
         }
+
         next();
-    } catch (e) {
-        console.error("Error in authentication middleware:", e);
+    } catch (error) {
+        console.error("Error in authentication middleware:", error);
          res.status(500).send("Internal Server Error");
+         return
     }
 };
 

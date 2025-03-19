@@ -2,7 +2,6 @@ import {prismaClient} from "@repo/db/src";
 import axios from 'axios';
 import { Request, Response } from 'express';
 import dotenv from "dotenv";
-import { phonePeWebhookSchema } from '../types';
 import { paymentQueue } from '../queue';
 import { Resend } from "resend";
 
@@ -79,10 +78,11 @@ export const paymentinitationController = async (req: Request, res: Response) =>
      return
     }
     const { paymentUrl, merchantOrderId } = await initiatePayment(amount)
+    console.log(paymentUrl,merchantOrderId)
     await client.purchase.create({
        data:{
         userId,
-        amount,
+        amount:amount*100,
         merchantOrderId,
         status:"PENDING",
         courses:{   //Creates multiple entries in PurchaseCourse, each linking the purchase to a course
@@ -163,29 +163,24 @@ export const paymentStatusController = async (req: Request, res: Response) => {
 
 
 export const webhookHandler = async(req:Request,res:Response)=>{
-  const parseData = phonePeWebhookSchema.safeParse(req.body)
-  if(!parseData.success){
-    res.status(400).json({
-    message:"Invalid data"
-    })
-    return;
-  }
+  const { state, merchantOrderId, amount } = req.body.payload;
+   
   const purchaseDetails = await client.purchase.findUnique({
     where:{
-      merchantOrderId: parseData.data.payload.merchantOrderId 
+      merchantOrderId
     },include:{
       user:true
     }
   })
   try{
-  if(parseData.data.payload.amount!==purchaseDetails?.amount){
+  if(amount!==purchaseDetails?.amount){
     await resend.emails.send({
       from: "anand.chaudhary@coursehubb.store",
       replyTo: "coursehubb.store@gmail.com",
       to: `${purchaseDetails?.user?.email}`, 
       subject: "⚠️ Payment Amount Not Valid",
       text: `Dear User,
-      We have received your  of ${parseData.data.payload.amount}, but the amount provided is not valid for the selected course. Please ensure that the correct amount is submitted.
+      We have received your  of ${amount}, but the amount provided is not valid for the selected course. Please ensure that the correct amount is submitted.
       Rest assured, your payment will be refunded within 24 hours.
       If you have any questions, feel free to contact our support team at coursehubb.store@gmail.com.
       Best regards,  
@@ -200,7 +195,7 @@ export const webhookHandler = async(req:Request,res:Response)=>{
       A user has made an invalid payment for a course, and a refund needs to be processed.     
       User Details:
       - Email: ${purchaseDetails?.user?.email}  
-      - Paid Amount: ${parseData.data.payload.amount}  
+      - Paid Amount: ${amount}  
       - Expected Amount: ${purchaseDetails?.amount}  
       Please process the refund within 24 hours and notify the user once completed.
       If you need any further details, please reach out.
@@ -210,15 +205,13 @@ export const webhookHandler = async(req:Request,res:Response)=>{
     return;
   }
  
-   if(parseData.data.event=="checkout.order.completed" && parseData.data.payload.state=="COMPLETED"){
-    const merchantOrderId =parseData.data.payload.merchantOrderId;
+   if(state=="COMPLETED"){
       await paymentQueue.add("processPayment", merchantOrderId)
         res.status(200).json({
           message:"merchant added successfull"
         })
     }
-    if(parseData.data.event=="checkout.order.failed" && parseData.data.payload.state =="FAILED"){
-      const merchantOrderId =parseData.data.payload.merchantOrderId;
+    if(state =="FAILED"){
       await client.purchase.update({
         where: { merchantOrderId },
         data:{

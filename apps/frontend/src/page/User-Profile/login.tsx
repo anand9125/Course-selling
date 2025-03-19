@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Input } from '../../componets/InputBox'
 import { useUserStore } from '../../store/useUserStore';
 import Spinner from '../../componets/Skeleton/ButtonSkeleton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Login() {
     const[formData,setFormData] = useState({
         email: '',
         password: ''
     })
+    const navigate = useNavigate()
     const{userSignin ,isLoading}= useUserStore()
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -16,6 +17,7 @@ function Login() {
           [name]: name === "year" ? Number(value) : value, 
         });
       };
+
       
      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +31,7 @@ function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">  
               <Input placeholder="Enter your email" label="Email" name="email" value={formData.email} onChange={handleChange} type="email" />
               <Input placeholder="Enter your password" label="Password" name="password" value={formData.password} onChange={handleChange} type="password" />
-              
+              <div className='flex justify-end text-blue-500 cursor-pointer' onClick={()=>navigate("/forget-password")}>Forget password ?</div>
               <div className='flex justify-center items-center'>
                 <button
                     type="submit"

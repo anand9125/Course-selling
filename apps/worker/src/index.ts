@@ -45,7 +45,15 @@ const worker = new Worker(
             replyTo: "coursehubb.store@gmail.com",
             to: "akdon9936@gmail.com",
             subject: "⚠️ Course Link Missing",
-            text: `Dear Admin,\n\nThe course links for the following Course IDs are missing:\n\n${purchasedCourseIds.join(", ")}\n\nPlease update the database and send the link to: ${purchaseData.user.email}.\n\nThank you.`,
+            html: `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #d9534f;">⚠️ Course Link Missing</h2>
+                <p>Dear Admin,</p>
+                <p>The course links for the following Course IDs are missing:</p>
+                <p><strong>${purchasedCourseIds.join(", ")}</strong></p>
+                <p>Please update the database and send the link to: <strong>${purchaseData.user.email}</strong>.</p>
+                <p>Thank you.</p>
+              </div>`
           });
       
           await resend.emails.send({
@@ -53,8 +61,16 @@ const worker = new Worker(
             replyTo: "coursehubb.store@gmail.com",
             to: purchaseData.user.email,
             subject: "✅ Payment Received - Course Link Pending",
-            text: `Dear ${purchaseData.user.name},\n\nWe have received your payment successfully. Your course links will be provided within 30 minutes.\n\nFor any queries, please contact us at coursehubb.store@gmail.com.\n\nBest regards,\nCourseHubb Team`,
+            html: `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #007bff;">✅ Payment Received</h2>
+                <p>Dear ${purchaseData.user.name},</p>
+                <p>We have received your payment successfully. Your course links will be provided within 30 minutes.</p>
+                <p>For any queries, please contact us at <a href="mailto:coursehubb.store@gmail.com">coursehubb.store@gmail.com</a>.</p>
+                <p>Best regards,<br><strong>CourseHubb Team</strong></p>
+              </div>`
           });
+          
         } else {
           console.log("✅ Course link available, sending confirmation email...");
       
@@ -62,13 +78,22 @@ const worker = new Worker(
             .map((c) => `${c.course.title}: ${c.course.CourseLink}`)
             .join("\n");
       
+          
           await resend.emails.send({
             from: "anand.chaudhary@coursehubb.store",
             replyTo: "coursehubb.store@gmail.com",
             to: purchaseData.user.email,
             subject: "🎉 Course Access Granted",
-            text: `Dear ${purchaseData.user.name},\n\nCongratulations! Your payment has been received, and you can now access your courses.\n\n${courseLinks}\n\nEnjoy your learning!\n\nBest regards,\nCourseHubb Team`,
-          });
+            html: `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #28a745;">🎉 Course Access Granted</h2>
+                <p>Dear ${purchaseData.user.name},</p>
+                <p>Congratulations! Your payment has been received, and you can now access your courses.</p>
+                ${courseLinks}
+                <p>Enjoy your learning!</p>
+                <p>Best regards,<br><strong>CourseHubb Team</strong></p>
+              </div>`
+          });;
         }
       
        
@@ -90,19 +115,33 @@ const worker = new Worker(
               replyTo: "coursehubb.store@gmail.com",
               to: referredUser.email,
               subject: "🎉 Referral Reward Earned!",
-              text: `Dear ${referredUser.name},\n\nYou have earned a ₹30 reward for referring ${purchaseData.user.name}!\n\nYour reward has been credited to your wallet. Claim the money or apply it towards your next course.\n\nClick here to explore more: https://coursehubb.store\n\nBest regards,\nCourseHubb Team`,
+              html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                  <h2 style="color: #ffc107;">🎉 Referral Reward Earned!</h2>
+                  <p>Dear ${referredUser.name},</p>
+                  <p>You have earned a ₹30 reward for referring ${purchaseData.user.name}!</p>
+                  <p>Your reward has been credited to your wallet. Claim the money or apply it towards your next course.</p>
+                  <p><a href="https://coursehubb.store" style="background-color: #007bff; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Explore More</a></p>
+                  <p>Best regards,<br><strong>CourseHubb Team</strong></p>
+                </div>`
             });
-          }
         }
-      } catch (error: any) {
+      }} catch (error: any) {
         console.error("❌ Error processing job:", error);
       
+        
         await resend.emails.send({
           from: "anand.chaudhary@coursehubb.store",
           replyTo: "coursehubb.store@gmail.com",
           to: "akdon9936@gmail.com",
           subject: "🚨 Error While Processing Payment",
-          text: `An error occurred while processing a payment job.\n\nError Details: ${error.message}\n\nPlease check the system logs for more information.`,
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h2 style="color: #d9534f;">🚨 Error While Processing Payment</h2>
+              <p>An error occurred while processing a payment job.</p>
+              <p><strong>Error Details:</strong> ${error.message}</p>
+              <p>Please check the system logs for more information.</p>
+            </div>`
         });
       }
       
@@ -111,13 +150,11 @@ const worker = new Worker(
    },
   {
     connection: {
-      host: "172.31.34.237",   // # Use the EC2 private IP
-      port: 6379,
-    },
+      host: "172.31.34.237",  // Choose the correct Redis server IP
+      port: 6379  
+  }
   }
 );
-
-
 
 
 worker.on("completed", (job) => {

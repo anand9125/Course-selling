@@ -1,6 +1,6 @@
 
 import CategoryRoute from './CategoryRoute'
-import AllMentors from './AllMentors'
+import AllCategory from './AllCategory'
 function Category() {
   return (
     <div className='max-w-7xl mx-auto sm:pl-1 '>
@@ -9,7 +9,7 @@ function Category() {
           <CategoryRoute></CategoryRoute> 
         </div> 
         <div className=''>
-          <AllMentors></AllMentors>
+          <AllCategory></AllCategory>
         </div>
        </div>
     </div>

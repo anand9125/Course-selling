@@ -23,19 +23,12 @@ model User {
   profileCompleted Boolean        @default(false)
   role             Role           @default(STUDENT)
   purchases        Purchase[]
-  reviews          Review[]
   referredBy       User?          @relation("UserReferrals", fields: [referredById], references: [id])  //self-referential referral system,(each user can refer other users and also be referred by another user.)
   referrals        User[]         @relation("UserReferrals")   //Each user can refer multiple users (referrals).
-  userCategories   UserCategory[]
+
 }
 
-model UserCategory {
-  id         String   @id @default(cuid())
-  userId     String
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
-}
+
 
 model Category {
   id             String         @id @default(cuid())
@@ -45,7 +38,7 @@ model Category {
   image          String
   courses        Course[]
   mentors        Mentor[]
-  userCategories UserCategory[]
+
 }
 
 model Mentor {
@@ -75,7 +68,7 @@ model Course {
   category    Category   @relation(fields: [categoryId], references: [id])
   mentor      Mentor     @relation(fields: [mentorId], references: [id])
   purchases   PurchaseCourse[]  // Many-to-many relation with purchases
-  reviews     Review[]
+
 }
 
 model Purchase {
@@ -98,16 +91,7 @@ model PurchaseCourse {  // Junction table to link purchases and courses to make 
 }
 
 
-model Review {
-  id        String   @id @default(cuid())
-  userId    String
-  courseId  String
-  rating    Int      @default(5)
-  comment   String?
-  createdAt DateTime @default(now())
-  course    Course   @relation(fields: [courseId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
+
 
 model AdminSettings {
   id               String   @id @default(uuid())
@@ -125,6 +109,21 @@ enum Status{
   CANCELLED
   FAILED
 }
+
+model TelegramAccessToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  email       String
+  telegramLink String
+  createdAt   DateTime @default(now())
+}
+model Forgetpassword {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  email       String
+  createdAt   DateTime @default(now())
+}
+
 
  
 //UserReferrals relation is a self-referential relation that links users together.

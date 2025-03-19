@@ -30,36 +30,52 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
       toast.error("Please enter a valid 10-digit mobile number.");
       return;
     }
+     if(!userData.id){
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You are not signed in!",
+            footer: '<a href="/user-Profile" style="color: #007bff; font-weight: bold; text-decoration: underline;">Sign in here before proceeding to checkout</a>',
+          });   
+          return;
+        }
     // @ts-ignore
-    if(walletBalance =>10){
-       await axios.post(`${userEndPoint}/user/postEmail`,{
-        email: userData.email,
-        phoneNumber: phoneNumber,
-        walletBalance: walletBalance,
-        name: userData.name,
-      }).then(async() => {
-         Swal.fire({
+    if (walletBalance >= 10) {
+      try {
+        await axios.post(`${userEndPoint}/user/postEmail`, {
+          email: userData.email,
+          phoneNumber: phoneNumber,
+          walletBalance: walletBalance,
+          name: userData.name,
+        });
+        await Swal.fire({
           title: "🎉 Success!",
           text: "Your balance will be added to your bank account shortly.",
           icon: "success",
           confirmButtonText: "OK"
-        }).then(async() => {
-          await axios.post(`${userEndPoint}/user/removeBalance/${userData?.id}`)
-              .then(async() => {
-                await userWalletBalance(userDetails?.id);
-              })
-              .catch(error => {
-                  console.error("Error removing balance:", error);
-                   
-              });
+        });
+        await axios.post(`${userEndPoint}/user/removeBalance/${userData.id}`);
+        await userWalletBalance(userDetails.id);
+        
+      } catch (error) {
+        console.error("Error processing balance withdrawal:", error);
+        Swal.fire({
+          title: "⚠️ Error!",
+          text: "Something went wrong. Please try again.",
+          icon: "error",
+          confirmButtonText: "OK"
+        });
+      }
+    } else {
+      Swal.fire({
+        title: "⚠️ Insufficient Balance!",
+        text: "Your wallet balance must be at least ₹10 to withdraw.",
+        icon: "warning",
+        confirmButtonText: "OK"
       });
-    })
-      
-    }
-    else{
-      toast.error("Minimum balance required is ₹10")
-    }
-  };
+    }   
+  }
+
   return (
     isOpen && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">

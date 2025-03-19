@@ -7,6 +7,7 @@ import { JWT_PASSWORD } from "../types/config"
 import { adminPassword } from "../types/config";
 const client =  prismaClient
 import { Resend } from "resend";
+import { randomBytes } from "crypto";
 const resend = new Resend("re_TdcBvneT_5DbUwu19BWBNR3MJ6CEUxB7o"); // Resend API key
 export const userSignUp = async (req: Request, res: Response) => {
     const parseData = SignupSchema.safeParse(req.body);
@@ -226,7 +227,6 @@ export const verifyRefrellCode = async (req:Request,res:Response)=>{
     }
 }
 
-
 export const removeBalance = async (req: Request, res: Response) => {
     const { userId } = req.params;
     
@@ -280,4 +280,149 @@ export const postEmail = async(req:Request,res:Response)=>{
      }
         
 
+}
+
+export const sendForgetPassowordmail= async(req:Request,res:Response)=>{
+    const {email} = req.body;
+    const token = randomBytes(32).toString("hex");
+
+   try{
+    await prismaClient.forgetpassword.create({
+        data:{
+            token,
+            email
+        }
+    })
+    const accessLink = `https://api.coursehubb.store/api/v1/user/access-forgetPasswordPage?token=${token}`;
+    await resend.emails.send({
+        from: "anand.chaudhary@coursehubb.store",
+        replyTo: "coursehubb.store@gmail.com",
+        to: email,
+        subject: "Reset Your Password - CourseHubb",
+        text: `Dear Customer,
+      
+      We received a request to reset your password. Please click the link below to set a new password:
+      
+      ${accessLink}
+      
+      This link is valid for a limited time and can be used only once. If you did not request this, please ignore this email.
+      
+      Best regards,  
+      CourseHubb Support Team  
+      support@coursehubb.store
+        `,
+        html: `
+          <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <h2 style="color: #007bff;">Reset Your Password</h2>
+            <p>Dear Customer,</p>
+            <p>We received a request to reset your password. Click the button below to proceed:</p>
+            <p style="text-align: center;">
+              <a href="${accessLink}" style="background-color: #007bff; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                Reset Password
+              </a>
+            </p>
+            <p>If the button doesn’t work, you can also use this link:</p>
+            <p><a href="${accessLink}" style="word-break: break-word;">${accessLink}</a></p>
+            <p>This link is valid for a limited time and can be used only once. If you did not request this, please ignore this email.</p>
+            <p>Best regards,</p>
+            <p><strong>CourseHubb Support Team</strong></p>
+            <p><a href="mailto:support@coursehubb.store">support@coursehubb.store</a></p>
+          </div>
+        `,
+      });
+      
+      res.status(200).json({ message: "Email sent successfully" });
+      return;
+   }
+   catch(e){
+    res.json({
+        message:"invalid request"
+    })
+   }
+}
+
+export const rediretForgetPasswordPage = async(req:Request,res:Response)=>{
+    const {token} = req.query 
+    if (!token) {
+         res.status(400).send("Invalid request.");
+         return
+    }
+    
+    try{
+        const tokenEntry = await prismaClient.forgetpassword.findUnique({
+            where:{
+                // @ts-ignore
+                token:token
+            }
+        })
+        if (!tokenEntry) {
+             res.status(400).send("This link has expired or is invalid.");
+             return
+        }
+        res.redirect(`https://api.coursehubb.store/reset-password/${tokenEntry.email}/${tokenEntry.token}`)
+    
+    }
+    catch(e){
+        res.json({
+            message:"Invalid request"
+        })
+    }
+
+} 
+
+export const resetPassword = async(req:Request,res:Response)=>{
+    const{token,email,password} = req.body;
+    if(!token || !email || !password){
+        res.json({
+            message:"plese provide all creadentials"
+        
+        })
+        return;
+    }
+    try{
+        const upsertData = await prismaClient.user.update({
+            where:{
+                email
+            },data:{
+                password
+            }
+        })
+        await prismaClient.forgetpassword.delete({
+            where: {
+              token: token, 
+            },
+          });
+          
+        res.status(200).json({
+            message:"user password updated successfully"
+        })
+    
+    }catch(e){
+        res.json({
+            message:"error while updating password"
+        })
+    }
+
+}
+
+export const verifyToken = async(req:Request,res:Response)=>{
+        const { token } = req.params;   
+       try{
+        const tokenEntry = await prismaClient.forgetpassword.findUnique({
+            where: { token },
+          });
+          if (tokenEntry) {
+            res.json({ valid: true });
+            return 
+          } else {
+             res.json({ valid: false });
+             return
+          }
+       }
+       catch(e){
+        res.json({
+            valid:false
+        })
+       }
+    
 }

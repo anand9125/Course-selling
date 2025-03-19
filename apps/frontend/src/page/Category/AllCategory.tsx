@@ -3,7 +3,7 @@ import SideSearchbar from '../../componets/SideSearchbar';
 import AllCategoryCardComponent from '../../componets/AllCategoryCardComponent';
 import { useCategoryStore } from "../../store/useCategoryStore";
 
-function AllMentors() {
+function AllCategory() {
    const { categories, fetchCategories} = useCategoryStore();
      
     useEffect(() => {
@@ -26,4 +26,4 @@ function AllMentors() {
   }
 
 
-export default AllMentors
+export default AllCategory

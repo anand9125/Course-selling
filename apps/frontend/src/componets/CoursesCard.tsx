@@ -33,28 +33,27 @@ interface Mentor {
 interface CoursesCardProps {
   courses: Courses[];
   mentor: Mentor | null;
- 
 }
 
 const ImgMediaCard: React.FC<
-  Courses & { onClick?: () => void; loading?: boolean; addToCart: (course: Courses) => void ,navigate:any }
-> = ({ title,navigate , image, price, actualPrice, id, description, onClick, loading, addToCart, ...course}) => {
+  Courses & { onClick?: () => void; loading?: boolean; addToCart: (course: Courses) => void; navigate: any }
+> = ({ title, navigate, image, price, actualPrice, id, description, onClick, loading, addToCart, ...course }) => {
   return (
     <Card
       onClick={onClick}
       sx={{
         width: "100%",
         maxWidth: 320,
-        height: 350,
+        height: "auto",
         transition: "transform 0.3s ease-in-out",
         cursor: loading ? "default" : "pointer",
         zIndex: 1,
         borderRadius: 3,
         boxShadow: 3,
         "&:hover": {
-          transform: loading ? "none" : "scale(1.03) translateY(-10px)",
+          transform: loading ? "none" : "scale(1.03) translateY(-5px)",
           zIndex: 10,
-          backgroundColor: '#f0f0f0', 
+          backgroundColor: "#f7f7f7",
         },
       }}
     >
@@ -101,21 +100,9 @@ const ImgMediaCard: React.FC<
             >
               {description}
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: 1,
-              }}
-            >
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 1 }}>
               <Box>
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  fontWeight="bold"
-                  sx={{ display: "inline" }}
-                >
+                <Typography variant="h6" color="primary" fontWeight="bold" sx={{ display: "inline" }}>
                   ₹{price}
                 </Typography>
                 {actualPrice > price && (
@@ -134,9 +121,20 @@ const ImgMediaCard: React.FC<
                 size="small"
                 sx={{ borderRadius: 5, textTransform: "none", fontWeight: "bold" }}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  addToCart({ id, title, courseId: course.courseId, price, actualPrice, description, categoryId: course.categoryId, mentorId: course.mentorId, image, index: course.index });
-                 navigate("/cart")
+                  e.stopPropagation(); // Prevent card click event from triggering
+                  addToCart({
+                    id,
+                    title,
+                    courseId: course.courseId,
+                    price,
+                    actualPrice,
+                    description,
+                    categoryId: course.categoryId,
+                    mentorId: course.mentorId,
+                    image,
+                    index: course.index,
+                  });
+                  navigate("/cart");
                 }}
               >
                 Add to Cart
@@ -150,7 +148,7 @@ const ImgMediaCard: React.FC<
 };
 
 const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
-  const { addToCart } = useCartAction(); // Get addToCart function
+  const { addToCart } = useCartAction();
   const { isLoading } = useMentorStore();
   const navigate = useNavigate();
 
@@ -163,24 +161,27 @@ const CoursesCard: React.FC<CoursesCardProps> = ({ courses, mentor }) => {
 
   return (
     <div>
-     <div className="text-3xl font-semibold pt-3 md:text-4xl">{mentor?.name}</div>
-      <Box sx={{ maxWidth: "1300px", margin: "auto", padding: 2 }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 3,
-            justifyContent: "center",
-          }}
-        >
+      <div className="text-3xl font-semibold pt-3 md:text-4xl">{mentor?.name}</div>
+      <Box sx={{ maxWidth: "1400px", margin: "auto", padding: 2 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: 2, // Reduce spacing slightly
+          justifyContent: "center",
+          "@media (min-width: 600px)": { gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" },
+          "@media (min-width: 1024px)": { gridTemplateColumns: "repeat(3, 1fr)" }, // Ensures 3 cards on big screens
+        }}
+      >
+
           {sortedCourses.map((course) => (
             <ImgMediaCard
               key={course.id}
               {...course}
               onClick={() => handleCardClick(course.courseId)}
               loading={isLoading}
-              addToCart={addToCart} // Pass addToCart function to child
-             navigate={navigate}
+              addToCart={addToCart}
+              navigate={navigate}
             />
           ))}
         </Box>

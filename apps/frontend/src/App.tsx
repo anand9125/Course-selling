@@ -13,6 +13,9 @@ import PaymentSuccess from "./page/Payment/PaymentSuccess";
 import PaymentFailure from "./page/Payment/PayemntFailure";
 import { useEffect } from "react"
 import { useUserStore } from "./store/useUserStore";
+import ForgetPassword from "./page/User-Profile/ForgetPassword";
+import ResetPassword from "./page/User-Profile/ResetPassword";
+import ProtectedResetPassword from "./store/ProtectrestPassword";
 
 
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
@@ -81,6 +84,10 @@ function App() {
             <Route path="/about" element={<AboutUs/>} />
             <Route path="/payment-failure" element={<PaymentFailure/>} />
             <Route path="/payment-success" element={<PaymentSuccess/>} />
+            <Route path="/forget-password" element={<ForgetPassword/>} />
+            <Route element={<ProtectedResetPassword />}>
+            <Route path="/reset-password/:email/:token" element={<ResetPassword />} />
+            </Route>
       
          
 
