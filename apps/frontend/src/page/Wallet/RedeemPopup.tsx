@@ -6,10 +6,12 @@ import { useUserStore } from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { userEndPoint } from "../../config";
+import Spinner from "../../componets/Skeleton/ButtonSkeleton";
 interface RedeemPopupProps {
   setPopUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
@@ -42,12 +44,14 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
     // @ts-ignore
     if (walletBalance >= 10) {
       try {
+        setIsLoading(true);
         await axios.post(`${userEndPoint}/user/postEmail`, {
           email: userData.email,
           phoneNumber: phoneNumber,
           walletBalance: walletBalance,
           name: userData.name,
         });
+        setIsLoading(false);
         await Swal.fire({
           title: "🎉 Success!",
           text: "Your balance will be added to your bank account shortly.",
@@ -124,7 +128,7 @@ export const RedeemPopupCard: React.FC<RedeemPopupProps> = ({ setPopUp }) => {
             onClick={handleRedeem}
             className="w-full bg-[#DC9814] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all text-lg font-medium"
           >
-            Claim Reward
+               {isLoading ? <Spinner size={20} className="mx-auto" /> : "Submit"}
           </button>
         </motion.div>
       </div>

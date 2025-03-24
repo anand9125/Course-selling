@@ -7,7 +7,6 @@ const AboutUs = () => {
             Welcome to <span className="text-primary font-semibold">Courehubb</span>, your go-to platform for high-quality online courses.  
             Our mission is to connect learners with expert mentors and provide a seamless learning experience.
           </p>
-  
           <div className="text-left space-y-4">
             <h3 className="text-2xl font-semibold text-gray-800">Why Choose Us?</h3>
             <ul className="list-disc list-inside text-gray-700 text-lg">
@@ -17,7 +16,6 @@ const AboutUs = () => {
               <li>🔄 Lifetime access to purchased courses.</li>
             </ul>
           </div>
-  
           <div className="mt-6">
             <button
               onClick={() => window.location.href = "/contact"}

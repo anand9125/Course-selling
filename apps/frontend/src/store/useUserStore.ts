@@ -30,8 +30,7 @@ interface FormData{
     collage: string;
     branch: string;
     year: number;
-  }  
-
+  }
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
   isLoading: false,
@@ -110,9 +109,12 @@ export const useUserStore = create<UserStore>((set) => ({
   },
 userWalletBalance:async(userId:string)=>{
     try{
+    
+     
       const response = await axios.get(`${userEndPoint}/user/wallet/${userId}`);
       set({walletBalance:response.data.walletBalance}) 
-     }
+    
+    }
     catch(error:any){
       console.error("Failed to get wallet balance:", error)
     }

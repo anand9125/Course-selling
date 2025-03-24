@@ -41,9 +41,9 @@ const worker = new Worker(
           console.log("⚠️ Course link missing, notifying admin and user...");
       
           await resend.emails.send({
-            from: "anand.chaudhary@coursehubb.store",
+            from: "ultimatcourses@coursehubb.store",
             replyTo: "coursehubb.store@gmail.com",
-            to: "akdon9936@gmail.com",
+            to: "coursehubb.store@gmail.com",
             subject: "⚠️ Course Link Missing",
             html: `
               <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -57,7 +57,7 @@ const worker = new Worker(
           });
       
           await resend.emails.send({
-            from: "anand.chaudhary@coursehubb.store",
+            from: "ultimatcourses@coursehubb.store",
             replyTo: "coursehubb.store@gmail.com",
             to: purchaseData.user.email,
             subject: "✅ Payment Received - Course Link Pending",
@@ -80,7 +80,7 @@ const worker = new Worker(
       
           
           await resend.emails.send({
-            from: "anand.chaudhary@coursehubb.store",
+            from: "ultimatcourses@coursehubb.store",
             replyTo: "coursehubb.store@gmail.com",
             to: purchaseData.user.email,
             subject: "🎉 Course Access Granted",
@@ -111,7 +111,7 @@ const worker = new Worker(
             });
             console.log(referredUser.email)
             await resend.emails.send({
-              from: "anand.chaudhary@coursehubb.store",
+              from: "ultimatcourses@coursehubb.store",
               replyTo: "coursehubb.store@gmail.com",
               to: referredUser.email,
               subject: "🎉 Referral Reward Earned!",
@@ -131,9 +131,9 @@ const worker = new Worker(
       
         
         await resend.emails.send({
-          from: "anand.chaudhary@coursehubb.store",
+          from: "ultimatcourses@coursehubb.store",
           replyTo: "coursehubb.store@gmail.com",
-          to: "akdon9936@gmail.com",
+          to: "coursehubb.store@gmail.com",
           subject: "🚨 Error While Processing Payment",
           html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">

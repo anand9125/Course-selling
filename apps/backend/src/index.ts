@@ -23,7 +23,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "https://coursehubb.store", // Allow all origins (safe for Postman and local development)
+    origin: "https://coursehubb.store", 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

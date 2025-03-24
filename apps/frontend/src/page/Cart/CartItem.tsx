@@ -146,6 +146,10 @@ function CartItem() {
       toast.error("User not found please login")
       return
     }
+    if((referralCode==userData.referralCode)){
+      toast.error("Referral code is not valid")
+      return
+    }
     try {
       setIsLoading(true);
     

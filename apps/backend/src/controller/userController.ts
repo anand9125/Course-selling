@@ -9,6 +9,8 @@ const client =  prismaClient
 import { Resend } from "resend";
 import { randomBytes } from "crypto";
 const resend = new Resend("re_TdcBvneT_5DbUwu19BWBNR3MJ6CEUxB7o"); // Resend API key
+
+
 export const userSignUp = async (req: Request, res: Response) => {
     const parseData = SignupSchema.safeParse(req.body);
     if (!parseData.success) {
@@ -76,7 +78,6 @@ export const userSignUp = async (req: Request, res: Response) => {
     }
     return
 };
-
 
 export const userSignIn= async(req:Request,res:Response)=>{
     const parseData = SigninSchema.safeParse(req.body)
@@ -250,13 +251,13 @@ export const removeBalance = async (req: Request, res: Response) => {
     }
 };
 
-export const postEmail = async(req:Request,res:Response)=>{
+export const postEmailForredeem = async(req:Request,res:Response)=>{
     const {name,email,walletBalance,phoneNumber} =req.body;
      try{
         await resend.emails.send({
-            from: "anand.chaudhary@coursehubb.store",
+            from: "ultimatcourses@coursehubb.store",
             replyTo: "coursehubb.store@gmail.com",
-            to: "achaudharyskn@gmail.com", 
+            to: "coursehubb.store@gmail.com", 
             subject: "🎉 Process Reward for User",
             text: `Dear Admin,      
             ${name} has successfully completed a transaction and is eligible for a reward. Please process the reward as per the details below:     
@@ -287,15 +288,26 @@ export const sendForgetPassowordmail= async(req:Request,res:Response)=>{
     const token = randomBytes(32).toString("hex");
 
    try{
+    const user = await prismaClient.user.findUnique({
+        where:{
+            email
+        }
+    })
+    if(!user){
+        res.status(400).json({
+            message:"User not found"
+        })
+        return
+    }
     await prismaClient.forgetpassword.create({
         data:{
             token,
             email
         }
     })
-    const accessLink = `https://api.coursehubb.store/api/v1/user/access-forgetPasswordPage?token=${token}`;
+    const accessLink = `http://localhost:3001/api/v1/user/access-forgetPasswordPage?token=${token}`;
     await resend.emails.send({
-        from: "anand.chaudhary@coursehubb.store",
+        from: "ultimatcourses@coursehubb.store",
         replyTo: "coursehubb.store@gmail.com",
         to: email,
         subject: "Reset Your Password - CourseHubb",
@@ -359,7 +371,7 @@ export const rediretForgetPasswordPage = async(req:Request,res:Response)=>{
              res.status(400).send("This link has expired or is invalid.");
              return
         }
-        res.redirect(`https://api.coursehubb.store/reset-password/${tokenEntry.email}/${tokenEntry.token}`)
+        res.redirect(`https://coursehubb.store/reset-password/${tokenEntry.email}/${tokenEntry.token}`)
     
     }
     catch(e){
@@ -380,11 +392,12 @@ export const resetPassword = async(req:Request,res:Response)=>{
         return;
     }
     try{
-        const upsertData = await prismaClient.user.update({
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const updateData = await prismaClient.user.update({
             where:{
                 email
             },data:{
-                password
+                password: hashedPassword
             }
         })
         await prismaClient.forgetpassword.delete({

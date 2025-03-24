@@ -1,7 +1,8 @@
 import {prismaClient} from "@repo/db/src";
 import { CreatecoursesSchema,updateCourseIndexSchema,updateCourseSchema } from "../types"
 import { Request,Response } from "express";
-
+import { Resend } from "resend";
+const resend = new Resend("re_TdcBvneT_5DbUwu19BWBNR3MJ6CEUxB7o"); // Resend API key
 const client =  prismaClient
 export const createCourses = async(req:Request,res:Response)=>{  
     const parseData = CreatecoursesSchema.safeParse(req.body);
@@ -471,4 +472,73 @@ export const getCourseOfSelectedMentor = async (req:Request,res:Response)=>{
       }
       return
     
+}
+
+export const sendRequestForCourseMail = async(req:Request,res:Response)=>{
+    console.log(req.body)
+    const {courseName,mentorName,email,phoneNumber} = req.body;
+    try{
+        await resend.emails.send({
+            from: "ultimatcourses@coursehubb.store",
+            replyTo: email, // User's email for direct response
+            to: "coursehubb.store@gmail.com",
+            subject: "New Course Request",
+            html: `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #d9534f;">📢 New Course Request</h2>
+                <p><strong>Course Name:</strong> ${courseName}</p>
+                <p><strong>Mentor Name:</strong> ${mentorName}</p>
+                <p><strong>User Email:</strong> ${email}</p>
+                <p><strong>Contact Number:</strong> ${phoneNumber}</p>
+                
+                <p>Please review this request and take the necessary action.</p>
+                
+                <p style="margin-top: 20px;">
+                  <a href="mailto:${email}" style="background-color: #007bff; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Reply to User
+                  </a>
+                </p>
+    
+                <hr style="border: 0; height: 1px; background-color: #ddd; margin-top: 20px;">
+                <p style="font-size: 14px; color: #777;">This is an automated email from CourseHubb.</p>
+              </div>  `
+        });
+        await resend.emails.send({
+            from: "ultimatcourses@coursehubb.store",
+            to: email,
+            subject: "Your Course Request Has Been Received!",
+            html: `
+              <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #28a745;">✅ Request Received</h2>
+                <p>Dear User,</p>
+                <p>We have received your request for the following course:</p>
+                
+                <p><strong>Course Name:</strong> ${courseName}</p>
+                <p><strong>Mentor Name:</strong> ${mentorName}</p>
+                
+                <p>Our team will review your request and get back to you as soon as possible.</p>
+    
+                <p>If you have any questions, feel free to contact us at 
+                  <a href="mailto:coursehubb.store@gmail.com">coursehubb.store@gmail.com</a>.
+                </p>
+    
+                <p>Best regards,<br><strong>CourseHubb Support Team</strong></p>
+    
+                <hr style="border: 0; height: 1px; background-color: #ddd; margin-top: 20px;">
+                <p style="font-size: 14px; color: #777;">This is an automated email from CourseHubb. Please do not reply.</p>
+              </div>
+            `
+        });
+        res.status(200).json({
+            message: "Request sent successfully"
+        })
+        return
+    }
+    catch(err){
+        console.error("Error sending request for course mail",err)
+        res.status(500).json({
+            message: "Failed to send request for course mail"
+        })
+        return
+    }
 }

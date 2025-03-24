@@ -175,7 +175,7 @@ export const webhookHandler = async(req:Request,res:Response)=>{
   try{
   if(amount!==purchaseDetails?.amount){
     await resend.emails.send({
-      from: "anand.chaudhary@coursehubb.store",
+      from: "ultimatcourses@coursehubb.store",
       replyTo: "coursehubb.store@gmail.com",
       to: `${purchaseDetails?.user?.email}`, 
       subject: "⚠️ Payment Amount Not Valid",
@@ -187,9 +187,9 @@ export const webhookHandler = async(req:Request,res:Response)=>{
       Course Hub Support Team`
       });
       await resend.emails.send({
-        from: "anand.chaudhary@coursehubb.store",
+        from: "ultimatcourses@coursehubb.store",
         replyTo: "coursehubb.store@gmail.com",
-        to: "akdon9936@gmail.com", 
+        to: "coursehubb.store@gmail.com", 
         subject: "🔄 Refund Required for Invalid Payment",
         text: `Dear Admin,      
       A user has made an invalid payment for a course, and a refund needs to be processed.     

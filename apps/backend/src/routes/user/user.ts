@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {sendForgetPassowordmail, rediretForgetPasswordPage, postEmail, removeBalance, resetPassword, userSignIn, userSignUp, verifyRefrellCode, walletBalance, verifyToken } from "../../controller/userController";
+import {sendForgetPassowordmail, rediretForgetPasswordPage, postEmailForredeem, removeBalance, resetPassword, userSignIn, userSignUp, verifyRefrellCode, walletBalance, verifyToken } from "../../controller/userController";
 
 
 
@@ -16,7 +16,7 @@ router.post("/verify/referralCode",verifyRefrellCode)
 
 router.post("/removeBalance/:userId",removeBalance)
 
-router.post("/postEmail",postEmail)
+router.post("/postEmail",postEmailForredeem)
 
 router.post("/forget-password",sendForgetPassowordmail)
 

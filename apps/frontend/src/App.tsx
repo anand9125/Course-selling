@@ -16,6 +16,8 @@ import { useUserStore } from "./store/useUserStore";
 import ForgetPassword from "./page/User-Profile/ForgetPassword";
 import ResetPassword from "./page/User-Profile/ResetPassword";
 import ProtectedResetPassword from "./store/ProtectrestPassword";
+import SpecificCourse from "./page/Courses/SpecificCourse";
+import ScrollToTop from "./store/ScrollToTop";
 
 
 const TermsAndConditions = React.lazy(() => import('./page/Legal/TermCondition'));
@@ -62,6 +64,7 @@ function App() {
   return (
     <RecoilRoot>
       <Router> 
+      <ScrollToTop />
         <Navbar />
         <Banner />
         <PopupCard />
@@ -82,6 +85,7 @@ function App() {
             <Route path="/return-policy" element={<RefundCancellationPolicy />} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/about" element={<AboutUs/>} />
+            <Route path="/specific-course" element={<SpecificCourse/>} />
             <Route path="/payment-failure" element={<PaymentFailure/>} />
             <Route path="/payment-success" element={<PaymentSuccess/>} />
             <Route path="/forget-password" element={<ForgetPassword/>} />

@@ -19,9 +19,21 @@ function CategoryMentors() {
      
       <div className="hidden pr-12 pt-4 lg:block w-1/4 ">
         <SideSearchbar />
+        </div>
+        <div className="w-full lg:w-3/4">
+        <div className="flex justify-end text-center">
+        <p className="text-lg font-semibold text-gray-800">
+        If you want any specific mentor's courses that are not present here
+        <a 
+          href="/specific-course" 
+          className="ml-3 inline-block text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg shadow-lg transition"
+        >
+          Click here
+        </a>
+      </p>
+
       </div>
-      <div className="w-full lg:w-3/4">
-        <div className="text-3xl font-semibold pt-3 md:text-4xl">Mentors</div>
+        <div className="text-3xl font-semibold  md:text-4xl">Mentors</div>
         <MentorsCard mentors={mentors} categoryId={categoryId} />
       </div>
     </div>
