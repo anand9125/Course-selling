@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 export const paymentQueue = new Queue("paymentQueue", {  
     connection: {
-        host: "190.152.145.92",  // Choose the correct Redis server IP
+        host: "190.152.145.92",  
         port: 28069  
     }
 });
@@ -12,6 +12,4 @@ paymentQueue.client.then(client => {
 }).catch(err => {
     console.error("❌ Failed to initialize Redis client:", err);
 });
-
-//initializes a BullMQ queue named "paymentQueue" and connects it to a Redis instance running on localhost:
 
