@@ -148,11 +148,11 @@ const worker = new Worker(
       console.log(`✅ Job ${job.id} processed successfully.`);
       
    },
-  {
-     connection: {
-      host: "190.152.145.92",  // Choose the correct Redis server IP
-      port: 28069  
-  }
+    {
+      connection: {
+        host: "190.152.145.92",  // Choose the correct Redis server IP
+        port: 28069  
+    }
   }
 );
 

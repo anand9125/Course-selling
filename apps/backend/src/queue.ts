@@ -1,9 +1,9 @@
 import { Queue } from "bullmq";
 export const paymentQueue = new Queue("paymentQueue", {  
-    connection: {
-        host: "190.152.145.92",  
-        port: 28069  
-    }
+        connection: {
+            host: "190.152.145.92",  
+            port: 28069  
+        }
 });
 paymentQueue.client.then(client => {
     client.ping()
