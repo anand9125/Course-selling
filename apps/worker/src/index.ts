@@ -149,7 +149,7 @@ const worker = new Worker(
       
    },
   {
-    connection: {
+     connection: {
       host: "190.152.145.92",  // Choose the correct Redis server IP
       port: 28069  
   }
