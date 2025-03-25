@@ -305,7 +305,7 @@ export const sendForgetPassowordmail= async(req:Request,res:Response)=>{
             email
         }
     })
-    const accessLink = `http://coursehubb.store/api/v1/user/access-forgetPasswordPage?token=${token}`;
+    const accessLink = `https://api.coursehubb.store/api/v1/user/access-forgetPasswordPage?token=${token}`;
     await resend.emails.send({
         from: "ultimatcourses@coursehubb.store",
         replyTo: "coursehubb.store@gmail.com",
