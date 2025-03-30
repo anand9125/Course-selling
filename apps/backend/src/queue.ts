@@ -1,8 +1,8 @@
 import { Queue } from "bullmq";
 export const paymentQueue = new Queue("paymentQueue", {  
         connection: {
-            host: "190.152.145.92",  
-            port: 28069  
+            host: "172.31.34.237",  // Your Redis server IP
+            port: 6379,             // Default Redis port
         }
 });
 paymentQueue.client.then(client => {

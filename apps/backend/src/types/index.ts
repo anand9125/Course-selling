@@ -11,7 +11,7 @@ export const SignupSchema = z.object({
     branch: z.string().optional().refine(val => val ? val.length > 0 : true, {
        message: "Branch is required if you are in college"
     }), 
-    year: z.number().int().min(1).max(5).optional(),
+    year: z.number().optional(),
     referralCode: z.string().optional(),
     referredById : z.string().optional(),
     role:z.enum(["STUDENT","ADMIN"]).default("STUDENT")
