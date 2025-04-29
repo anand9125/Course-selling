@@ -150,7 +150,7 @@ const worker = new Worker(
    },
     {
       connection: {
-        host: "127.0.0.1",  // Your Redis server IP
+        host: "172.31.28.161",  // Your Redis server IP
         port: 6379,             // Default Redis port
     }
   }

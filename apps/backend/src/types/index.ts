@@ -41,8 +41,7 @@ export const CreatecoursesSchema = z.object({
     mentorImage: z.string().optional().default(""), 
     mentorIndex: z.number().optional().default(0).nullable(),
 });
-
-    
+  
 
 export const updateCourseSchema = z.object({
     image:z.string().optional(),
