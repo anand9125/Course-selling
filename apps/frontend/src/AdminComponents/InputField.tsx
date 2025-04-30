@@ -13,7 +13,7 @@ export const InputField = ({ label, name, type = 'text', register, placeholder }
 };
 
 export const UpdateInputField = ({
-  label,
+   label,
   name,
   type = "text",
   register,
